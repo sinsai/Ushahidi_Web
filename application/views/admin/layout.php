@@ -104,6 +104,17 @@
 		echo html::script('media/js/tinymce/tiny_mce', true);
 	}
 	
+	// Load datepicker
+	if (isset($datepicker_enabled) && $datepicker_enabled)
+	{
+		echo html::script('media/js/datepicker/datepicker', true);
+		echo html::script('media/js/datepicker/jquery.ui.core', true);
+		echo html::script('media/js/datepicker/jquery-ui-1.8.11.custom', true);
+		echo html::script('media/js/datepicker/jquery.ui.datepicker', true);
+		echo html::script('media/js/datepicker/i18n/jquery-ui-i18n', true);
+		echo html::stylesheet('media/css/datepicker/jquery-ui-1.8.11.custom', '', true);
+	}
+
 	// Turn on picbox
 	echo html::script('media/js/picbox', true);
 	echo html::stylesheet('media/css/picbox/picbox');

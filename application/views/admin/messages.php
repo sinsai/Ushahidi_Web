@@ -12,8 +12,8 @@
  * @copyright  Ushahidi - http://www.ushahidi.com
  * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL) 
  */
+//<script type="text/javascript" src="http://plugins.jquery.com/files/jquery.query-2.1.7.js.txt"></script>
 ?>
-<script type="text/javascript" src="http://plugins.jquery.com/files/jquery.query-2.1.7.js.txt"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
   google.load("visualization", "1");
@@ -38,6 +38,8 @@
 			<div class="bg">
 				<h2>
 					<?php admin::messages_subtabs($service_id); ?>
+<input id="datepicker" name="startHms" type="text" />
+<!--<div id="datepicker"></div>-->
 				</h2>
 
 <?php
