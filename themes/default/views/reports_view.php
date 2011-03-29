@@ -60,11 +60,18 @@
 			<?php echo $incident_description; 
                               Event::run('ushahidi_action.report_extra', $incident_id);
                         ?>
-			<?php if ( count($incident_news) > 0 ) {?>
+			<?php
+			 $show_comment = true;
+			 if ( count($incident_news) > 0 ) {?>
             <br /><br /><h5><?php echo Kohana::lang('ui_main.reports_news');?></h5>
-            <?php   foreach ($incident_news as $news)
+            <?php   
+                foreach ($incident_news as $news)
                     {
                         echo '<a href="'.$news.'">'.$news.'</a> ';
+                        if(strpos($news, "http://tasukeai.heroku.com/messages/show/", 0) === 0){
+                            $show_comment = false;
+                        }
+                        
                     } ?>
 			<?php } ?>
                         
@@ -82,15 +89,14 @@
 		</div>
 		
 		<?php
-			// Filter::comments_block - The block that contains posted comments
-			Event::run('ushahidi_filter.comment_block', $comments);
-			echo $comments;
-		?>
-		
-		<?php
-			// Filter::comments_form_block - The block that contains the comments form
-			Event::run('ushahidi_filter.comment_form_block', $comments_form);
-			echo $comments_form;
+		    if($show_comment){
+			    // Filter::comments_block - The block that contains posted comments
+			    Event::run('ushahidi_filter.comment_block', $comments);
+			    echo $comments;
+			    // Filter::comments_form_block - The block that contains the comments form
+			    Event::run('ushahidi_filter.comment_form_block', $comments_form);
+			    echo $comments_form;
+			}
 		?>
 	
 	</div>

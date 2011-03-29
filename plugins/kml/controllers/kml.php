@@ -27,12 +27,18 @@ class Kml_Controller extends Controller
 		// 3. ditect cache
 		// 4.1. has cache -> return file
 		// 4.2. no cache -> get data from sql, and write in view
+        Kohana::config_load('kml');
 
 		// 1.
 		$limit = 0;
 		if (isset($_GET['l']) AND !empty($_GET['l']))
 		{
 			$limit = (int) $_GET['l'];
+		}
+
+		$category_id = 0;
+		if (isset($_GET['cat']) AND !empty($_GET['cat'])) {
+			$category_id = (int) $_GET['cat'];
 		}
 
 		// cron on?
@@ -43,10 +49,9 @@ class Kml_Controller extends Controller
 			$limit = 0; // execute cron with no limit.
 		}
 
-        if ($limit == 0 && $cron_flag == false) {
-            Kohana::config_load('kml');
-            url::redirect(Kohana::config("kml.cdn_kml_url"));
-        }
+		if ($limit == 0 && $cron_flag == false) {
+			url::redirect(Kohana::config("kml.cdn_kml_url"));
+		}
 
 		// 2.
 		$kml_filename = "latest.kml";  // filename for exported KML file
@@ -102,9 +107,17 @@ class Kml_Controller extends Controller
 					->find_all();
 			}
 			// Get all Categories...
-			$categories = ORM::factory('category')
-				->where('category_visible', '1')
-				->find_all();
+			$categories = array();
+			if ($category_id == 0) {
+				$categories = ORM::factory('category')
+					->where('category_visible', '1')
+					->find_all();
+			} else {
+				$categories = ORM::factory('category')
+					->where('id', $category_id)
+					->where('category_visible', '1')
+					->find_all();
+			}
 
 		}
 		

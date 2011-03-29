@@ -64,7 +64,7 @@
 							$incident_date = $incident->incident_date;
 							$incident_date = date('g:i A', strtotime($incident->incident_date));
 							$incident_mode = $incident->incident_mode;	// Mode of submission... WEB/SMS/EMAIL?
-							
+
 							if ($incident_mode == 1)
 							{
 								$submit_mode = "mail";

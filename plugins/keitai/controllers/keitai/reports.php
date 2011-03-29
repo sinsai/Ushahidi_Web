@@ -4,15 +4,15 @@
  * Generates KML with PlaceMarkers and Category Styles
  *
  * PHP version 5
- * LICENSE: This source file is subject to LGPL license 
+ * LICENSE: This source file is subject to LGPL license
  * that is available through the world-wide-web at the following URI:
  * http://www.gnu.org/copyleft/lesser.html
- * @author	   Ushahidi Team <team@ushahidi.com> 
+ * @author	   Ushahidi Team <team@ushahidi.com>
  * @package    Ushahidi - http://source.ushahididev.com
- * @module	   keitai Controller	
+ * @module	   keitai Controller
  * @copyright  Ushahidi - http://www.ushahidi.com
- * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL) 
-* 
+ * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+*
 */
 
 class Reports_Controller extends Keitai_Controller {
@@ -21,7 +21,7 @@ class Reports_Controller extends Keitai_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Displays a list of reports
 	 * @param boolean $category_id If category_id is supplied filter by
@@ -31,11 +31,11 @@ class Reports_Controller extends Keitai_Controller {
 	{
 
 		$this->template->content = new View('keitai/reports');
-		
+
 		$db = new Database;
-		
+
 		$filter = ( $category_id )
-			? " AND ( c.id='".$category_id."' OR 
+			? " AND ( c.id='".$category_id."' OR
 				c.parent_id='".$category_id."' )  "
 			: " AND 1 = 1";
 
@@ -63,7 +63,7 @@ class Reports_Controller extends Keitai_Controller {
 		$this->template->content->pagination = $pagination;
 
 		$incidents = $db->query("SELECT DISTINCT i.*, l.location_name FROM `".$this->table_prefix."incident` AS i JOIN `".$this->table_prefix."incident_category` AS ic ON (i.`id` = ic.`incident_id`) JOIN `".$this->table_prefix."category` AS c ON (c.`id` = ic.`category_id`) JOIN `".$this->table_prefix."location` AS l ON (i.`location_id` = l.`id`) WHERE `incident_active` = '1' $filter $latlong_filter ORDER BY incident_date DESC LIMIT ". (int) Kohana::config('keitai.items_per_page') . " OFFSET ".$pagination->sql_offset);
-		
+
 		// If Category Exists
 		if ($category_id)
 		{
@@ -78,19 +78,19 @@ class Reports_Controller extends Keitai_Controller {
 		{
 			$category = FALSE;
 		}
-			
+
 		$this->template->content->incidents = $incidents;
 		$this->template->content->category = $category;
 		$this->template->content->latlong = $latlong;
 	}
-	
+
 	/**
 	 * Displays a report.
 	 * @param boolean $id If id is supplied, a report with that id will be
 	 * retrieved.
 	 */
 	public function view($id = false)
-	{	
+	{
 		$latlong = (isset($_GET['latlong'])) ? $_GET['latlong'] : "";
 		$latlong_params = "";
 		if ($latlong) {
@@ -100,7 +100,7 @@ class Reports_Controller extends Keitai_Controller {
 		$this->template->header->show_map = TRUE;
 		$this->template->header->js = new View('keitai/reports_view_js');
 		$this->template->content = new View('keitai/reports_view');
-		
+
 		if ( ! $id )
 		{
 			url::redirect('keitai');
@@ -117,7 +117,7 @@ class Reports_Controller extends Keitai_Controller {
 			$this->template->content->incident = $incident;
 			$this->template->header->js->latitude = $incident->location->latitude;
 			$this->template->header->js->longitude = $incident->location->longitude;
-			
+
 			$page_no = (isset($_GET['p'])) ? $_GET['p'] : "";
 			$category_id = (isset($_GET['c'])) ? $_GET['c'] : "";
 			if ($category_id)
@@ -137,19 +137,19 @@ class Reports_Controller extends Keitai_Controller {
 	}
 	public function thanks($saved = false){
 		$this->is_cachable = TRUE;
-		
+
 		$this->template->header->show_map = TRUE;
 		$this->template->content  = new View('keitai/reports_thanks');
 	}
-	
+
 	public function submit($saved = false)
 	{
 		// Cacheable Controller
 		$this->is_cachable = FALSE;
-		
+
 		$this->template->header->show_map = TRUE;
 		$this->template->content  = new View('keitai/reports_submit');
-		
+
 		// First, are we allowed to submit new reports?
 		if ( ! Kohana::config('settings.allow_reports'))
 		{
@@ -203,8 +203,8 @@ class Reports_Controller extends Keitai_Controller {
 		//	$forms[$custom_forms->id] = $custom_forms->form_title;
 		//}
 		//$this->template->content->forms = $forms;
-		
-		
+
+
 		// check, has the form been submitted, if so, setup validation
 		if ($_POST)
 		{
@@ -220,12 +220,12 @@ class Reports_Controller extends Keitai_Controller {
 			$post->add_rules('incident_month', 'required', 'numeric', 'between[1,12]');
 			$post->add_rules('incident_day', 'required', 'numeric', 'between[1,31]');
 			$post->add_rules('incident_year', 'required', 'numeric', 'length[4,4]');
-			
+
 			if ( ! checkdate($_POST['incident_month'], $_POST['incident_day'], $_POST['incident_year']) )
 			{
 				$post->add_error('incident_date','date_mmddyyyy');
 			}
-			
+
 			$post->add_rules('incident_hour', 'required', 'between[1,12]');
 			$post->add_rules('incident_minute', 'required', 'between[0,59]');
 
@@ -248,9 +248,9 @@ class Reports_Controller extends Keitai_Controller {
 			{
 				$post->add_rules('incident_category.*', 'required', 'numeric');
 			}
-			
+
 			// Geocode Location
-			if ( empty($_POST['latitude']) AND empty($_POST['longitude']) 
+			if ( empty($_POST['latitude']) AND empty($_POST['longitude'])
 				AND ! empty($_POST['location_name']) )
 			{
 				$default_country = Kohana::config('settings.default_country');
@@ -263,7 +263,7 @@ class Reports_Controller extends Keitai_Controller {
 						$country_name = $country->country;
 					}
 				}
-				
+
 				$geocode = keitai_geocoder::geocode($_POST['location_name'].", ".$country_name);
 				if ($geocode)
 				{
@@ -289,7 +289,7 @@ class Reports_Controller extends Keitai_Controller {
 					$location->location_date = date("Y-m-d H:i:s",time());
 					$location->save();
 				}
-				
+
 				// STEP 2: SAVE INCIDENT
 				$incident = new Incident_Model();
 				if (isset($location) AND $location->loaded)
@@ -304,7 +304,7 @@ class Reports_Controller extends Keitai_Controller {
 				$incident_time = $post->incident_hour
 					.":".$post->incident_minute
 					.":00 ".$post->incident_ampm;
-				$incident->incident_date = date( "Y-m-d H:i:s", strtotime($incident_date . " " . $incident_time) );				
+				$incident->incident_date = date( "Y-m-d H:i:s", strtotime($incident_date . " " . $incident_time) );
 				$incident->incident_dateadd = date("Y-m-d H:i:s",time());
 				$incident->save();
 
@@ -316,9 +316,9 @@ class Reports_Controller extends Keitai_Controller {
 					$incident_category->category_id = $item;
 					$incident_category->save();
 				}
-				
+
 				url::redirect('keitai/reports/thanks');
-				
+
 			}
 			// No! We have validation errors, we need to show the form again, with the errors
 			else
@@ -327,22 +327,22 @@ class Reports_Controller extends Keitai_Controller {
 				$form = arr::overwrite($form, $post->as_array());
 
 				// populate the error fields, if any
-				$errors = arr::overwrite($errors, $post->errors('keitai_report'));
+				$errors = arr::overwrite($errors, $post->errors('report'));
 				$form_error = TRUE;
 			}
-			
+
 		} else {
 			$form['latitude'] = (isset($_GET['latitude'])) ? $_GET['latitude'] : "";
 			$form['longitude'] = (isset($_GET['longitude'])) ? $_GET['longitude'] : "";
 		}
-		
+
 		$this->template->content->form = $form;
 		$this->template->content->errors = $errors;
 		$this->template->content->form_error = $form_error;
 		$this->template->content->categories = $this->_get_categories($form['incident_category']);
-		
+
 		$this->template->content->cities = $this->_get_cities();
-		
+
 		$this->template->header->js = new View('keitai/reports_submit_js');
 		if (!$form['latitude'] || !$form['latitude'])
 		{
@@ -355,7 +355,7 @@ class Reports_Controller extends Keitai_Controller {
 		$this->template->content->device = $this->checkdevice($_SERVER['HTTP_USER_AGENT']);
 
 	}
-	
+
 	/*
 	 * Retrieves Categories
 	 */
@@ -370,15 +370,15 @@ class Reports_Controller extends Keitai_Controller {
 
 		return $categories;
 	}
-	
-	
+
+
 	/*
 	 * Retrieves Cities
 	 */
 	private function _get_cities()
 	{
 		$cities = ORM::factory('city')->orderby('city', 'asc')->find_all();
-		$city_select = array('' => 'Select A Location from the Drop-Down');
+		$city_select = array('' => Kohana::lang('ui_main.reports_select_city'));
 
 		foreach ($cities as $city)
 		{
