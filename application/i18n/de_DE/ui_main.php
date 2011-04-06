@@ -486,5 +486,16 @@
 	'weight' => 'Gewicht',
 	'yes' => 'Ja',
 	'yesterday' => 'Gestern',
+
+	'about_us' => 'über uns',
+	'about_us_title_index' => 'über uns',
+	'first_steps' => 'Erste Schritte',
+	'first_steps_title_index' => 'Erste Schritte',
+	'images_and_movies' => 'Bilder und Filme',
+	'images_and_movies_title_index' => 'Bilder und Filme',
+	'safety_confirmation_bbs' => 'Sicherheitsbestätigung・BBS',
+	'safety_confirmation_bbs_title_index' => 'Sicherheitsbestätigung・BBS',
+	'volunteer' => 'Freiwillige',
+	'volunteer_title_index' => 'Freiwillige',
 	);
 ?>

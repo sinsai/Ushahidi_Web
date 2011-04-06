@@ -66,14 +66,22 @@ foreach ($nations as $nation){
 <!-- <?php nav::main_tabs($this_page); ?> -->
 <?php
 $menu = "";
+$lang = "";
+if (isset($_GET['l']) && !empty($_GET['l']))
+{
+	if($_GET['l'] != 'ja_JP')
+	{
+	$lang = "?l=".$_GET['l'];
+	}
+}
 
 // Home
-$menu .= "<li><a href=\"".url::site()."main\" ";
+$menu .= "<li><a href=\"".url::site()."main".$lang."\" ";
 $menu .= ($this_page == 'home') ? " class=\"active\"" : "";
 $menu .= ">".Kohana::lang('ui_main.home')."</a></li>";
 
 // Reports List
-$menu .= "<li><a href=\"".url::site()."reports\" ";
+$menu .= "<li><a href=\"".url::site()."reports".$lang."\" ";
 $menu .= ($this_page == 'reports') ? " class=\"active\"" : "";
 $menu .= ">".Kohana::lang('ui_main.reports')."</a></li>";
 
@@ -86,25 +94,25 @@ $menu .= ">".Kohana::lang('ui_main.reports')."</a></li>";
 //}
 
 // Alerts
-$menu .= "<li><a href=\"".url::site()."alerts\" ";
+$menu .= "<li><a href=\"".url::site()."alerts".$lang."\" ";
 $menu .= ($this_page == 'alerts') ? " class=\"active\"" : "";
 $menu .= ">".Kohana::lang('ui_main.alerts')."</a></li>";
 
 // Contacts
 if (Kohana::config('settings.site_contact_page'))
 {
-$menu .= "<li><a href=\"".url::site()."contact\" ";
+$menu .= "<li><a href=\"".url::site()."contact".$lang."\" ";
 $menu .= ($this_page == 'contact') ? " class=\"active\"" : "";
-$menu .= ">".Kohana::lang('ui_main.contact')."</a></li>";	
+$menu .= ">".Kohana::lang('ui_main.contact')."</a></li>";
 }
 
 // Custom Pages
 $pages = ORM::factory('page')->where('page_active', '1')->find_all();
 foreach ($pages as $page)
 {
-$menu .= "<li><a href=\"".url::site()."page/index/".$page->id."\" ";
+$menu .= "<li><a href=\"".url::site()."page/index/".$page->id.$lang."\" ";
 $menu .= ($this_page == 'page_'.$page->id) ? " class=\"active\"" : "";
-$menu .= ">".$page->page_tab."</a></li>";
+$menu .= ">".Kohana::lang('ui_main.'.$page->page_tab)."</a></li>";
 }
 
 echo $menu;

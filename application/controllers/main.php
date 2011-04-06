@@ -51,8 +51,8 @@ class Main_Controller extends Template_Controller {
 		// Themes Helper
 		$this->themes = new Themes();
 		$this->themes->api_url = Kohana::config('settings.api_url');
-		$this->template->header->submit_btn = $this->themes->submit_btn();
 		$this->template->header->languages = $this->themes->languages();
+		$this->template->header->submit_btn = $this->themes->submit_btn();
 		$this->template->header->search = $this->themes->search();
 
 		// Set Table Prefix
@@ -89,7 +89,7 @@ class Main_Controller extends Template_Controller {
 		}else{
 			$this->template->footer->ushahidi_stats = '';
 		}
-		
+
 		// add copyright info
 		$this->template->footer->site_copyright_statement = '';
 		$site_copyright_statement = trim(Kohana::config('settings.site_copyright_statement'));
@@ -97,7 +97,7 @@ class Main_Controller extends Template_Controller {
 		{
 			$this->template->footer->site_copyright_statement = $site_copyright_statement;
 		}
-		
+
 	}
 
     public function index()

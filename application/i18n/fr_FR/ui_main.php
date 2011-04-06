@@ -72,5 +72,16 @@
 	'title' => 'TITRE',
 	'video' => 'Vidéo',
 	'views' => 'Affichage',
+
+	'about_us' => 'au sujet de nous',
+	'about_us_title_index' => 'au sujet de nous',
+	'first_steps' => 'En premier Pas',
+	'first_steps_title_index' => 'En premier Pas',
+	'images_and_movies' => 'Images Et Cinémas',
+	'images_and_movies_title_index' => 'Images Et Cinémas',
+	'safety_confirmation_bbs' => 'La sécurité Confirme・BBS',
+	'safety_confirmation_bbs_title_index' => 'La sécurité Confirme・BBS',
+	'volunteer' => 'Volontaire',
+	'volunteer_title_index' => 'Volontaire',
 	);
 ?>

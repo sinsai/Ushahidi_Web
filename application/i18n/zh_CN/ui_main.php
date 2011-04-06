@@ -265,5 +265,16 @@
 	'view_reports' => '查看报道',
 	'yes' => '是',
 	'yesterday' => '昨天',
+
+	'about_us' => '关于我们',
+	'about_us_title_index' => '关于我们',
+	'first_steps' => '给新用户',
+	'first_steps_title_index' => '给新用户',
+	'images_and_movies' => '图像和映像',
+	'images_and_movies_title_index' => '图像和映像',
+	'safety_confirmation_bbs' => '平安与否确・公告牌',
+	'safety_confirmation_bbs_title_index' => '平安与否确・公告牌',
+	'volunteer' => '志愿者募集',
+	'volunteer_title_index' => '志愿者募集',
 	);
 ?>

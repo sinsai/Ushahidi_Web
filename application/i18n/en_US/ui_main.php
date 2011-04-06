@@ -510,5 +510,16 @@
 	'yesterday' => 'Yesterday',
 	'zoom_in' => 'Zoom In',
 	'zoom_out' => 'Zoom Out',
+
+	'about_us' => 'About Us',
+	'about_us_title_index' => 'About Us',
+	'first_steps' => 'First Steps',
+	'first_steps_title_index' => 'First Steps',
+	'images_and_movies' => 'Images And Movies',
+	'images_and_movies_title_index' => 'Images And Movies',
+	'safety_confirmation_bbs' => 'Safety Confirm・BBS',
+	'safety_confirmation_bbs_title_index' => 'Safety Confirm・BBS',
+	'volunteer' => 'Volunteer',
+	'volunteer_title_index' => 'Volunteer',
 	);
 ?>

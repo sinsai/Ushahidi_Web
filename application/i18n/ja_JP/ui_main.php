@@ -525,5 +525,16 @@
 	'yesterday' => '昨日',
 	'zoom_in' => 'ズームイン',
 	'zoom_out' => 'ズームアウト',
+
+	'about_us' => 'サイト運営団体',
+	'about_us_title_index' => 'サイト運営団体',
+	'first_steps' => '初めての方へ',
+	'first_steps_title_index' => '初めての方へ',
+	'images_and_movies' => '被災地画像/映像',
+	'images_and_movies_title_index' => '被災地画像/映像',
+	'safety_confirmation_bbs' => '安否確認・伝言板',
+	'safety_confirmation_bbs_title_index' => '安否確認・伝言板',
+	'volunteer' => 'ボランティア募集',
+	'volunteer_title_index' => 'ボランティア募集',
 	);
 ?>
