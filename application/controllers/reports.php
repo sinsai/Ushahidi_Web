@@ -609,7 +609,12 @@ class Reports_Controller extends Main_Controller {
 
 		$api_akismet = Kohana::config('settings.api_akismet');
 
-		$clientip = $_SERVER['X_FORWARDED_FOR']? $_SERVER['X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'];
+		$clientip = "";
+		if (isset($_SERVER['X_FORWARDED_FOR'])) {
+			$clientip = $_SERVER['X_FORWARDED_FOR'];
+		} else if(isset($_SERVER['REMOTE_ADDR'])) {
+			$clientip = $_SERVER['REMOTE_ADDR'];
+		}
 
 		if ( !$id )
 		{
