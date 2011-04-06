@@ -28,6 +28,7 @@ Event::run('ushahidi_action.header_scripts');
 <!-- / searchform -->
 <br sytle="clear:both;"/>
 <div id="nations">
+SELECT LANGAGE<br>
 <?php
 $nations = array("ja_JP","en_US","ko_KR","zh_CN","de_DE","fr_FR","it_IT");
 foreach ($nations as $nation){
