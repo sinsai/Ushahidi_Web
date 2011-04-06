@@ -40,7 +40,7 @@ class Page_Controller extends Main_Controller {
         {
             url::redirect('main');
         }
-        $this->template->header->action_name = $page->page_title;
+        $this->template->header->action_name = Kohana::lang("ui_main.".$page->page_title);
         $this->template->header->header_block = $this->themes->header_block();
     }
 
