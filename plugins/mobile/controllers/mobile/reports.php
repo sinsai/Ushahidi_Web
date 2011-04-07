@@ -30,24 +30,43 @@ class Reports_Controller extends Mobile_Controller {
 	public function index($category_id = false)
 	{
 		$this->template->content = new View('mobile/reports');
-		
+		$get_params = "?";
+		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0)$get_params .= "c=".$_GET['c']."&";
+		if(isset($_GET['sw']))$get_params .= "sw=".$_GET['sw']."&";
+		if(isset($_GET['ne']))$get_params .= "ne=".$_GET['ne']."&";
+		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0)$get_params .= "l=".$_GET['l'];
+		$get_params = rtrim(rtrim($get_params,'&'),'?');
+		$this->template->content->get_params = $get_params;
 		$db = new Database;
 		
 		$filter = ( $category_id )
 			? " AND ( c.id='".$category_id."' OR 
 				c.parent_id='".$category_id."' )  "
 			: " AND 1 = 1";
-			
+		// 検索キーワード取得
+		if(isset($_GET["keyword"]) && trim($_GET["keyword"]) !==""){
+			$keywords = array();
+			$keyword = str_replace("　"," ",$_GET["keyword"]);
+			$keywords = explode(" ",$keyword);
+		}
+		$keyword_like = "1=1";
+		if(isset($keywords) && count($keywords)){
+			$keyword_like = "";
+			foreach($keywords as $val){
+				$keyword_like .= "(incident_title like '%".$val."%' OR incident_description like '%".$val."%') AND ";
+			}
+			$keyword_like = rtrim($keyword_like," AND ");
+		}
 		// Pagination
 		$pagination = new Pagination(array(
 				'style' => 'mobile',
 				'query_string' => 'page',
 				'items_per_page' => (int) Kohana::config('mobile.items_per_page'),
-				'total_items' => $db->query("SELECT DISTINCT i.* FROM `".$this->table_prefix."incident` AS i JOIN `".$this->table_prefix."incident_category` AS ic ON (i.`id` = ic.`incident_id`) JOIN `".$this->table_prefix."category` AS c ON (c.`id` = ic.`category_id`) WHERE `incident_active` = '1' $filter")->count()
+				'total_items' => $db->query("SELECT DISTINCT i.* FROM `".$this->table_prefix."incident` AS i JOIN `".$this->table_prefix."incident_category` AS ic ON (i.`id` = ic.`incident_id`) JOIN `".$this->table_prefix."category` AS c ON (c.`id` = ic.`category_id`) WHERE `incident_active` = '1' AND $keyword_like $filter")->count()
 				));
 		$this->template->content->pagination = $pagination;
 
-		$incidents = $db->query("SELECT DISTINCT i.*, l.location_name FROM `".$this->table_prefix."incident` AS i JOIN `".$this->table_prefix."incident_category` AS ic ON (i.`id` = ic.`incident_id`) JOIN `".$this->table_prefix."category` AS c ON (c.`id` = ic.`category_id`) JOIN `".$this->table_prefix."location` AS l ON (i.`location_id` = l.`id`) WHERE `incident_active` = '1' $filter ORDER BY incident_date DESC LIMIT ". (int) Kohana::config('mobile.items_per_page') . " OFFSET ".$pagination->sql_offset);
+		$incidents = $db->query("SELECT DISTINCT i.*, l.location_name FROM `".$this->table_prefix."incident` AS i JOIN `".$this->table_prefix."incident_category` AS ic ON (i.`id` = ic.`incident_id`) JOIN `".$this->table_prefix."category` AS c ON (c.`id` = ic.`category_id`) JOIN `".$this->table_prefix."location` AS l ON (i.`location_id` = l.`id`) WHERE `incident_active` = '1' AND $keyword_like $filter ORDER BY incident_date DESC LIMIT ". (int) Kohana::config('mobile.items_per_page') . " OFFSET ".$pagination->sql_offset);
 		
 		// If Category Exists
 		if ($category_id)
