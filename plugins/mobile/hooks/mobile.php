@@ -48,7 +48,16 @@ class mobile {
 				AND Router::$controller != 'api') 
 			{
 				// Only add the events if we are on that controller
-				url::redirect(url::base()."mobile");
+				$request_url = "http://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
+				$replace_url1 = "http://" . $_SERVER["HTTP_HOST"]."/ushahidi/mobile/";
+				$replace_url2 = "http://" . $_SERVER["HTTP_HOST"]."/mobile/";
+				if(strpos($request_url,"ushahidi")===false){
+					$url = str_replace("http://" . $_SERVER["HTTP_HOST"]."/",$replace_url2,$request_url);
+				}else{
+					$url = str_replace(url::base(),$replace_url1,$request_url);
+				}
+				//url::redirect(url::base()."mobile");
+				url::redirect($url);
 			}
 		}
 	}
@@ -96,15 +105,15 @@ class mobile {
         $agent = Net_UserAgent_Mobile::singleton(); 
         switch( true )
         {
-          case ($agent->isDoCoMo()):   // DoCoMoå墫å¦¡ë           return true;
+          case ($agent->isDoCoMo()):   // DoCoMoa墫a|!e           return true;
             if( $agent->isFOMA() )
               return true;
             break;
-          case ($agent->isVodafone()): // softbankå墫å¦¡ë           return true;
+          case ($agent->isVodafone()): // softbanka墫a|!e           return true;
             if( $agent->isType3GC() )
               return true;
             break;
-          case ($agent->isEZweb()):    // ezwebå墫å¦¡ë           return true;
+          case ($agent->isEZweb()):    // ezweba墫a|!e           return true;
             if( $agent->isWIN() )
               return true;
             break;
