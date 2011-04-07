@@ -12,12 +12,14 @@
 			echo '<a class="category_menu" href="'.url::site().'reports/';
 			if(isset($_GET['sw']))echo '?sw='.$_GET['sw'];
 			if(isset($_GET['ne']))echo '&ne='.$_GET['ne'];
+			if(isset($_GET['keyword']))echo '&keyword='.$_GET['keyword'];
 			echo '"><img src="'.url::base().'/media/img/all.png" width="16" height="16"/>';
 			echo '<span>全カテゴリ</span></a>';
 			foreach($category_master as $key => $category){
 				echo '<a class="category_menu" href="'.url::site().'reports/?c='.$key;
 				if(isset($_GET['sw']))echo '&sw='.$_GET['sw'];
 				if(isset($_GET['ne']))echo '&ne='.$_GET['ne'];
+				if(isset($_GET['keyword']))echo '&keyword='.$_GET['keyword'];
 				echo '" >';
 				if(isset($category['category_image_thumb'])){
 				    echo '<img src="/ushahidi/media/uploads/'.$category['category_image_thumb'].'"/>';
@@ -28,7 +30,10 @@
 			}
 ?>
 
-
+<form action="<?php echo $_SERVER['PHP_SELF'].$get_params; ?>" id="report-search" method="GET">
+<input type="text" name="keyword" value="<?php if(isset($_GET["keyword"])){echo $_GET["keyword"];}?>" />
+<input type="submit" name="submit" value="検索" />
+</form>
 
 
 
@@ -39,8 +44,8 @@
 				foreach ($incidents as $incident)
 				{
 					$incident_id = $incident->id;
-					$incident_title = html::specialchars($incident->incident_title);
-					$incident_description =  html::specialchars($incident->incident_description);
+					$incident_title = $incident->incident_title;
+					$incident_description = $incident->incident_description;
 					//$incident_category = $incident->incident_category;
 					// Trim to 150 characters without cutting words
 					// XXX: Perhaps delcare 150 as constant
@@ -49,7 +54,7 @@
 					$incident_date = date('H:i M d, Y', strtotime($incident->incident_date));
 					//$incident_time = date('H:i', strtotime($incident->incident_date));
 					$location_id = $incident->location_id;
-					$location_name =  html::specialchars($incident->location->location_name);
+					$location_name = $incident->location->location_name;
 					$incident_verified = $incident->incident_verified;
 
 					if ($incident_verified)

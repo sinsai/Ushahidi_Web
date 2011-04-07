@@ -13,7 +13,7 @@
 		}
 		?>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" id="report-search" method="GET">
-<input type="text" name="keyword" />
+<input type="text" name="keyword" value="<?php if(isset($_GET["keyword"])){echo $_GET["keyword"];}?>"/>
 <input type="submit" name="submit" value="検索" />
 </form>
 		<div class="list">
