@@ -39,13 +39,18 @@ class Reports_Controller extends Main_Controller {
 	{
 		// Cacheable Controller
 		$this->is_cachable = TRUE;
-		
 		$this->template->header->this_page = 'reports';
 		$this->template->content = new View('reports');
 		$this->themes->js = new View('reports_js');
-
 		// Get locale
 		$l = Kohana::config('locale.language.0');
+		$get_params = "?";
+		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0)$get_params .= "c=".$_GET['c']."&";
+		if(isset($_GET['sw']))$get_params .= "sw=".$_GET['sw']."&";
+		if(isset($_GET['ne']))$get_params .= "ne=".$_GET['ne']."&";
+		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0)$get_params .= "l=".$_GET['l'];
+		$get_params = rtrim(rtrim($get_params,'&'),'?');
+		$this->template->content->get_params = $get_params;
 
 		$db = new Database;
 
@@ -112,6 +117,20 @@ class Reports_Controller extends Main_Controller {
 		{
 			$location_id_in = 'location_id IN ('.implode(',',$location_ids).')';
 		}
+		// 検索キーワード取得
+		if(isset($_GET["keyword"]) && trim($_GET["keyword"]) !==""){
+			$keywords = array();
+			$keyword = str_replace("　"," ",$_GET["keyword"]);
+			$keywords = explode(" ",$keyword);
+		}
+		$keyword_like = "1=1";
+		if(isset($keywords) && count($keywords)){
+			$keyword_like = "";
+			foreach($keywords as $val){
+				$keyword_like .= "(incident_title like '%".$val."%' OR incident_description like '%".$val."%') AND ";
+			}
+			$keyword_like = rtrim($keyword_like," AND ");
+		}
 
 		// Pagination
 		$pagination = new Pagination(array(
@@ -121,14 +140,16 @@ class Reports_Controller extends Main_Controller {
 					->where("incident_active", 1)
 					->where($location_id_in)
 					->where($incident_id_in)
+					->where($keyword_like)
 					->count_all()
 				));
-
 		// Reports
+
 		$incidents = ORM::factory("incident")
 			->where("incident_active", 1)
 			->where($location_id_in)
 			->where($incident_id_in)
+			->where($keyword_like)
 			->orderby("incident_date", "desc")
 			->find_all((int) Kohana::config('settings.items_per_page_admin'), $pagination->sql_offset);
 		// Swap out category titles with their proper localizations using an array (cleaner way to do this?)
@@ -136,7 +157,7 @@ class Reports_Controller extends Main_Controller {
 
 
                 // $query = 'SELECT id,category_title,category_color FROM category WHERE category_visible = 1 AND category_trusted = 0';
-                $query = 'SELECT id,category_title,category_color,category_image_thumb FROM category  order by category_type desc;';
+                $query = 'SELECT id,category_title,category_color,category_image_thumb FROM category';
 
                 $query = $db->query($query);
 		$category_master = array();
@@ -609,13 +630,6 @@ class Reports_Controller extends Main_Controller {
 
 		$api_akismet = Kohana::config('settings.api_akismet');
 
-		$clientip = "";
-		if (isset($_SERVER['X_FORWARDED_FOR'])) {
-			$clientip = $_SERVER['X_FORWARDED_FOR'];
-		} else if(isset($_SERVER['REMOTE_ADDR'])) {
-			$clientip = $_SERVER['REMOTE_ADDR'];
-		}
-
 		if ( !$id )
 		{
 
@@ -685,7 +699,7 @@ class Reports_Controller extends Main_Controller {
 							'email' => $post->comment_email,
 							'website' => "",
 							'body' => $post->comment_description,
-							'user_ip' => $clientip
+							'user_ip' => $_SERVER['REMOTE_ADDR']
 						);
 
 						$config = array(
@@ -739,7 +753,7 @@ class Reports_Controller extends Main_Controller {
 					$comment->comment_author = strip_tags($post->comment_author);
 					$comment->comment_description = strip_tags($post->comment_description);
 					$comment->comment_email = strip_tags($post->comment_email);
-					$comment->comment_ip = $clientip;
+					$comment->comment_ip = $_SERVER['REMOTE_ADDR'];
 					$comment->comment_date = date("Y-m-d H:i:s",time());
 
 					// Activate comment for now
@@ -795,7 +809,6 @@ class Reports_Controller extends Main_Controller {
 
 			// Filters
 			$incident_title = $incident->incident_title;
-			$incident->incident_description = html::specialchars($incident->incident_description);
 			$incident_description = nl2br($incident->incident_description);
 			$incident_description = preg_replace('/((https?|http)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))/', '<a href="$1">$1</a>', $incident_description);
 			Event::run('ushahidi_filter.report_title', $incident_title);
@@ -941,7 +954,6 @@ class Reports_Controller extends Main_Controller {
 	{
 		$this->template = "";
 		$this->auto_render = FALSE;
-		$clientip = $_SERVER['X_FORWARDED_FOR']? $_SERVER['X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'];
 
 		if (!$id)
 		{
@@ -975,14 +987,14 @@ class Reports_Controller extends Main_Controller {
 					{
 						$previous = ORM::factory('rating')
 												->where('incident_id',$id)
-												->where('rating_ip',$clientip)
+												->where('rating_ip',$_SERVER['REMOTE_ADDR'])
 												->find();
 					}
 					elseif ($type == 'comment')
 					{
 						$previous = ORM::factory('rating')
 												->where('comment_id',$id)
-												->where('rating_ip',$clientip)
+												->where('rating_ip',$_SERVER['REMOTE_ADDR'])
 												->find();
 					}
 
@@ -1000,7 +1012,7 @@ class Reports_Controller extends Main_Controller {
 					}
 
 					$rating->rating = $action;
-					$rating->rating_ip = $clientip;
+					$rating->rating_ip = $_SERVER['REMOTE_ADDR'];
 					$rating->rating_date = date("Y-m-d H:i:s",time());
 					$rating->save();
 
