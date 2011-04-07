@@ -337,10 +337,10 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = FALSE;
+		$layer->active = TRUE;
 		$layer->name = 'virtualearth_hybrid';
 		$layer->openlayers = "VirtualEarth";
-		$layer->title = 'Virtual Earth Hybrid';
+		$layer->title = Kohana::lang('ui_main.virtualearth_hybrid');
 		$layer->description = 'Virtual Earth (Bing) hybrid of streets and satellite tiles.';
 		$layer->api_url = 'http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6';
 		$layer->data = array(

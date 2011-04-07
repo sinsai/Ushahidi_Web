@@ -538,5 +538,6 @@
 	'volunteer_title_index' => 'ボランティア募集',
 	'osm_mapnik' => '地図 (by OSM)',
 	'virtualearth_satellite' => '衛星写真 (by Bing)',
+	'virtualearth_hybrid' => '地図&衛星写真 (by Bing)',
 	);
 ?>

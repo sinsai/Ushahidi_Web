@@ -532,5 +532,6 @@
 	'volunteer_title_index' => 'Volunteer',
 	'osm_mapnik' => 'Map (by OSM)',
 	'virtualearth_satellite' => 'Satellite (by Bing)',
+	'virtualearth_hybrid' => 'Map & Satellite (by Bing)',
 	);
 ?>
