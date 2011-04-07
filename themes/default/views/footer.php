@@ -40,7 +40,7 @@
 			<!-- / footer menu -->
 
 			<!-- footer credits links -->
-			<div class="footer-credits-links"><ul><li><a href="http://aws.amazon.com/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/Powered-by-Amazon-Web-Services.jpeg" alt="Amazon-Web-Services" style="vertical-align:middle" /></a></li><li><a href="http://www.gree.co.jp/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/powered-by-gree.gif" alt="gree" style="vertical-align:middle" /></a></li><li><a href="http://heartbeats.jp/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/powered-by-heartbeats.gif" alt="heartbeats" style="vertical-align:middle" /></a></li></ul></div>
+			<div class="footer-credits-links"><ul><li><a href="http://aws.amazon.com/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/Powered-by-Amazon-Web-Services.jpeg" alt="Amazon-Web-Services" style="vertical-align:middle" /></a></li><li><a href="http://heartbeats.jp/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/powered-by-heartbeats.gif" alt="heartbeats" style="vertical-align:middle" /></a></li><li><a href="http://www.gree.co.jp/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/powered-by-gree.gif" alt="gree" style="vertical-align:middle" /></a></li></ul></div>
 			<!-- / footer credits links -->
 
 <?php /*
