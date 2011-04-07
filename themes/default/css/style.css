@@ -714,6 +714,39 @@ div.footer-credits{
     text-transform: uppercase;
     margin: 0 20px 0 0;
 }
+/* footer credits links */
+div.footer-credits-links{
+	margin-bottom:4px;
+	clear: both;
+	overflow: hidden;
+	position: relative;
+	background-color: #FFF;
+	padding: 5px 10px;
+}
+div.footer-credits-links ul {
+	margin: 0px;
+	text-align: center;
+	float: none;
+}
+div.footer-credits-links ul li{
+	margin: 0px;
+	padding: 0px 10px;
+	vertical-align:middle;
+	display: inline-block;
+	float: none;
+}
+*html div.footer-credits-links ul li { /* for ie6　*/
+	vertical-align:middle;
+	display: inline !important;
+	float: none;
+}
+*:first-child+html div.footer-credits-links ul li { /* for ie7　*/
+	vertical-align:middle;
+	display: inline !important;
+	float: none;
+}
+
+
 
 /* -----------------------------------------------------------
 	10. reports
@@ -2286,6 +2319,3 @@ a.category_menu{
     text-decoration:none;
     font-size:16px;
 }
-
-
-

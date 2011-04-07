@@ -11,11 +11,11 @@
 		<div id="underfooter"></div>
 
 		<!-- footer content -->
-		<div class="rapidxwpr floatholder">
+	<div class="rapidxwpr floatholder">
 
 			<!-- footer credits -->
 			<div class="footer-credits">
-				<a href="http://aws.amazon.com/"><img src="<?php echo url::base(); ?>/media/img/Powered-by-Amazon-Web-Services.jpeg" alt="Ushahidi" style="vertical-align:middle" /></a> &nbsp; and &nbsp; the &nbsp; <a href="http://www.ushahidi.com/"><img src="<?php echo url::base(); ?>/media/img/footer-logo.png" alt="Ushahidi" style="vertical-align:middle" /></a>&nbsp; Platform
+				the &nbsp; <a href="http://www.ushahidi.com/"><img src="<?php echo url::base(); ?>/media/img/footer-logo.png" alt="Ushahidi" style="vertical-align:middle" /></a>&nbsp; Platform
 			</div>
 			<!-- / footer credits -->
 
@@ -38,6 +38,10 @@
       	<?php } ?>
 			</div>
 			<!-- / footer menu -->
+
+			<!-- footer credits links -->
+			<div class="footer-credits-links"><ul><li><a href="http://aws.amazon.com/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/Powered-by-Amazon-Web-Services.jpeg" alt="Amazon-Web-Services" style="vertical-align:middle" /></a></li><li><a href="http://www.gree.co.jp/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/powered-by-gree.gif" alt="gree" style="vertical-align:middle" /></a></li><li><a href="http://heartbeats.jp/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/powered-by-heartbeats.gif" alt="heartbeats" style="vertical-align:middle" /></a></li></ul></div>
+			<!-- / footer credits links -->
 
 <?php /*
 			<h2 class="feedback_title" style="clear:both">
