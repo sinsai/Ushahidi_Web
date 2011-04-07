@@ -536,5 +536,7 @@
 	'safety_confirmation_bbs_title_index' => '安否確認・伝言板',
 	'volunteer' => 'ボランティア募集',
 	'volunteer_title_index' => 'ボランティア募集',
+	'osm_mapnik' => '地図 (by OSM)',
+	'virtualearth_satellite' => '衛星写真 (by Bing)',
 	);
 ?>

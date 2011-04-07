@@ -101,6 +101,8 @@ $config['enable_mhi'] = FALSE;
  */
 $config['extension_prefix'] = 'MY_';
 
+
+
 /**
  * Additional resource paths, or "modules". Each path can either be absolute
  * or relative to the docroot. Modules can include any resource that can exist

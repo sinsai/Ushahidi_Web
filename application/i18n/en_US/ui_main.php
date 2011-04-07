@@ -530,5 +530,7 @@
 	'safety_confirmation_bbs_title_index' => 'Safety Confirm・BBS',
 	'volunteer' => 'Volunteer',
 	'volunteer_title_index' => 'Volunteer',
+	'osm_mapnik' => 'Map (by OSM)',
+	'virtualearth_satellite' => 'Satellite (by Bing)',
 	);
 ?>

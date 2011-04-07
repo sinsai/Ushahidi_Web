@@ -572,8 +572,8 @@ function mU() {
 			map = new OpenLayers.Map('map', options);
 			map.addControl( new OpenLayers.Control.LoadingPanel({minSize: new OpenLayers.Size(573, 366)}) );
 			
-			<?php echo map::layers_js(FALSE); ?>
-			map.addLayers(<?php echo map::layers_array(FALSE); ?>);
+			<?php echo map::layers_js(TRUE); ?>
+			map.addLayers(<?php echo map::layers_array(TRUE); ?>);
 			
 			
 			// Add Controls

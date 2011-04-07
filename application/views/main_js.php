@@ -371,8 +371,8 @@
 			map = new OpenLayers.Map('map', options);
 			map.addControl( new OpenLayers.Control.LoadingPanel({minSize: new OpenLayers.Size(573, 366)}) );
 			
-			<?php echo map::layers_js(FALSE); ?>
-			map.addLayers(<?php echo map::layers_array(FALSE); ?>);
+			<?php echo map::layers_js(TRUE); ?>
+			map.addLayers(<?php echo map::layers_array(TRUE); ?>);
 			
 			
 			// Add Controls
@@ -386,8 +386,11 @@
 				}));    
 			map.addControl(new OpenLayers.Control.Scale('mapScale'));
             map.addControl(new OpenLayers.Control.ScaleLine());
-			map.addControl(new OpenLayers.Control.LayerSwitcher());
+            layerSwitcher = new OpenLayers.Control.LayerSwitcher();
+			layerSwitcher.useLegendGraphics = true;
 			
+			map.addControl(layerSwitcher);
+			layerSwitcher.maximizeControl();
 			// display the map projection
 			document.getElementById('mapProjection').innerHTML = map.projection;
 				

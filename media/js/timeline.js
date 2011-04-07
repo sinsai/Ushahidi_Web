@@ -582,7 +582,7 @@
 		{
 
 			var	protocolUrl = baseUrl + json_url + "/"; // Default Json
-			var thisLayer = "Reports"; // Default Layer Name
+			var thisLayer = "レポート/Reports"; // Default Layer Name
 			var protocolFormat = OpenLayers.Format.GeoJSON;
 			newlayer = false;
 

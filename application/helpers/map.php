@@ -150,6 +150,55 @@ class map_Core {
 		return $js;
 	}
 	
+	
+	/**
+	 * Generate the Map Array.
+	 * These are the maps that show up in the Layer Switcher
+	 * if $all is set to TRUE all maps are rendered
+	 * **caveat is that each mapping api js must be loaded **
+	 * 
+	 * @param   bool  $all
+	 * @return  string $js
+	 */
+	public static function layers_scripts($all = FALSE)
+	{
+		// Javascript
+		$js = "";
+
+		// Get All Layers
+		$layers = map::base();
+		
+		// Next get the default base layer
+		$default_map = Kohana::config('settings.default_map');
+		
+		if ( ! isset($layers[$default_map]))
+		{ // Map Layer Doesn't Exist - default to google
+			$default_map = "google_normal";
+		}
+		
+		// Get openlayers type
+		$openlayers_type = $layers[$default_map]->openlayers;
+		$js .= "";
+		foreach ($layers as $layer)
+		{
+			if ($layer->name != $default_map AND $layer->active)
+			{
+				if ($all == TRUE)
+				{
+					$js .= "<script src='".$layer->api_url."'></script>";
+				}
+				else
+				{
+					if ($layer->openlayers == $openlayers_type)
+					{
+						$js .= "<script src='".$layer->api_url."'></script>";
+					}
+				}
+			}
+		}
+		
+		return $js;
+	}
 	/**
 	 * Generate the Map Base Layer Object
 	 * If a layer name is passed, it will return only the object
@@ -164,7 +213,7 @@ class map_Core {
 		$layers = array();
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'google_satellite';
 		$layer->openlayers = "Google";
 		$layer->title = 'Google Maps Satellite';
@@ -178,7 +227,7 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'google_hybrid';
 		$layer->openlayers = "Google";
 		$layer->title = 'Google Maps Hybrid';
@@ -192,7 +241,7 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'google_normal';
 		$layer->openlayers = "Google";
 		$layer->title = 'Google Maps Normal';
@@ -206,7 +255,7 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'google_physical';
 		$layer->openlayers = "Google";
 		$layer->title = 'Google Maps Physical';
@@ -220,7 +269,7 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'yahoo_satellite';
 		$layer->openlayers = "Yahoo";
 		$layer->title = 'Yahoo Maps Satellite';
@@ -234,7 +283,7 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'yahoo_street';
 		$layer->openlayers = "Yahoo";
 		$layer->title = 'Yahoo Maps Street';
@@ -248,7 +297,7 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'yahoo_hybrid';
 		$layer->openlayers = "Yahoo";
 		$layer->title = 'Yahoo Maps Hybrid';
@@ -278,7 +327,7 @@ class map_Core {
 		$layer->active = TRUE;
 		$layer->name = 'virtualearth_satellite';
 		$layer->openlayers = "VirtualEarth";
-		$layer->title = 'Virtual Earth Satellite';
+		$layer->title = Kohana::lang('ui_main.virtualearth_satellite');
 		$layer->description = 'Virtual Earth (Bing) satellite tiles.';
 		$layer->api_url = 'http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6';
 		$layer->data = array(
@@ -288,7 +337,7 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'virtualearth_hybrid';
 		$layer->openlayers = "VirtualEarth";
 		$layer->title = 'Virtual Earth Hybrid';
@@ -305,7 +354,7 @@ class map_Core {
 		$layer->active = TRUE;
 		$layer->name = 'osm_mapnik';
 		$layer->openlayers = "OSM.Mapnik";
-		$layer->title = 'OSM Mapnik';
+		$layer->title =  Kohana::lang('ui_main.osm_mapnik');
 		$layer->description = 'The main OpenStreetMap map';
 		$layer->api_url = 'http://www.openstreetmap.org/openlayers/OpenStreetMap.js';
 		$layer->data = array(
@@ -319,7 +368,7 @@ class map_Core {
 
 		// OpenStreetMap Tiles @ Home
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'osm_tah';
 		$layer->openlayers = "OSM.Mapnik";
 		$layer->title = 'OSM Tiles@Home';
@@ -336,7 +385,7 @@ class map_Core {
 
 		// OpenStreetMap Cycling Map
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'osm_cycle';
 		$layer->openlayers = "OSM.Mapnik";
 		$layer->title = 'OSM Cycling Map';

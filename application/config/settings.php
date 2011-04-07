@@ -12,8 +12,8 @@ $config = array
 (
 	'site_name' => 'Ushahidi',
 	'site_email' => '',
-	'default_map' => '',
-	'api_google' => '',
+	'default_map' => 'osm_mapnik',
+	'api_google' => 'ABQIAAAAC99cU8JddvQOwYmQc58EvhTwkllQ1ylirtKWEj6gIkcaRzt0cxQ3dZF78whwStV1xjQiTdi4NnZ4eg',
 	'api_yahoo' => '',
 	'default_city' => '',
 	'default_country' => '',

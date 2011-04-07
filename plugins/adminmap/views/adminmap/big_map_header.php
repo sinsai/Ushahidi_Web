@@ -7,6 +7,7 @@
 	<?php
 	// Action::header_scripts - Additional Inline Scripts from Plugins
 	Event::run('ushahidi_action.header_scripts');
+	echo map::layers_scripts(TRUE);
 	?>
 </head>
 
