@@ -32,7 +32,7 @@ class Messages_Controller extends Admin_Controller
     * Lists the messages.
     * @param int $service_id
     */
-    function index($service_id = 1)
+    function index($service_id = 2)
     {
         $this->template->content = new View('admin/messages');
 
