@@ -49,8 +49,13 @@ class mobile {
 			{
 				// Only add the events if we are on that controller
 				$request_url = "http://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
-				$replace_url = "http://" . $_SERVER["HTTP_HOST"]."/ushahidi/mobile/";
-				$url = str_replace(url::base(),$replace_url,$request_url);
+				$replace_url1 = "http://" . $_SERVER["HTTP_HOST"]."/ushahidi/mobile/";
+				$replace_url2 = "http://" . $_SERVER["HTTP_HOST"]."/mobile/";
+				if(strpos($request_url,"ushahidi")===false){
+					$url = str_replace("http://" . $_SERVER["HTTP_HOST"]."/",$replace_url2,$request_url);
+				}else{
+					$url = str_replace(url::base(),$replace_url1,$request_url);
+				}
 				//url::redirect(url::base()."mobile");
 				url::redirect($url);
 			}
