@@ -54,11 +54,7 @@
 					$incident_date = date('H:i M d, Y', strtotime($incident->incident_date));
 					//$incident_time = date('H:i', strtotime($incident->incident_date));
 					$location_id = $incident->location_id;
-<<<<<<< HEAD
-					$location_name = $incident->location->location_name;
-=======
 					$location_name = html::specialchars($incident->location->location_name);
->>>>>>> 1209649c00752d384255beca2e67fac48f9616af
 					$incident_verified = $incident->incident_verified;
 
 					if ($incident_verified)
