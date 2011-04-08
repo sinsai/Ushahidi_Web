@@ -54,7 +54,7 @@ class Reports_Controller extends Keitai_Controller {
 		if(isset($keywords) && count($keywords)){
 			$keyword_like = "";
 			foreach($keywords as $val){
-				$keyword_like .= "(incident_title like '%".$val."%' OR incident_description like '%".$val."%') AND ";
+				$keyword_like .= "(incident_title like '%".addslashes($val)."%' OR incident_description like '%".addslashes($val)."%') AND ";
 			}
 			$keyword_like = rtrim($keyword_like," AND ");
 		}
