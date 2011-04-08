@@ -23,6 +23,10 @@ class Dashboard_Controller extends Admin_Controller
     function index()
     {
         $this->template->content = new View('admin/dashboard');
+        $this->template->content->superadmin_flag = false;
+        if($this->auth->logged_in('superadmin')){
+            $this->template->content->superadmin_flag = true;
+        }
         $this->template->content->title = Kohana::lang('ui_admin.dashboard');
         $this->template->this_page = 'dashboard';
 
@@ -99,7 +103,6 @@ class Dashboard_Controller extends Admin_Controller
         $this->template->content->failure = '';
 
         // Build dashboard chart
-
         // Set the date range (how many days in the past from today?)
         //    default to one year
         $range = (isset($_GET['range'])) ? $_GET['range'] : 365;
