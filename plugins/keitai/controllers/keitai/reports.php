@@ -31,6 +31,22 @@ class Reports_Controller extends Keitai_Controller {
 	{
 
 		$this->template->content = new View('keitai/reports');
+		$this->template->content->c = "";
+		$this->template->content->sw = "";
+		$this->template->content->ne = "";
+		$this->template->content->l = "";
+		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0){
+			$this->template->content->c = $_GET['c'];
+		}
+		if(isset($_GET['sw'])){
+			$this->template->content->sw = $_GET['sw'];
+		}
+		if(isset($_GET['ne'])){
+			$this->template->content->ne = $_GET['ne'];
+		}
+		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0){
+			$this->template->content->l = $_GET['l'];
+		}
 		$get_params = "?";
 		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0)$get_params .= "c=".$_GET['c']."&";
 		if(isset($_GET['sw']))$get_params .= "sw=".$_GET['sw']."&";
@@ -58,7 +74,7 @@ class Reports_Controller extends Keitai_Controller {
 			}
 			$keyword_like = rtrim($keyword_like," AND ");
 		}
-
+		$this->template->content->area_name = "";
 		$latlong = (isset($_GET['latlong'])) ? $_GET['latlong'] : "";
 		$latlong_filter = "";
 		if ($latlong) {
@@ -69,6 +85,16 @@ class Reports_Controller extends Keitai_Controller {
 			$latmax = $lat + 0.0277778;
 			$lonmin = $lon - 0.0277778;
 			$lonmax = $lon + 0.0277778;
+			$lon_center = ($lonmin+$lonmax) / 2;
+			$lat_center = ($latmin+$latmax) / 2;
+			$geo_url = 'http://maps.google.com/maps/api/geocode/json?region=jp&language=ja&latlng='.$lat_center.','.$lon_center.'&sensor=false';
+			$geo_google = json_decode(file_get_contents($geo_url) , true);
+			foreach($geo_google["results"] as $geo_val){
+				if($geo_val["types"][0]=="locality" && $geo_val["types"][1]=="political" && count($geo_val["types"])==2){
+					$area_name = explode(',',$geo_val["formatted_address"]);
+				}
+			}
+			if(isset($area_name))$this->template->content->area_name =  $area_name[1];
 			$latlong_filter = "AND l.latitude >= $latmin AND l.latitude <= $latmax AND l.longitude >= $lonmin AND l.longitude <= $lonmax";
 		    }
 		}

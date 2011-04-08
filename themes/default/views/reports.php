@@ -7,7 +7,7 @@
 			Event::run('ushahidi_filter.report_stats', $report_stats);
 			echo $report_stats;
 			?>
-			<h2><?php echo Kohana::lang('ui_main.reports').": ";?> <?php echo ($category_title) ? " in $category_title" : ""?> <?php echo $pagination_stats; ?></h2>
+			<h2><?php echo Kohana::lang('ui_main.reports').": ";?> <?php echo ($area_name) ? " $area_name を中心とした" : ""?> <?php echo ($category_title) ? " in $category_title" : ""?> <?php echo $pagination_stats; ?></h2>
 <?php
 			echo '<a class="category_menu" href="'.url::site().'reports/';
 			if(isset($_GET['sw'])){
@@ -34,7 +34,11 @@
 			}
 ?>
 
-<form action="<?php echo $_SERVER['PHP_SELF'].$get_params; ?>" id="report-search" method="GET">
+<form action="<?php echo $_SERVER['PHP_SELF'] ?>" id="report-search" method="GET">
+<input type="hidden" name="c" value="<?php echo $c; ?>">
+<input type="hidden" name="l" value="<?php echo $l; ?>">
+<input type="hidden" name="sw" value="<?php echo $sw; ?>">
+<input type="hidden" name="ne" value="<?php echo $ne; ?>">
 <input type="text" name="keyword" value="<?php if(isset($_GET["keyword"])){echo $_GET["keyword"];}?>" />
 <input type="submit" name="submit" value="検索" />
 </form>

@@ -44,14 +44,23 @@ class Reports_Controller extends Main_Controller {
 		$this->themes->js = new View('reports_js');
 		// Get locale
 		$l = Kohana::config('locale.language.0');
-		$get_params = "?";
-		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0)$get_params .= "c=".$_GET['c']."&";
-		if(isset($_GET['sw']))$get_params .= "sw=".$_GET['sw']."&";
-		if(isset($_GET['ne']))$get_params .= "ne=".$_GET['ne']."&";
-		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0)$get_params .= "l=".$_GET['l']."&";
-		if(isset($_GET['keyword']) AND !empty($_GET['keyword']) AND $_GET['keyword']!="")$get_params .= "keyword=".$_GET['keyword'];
-		$get_params = rtrim(rtrim($get_params,'&'),'?');
-		$this->template->content->get_params = $get_params;
+
+		$this->template->content->c = "";
+		$this->template->content->sw = "";
+		$this->template->content->ne = "";
+		$this->template->content->l = "";
+		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0){
+			$this->template->content->c = $_GET['c'];
+		}
+		if(isset($_GET['sw'])){
+			$this->template->content->sw = $_GET['sw'];
+		}
+		if(isset($_GET['ne'])){
+			$this->template->content->ne = $_GET['ne'];
+		}
+		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0){
+			$this->template->content->l = $_GET['l'];
+		}
 
 		$db = new Database;
 
@@ -84,14 +93,23 @@ class Reports_Controller extends Main_Controller {
 		{
 			$northeast = explode(",",$_GET['ne']);
 		}
-
+		$this->template->content->area_name = "";
 		if ( count($southwest) == 2 AND count($northeast) == 2 )
 		{
 			$lon_min = (float) $southwest[0];
 			$lon_max = (float) $northeast[0];
 			$lat_min = (float) $southwest[1];
 			$lat_max = (float) $northeast[1];
-
+			$lon_center = ($lon_min+$lon_max) / 2;
+			$lat_center = ($lat_min+$lat_max) / 2;
+			$geo_url = 'http://maps.google.com/maps/api/geocode/json?region=jp&language=ja&latlng='.$lat_center.','.$lon_center.'&sensor=false';
+			$geo_google = json_decode(file_get_contents($geo_url) , true);
+			foreach($geo_google["results"] as $geo_val){
+				if($geo_val["types"][0]=="locality" && $geo_val["types"][1]=="political" && count($geo_val["types"])==2){
+					$area_name = explode(',',$geo_val["formatted_address"]);
+				}
+			}
+			$this->template->content->area_name =  $area_name[1];
 			$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE latitude >='.$lat_min.' AND latitude <='.$lat_max.' AND longitude >='.$lon_min.' AND longitude <='.$lon_max;
 
 			$query = $db->query($query);

@@ -4,6 +4,7 @@ if ($latlong) {
   $latlong_params = "&latlong=".$latlong;
 ?>
 ▼現在地<br>
+<?php if(isset($area_name))echo $area_name;?>
 <div style="clear:both;text-align:center;" align="center"><center><a href="http://www.google.co.jp/m/local?q=<?php echo $latlong;?>&z=14"><img src="http://maps.google.com/maps/api/staticmap?center=<?php echo $latlong;?>&zoom=14&size=230x100&format=gif&maptype=roadmap&sensor=false&markers=<?php echo $latlong;?>" border="0"></a></center></div>
 <hr size="1" noshade>
 <?php
@@ -23,8 +24,12 @@ else
 	$category_id = "";
 }
 ?>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" id="report-search" method="GET">
-<input type="text" name="keyword" value="<?php if(isset($_GET["keyword"])){echo $_GET["keyword"];}?>"/>
+<form action="<?php echo $_SERVER['PHP_SELF'] ?>" id="report-search" method="GET">
+<input type="hidden" name="c" value="<?php echo $c; ?>">
+<input type="hidden" name="l" value="<?php echo $l; ?>">
+<input type="hidden" name="sw" value="<?php echo $sw; ?>">
+<input type="hidden" name="ne" value="<?php echo $ne; ?>">
+<input type="text" name="keyword" value="<?php if(isset($_GET["keyword"])){echo $_GET["keyword"];}?>" />
 <input type="submit" name="submit" value="検索" />
 </form>
 <?php
