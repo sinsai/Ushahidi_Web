@@ -131,10 +131,16 @@
 									
 								</ul>
 							</li>
+<?php
+							if($superadmin_flag){
+?>
 							<li>
 								<a href="<?php echo url::site() . 'admin/manage' ?>" class="categories"><?php echo Kohana::lang('ui_main.categories');?></a>
 								<strong><?php echo number_format($categories); ?></strong>
 							</li>
+<?php
+							}
+?>
 							<li>
 								<span class="locations"><?php echo Kohana::lang('ui_main.locations');?></span>
 								<strong><?php echo $locations; ?></strong>
