@@ -48,7 +48,8 @@ class Reports_Controller extends Main_Controller {
 		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0)$get_params .= "c=".$_GET['c']."&";
 		if(isset($_GET['sw']))$get_params .= "sw=".$_GET['sw']."&";
 		if(isset($_GET['ne']))$get_params .= "ne=".$_GET['ne']."&";
-		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0)$get_params .= "l=".$_GET['l'];
+		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0)$get_params .= "l=".$_GET['l']."&";
+		if(isset($_GET['keyword']) AND !empty($_GET['keyword']) AND $_GET['keyword']!="")$get_params .= "keyword=".$_GET['keyword'];
 		$get_params = rtrim(rtrim($get_params,'&'),'?');
 		$this->template->content->get_params = $get_params;
 

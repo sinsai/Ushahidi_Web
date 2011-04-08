@@ -10,9 +10,13 @@
 			<h2><?php echo Kohana::lang('ui_main.reports').": ";?> <?php echo ($category_title) ? " in $category_title" : ""?> <?php echo $pagination_stats; ?></h2>
 <?php
 			echo '<a class="category_menu" href="'.url::site().'reports/';
-			if(isset($_GET['sw']))echo '?sw='.$_GET['sw'];
+			if(isset($_GET['sw'])){
+				echo '?sw='.$_GET['sw'];
+				if(isset($_GET['keyword']))echo '&keyword='.$_GET['keyword'];
+			}else{
+				if(isset($_GET['keyword']))echo '?keyword='.$_GET['keyword'];
+			}
 			if(isset($_GET['ne']))echo '&ne='.$_GET['ne'];
-			if(isset($_GET['keyword']))echo '&keyword='.$_GET['keyword'];
 			echo '"><img src="'.url::base().'/media/img/all.png" width="16" height="16"/>';
 			echo '<span>全カテゴリ</span></a>';
 			foreach($category_master as $key => $category){
