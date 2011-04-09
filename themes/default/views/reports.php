@@ -7,7 +7,7 @@
 			Event::run('ushahidi_filter.report_stats', $report_stats);
 			echo $report_stats;
 			?>
-			<h2><?php echo Kohana::lang('ui_main.reports').": ";?> <?php echo ($area_name) ? " $area_name を中心とした" : ""?> <?php echo ($category_title) ? " in $category_title" : ""?> <?php echo $pagination_stats; ?></h2>
+			<h2><?php echo ($area_name) ? $area_name."周辺の" : ""?><?php echo Kohana::lang('ui_main.reports').": ";?> <?php echo ($category_title) ? " in $category_title" : ""?> <?php echo $pagination_stats; ?></h2>
 <?php
 			echo '<a class="category_menu" href="'.url::site().'reports/';
 			if(isset($_GET['sw'])){
