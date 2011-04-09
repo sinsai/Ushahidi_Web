@@ -45,6 +45,9 @@ class Reports_Controller extends Main_Controller {
 		// Get locale
 		$l = Kohana::config('locale.language.0');
 
+		if(isset($_SESSION["locale"])){
+			$_GET["l"] = $_SESSION["locale"];
+		}
 		$this->template->content->c = "";
 		$this->template->content->sw = "";
 		$this->template->content->ne = "";
