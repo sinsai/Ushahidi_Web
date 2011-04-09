@@ -72,6 +72,7 @@ class Keitai_Controller extends Template_Controller {
 	$latmax = "";
 	$lonmin = "";
 	$lonmax = "";
+	$this->template->content->area_name = "";
 	if (isset($_GET['latlong'])) {
 	    $latlong = $_GET['latlong'];
 	    if (preg_match("/^([0-9\.]+),([0-9\.]+)/", $latlong, $matches)) {
@@ -81,6 +82,16 @@ class Keitai_Controller extends Template_Controller {
 		$latmax = $lat + 0.0277778;
 		$lonmin = $lon - 0.0277778;
 		$lonmax = $lon + 0.0277778;
+		$lon_center = ($lonmin+$lonmax) / 2;
+		$lat_center = ($latmin+$latmax) / 2;
+		$geo_url = 'http://maps.google.com/maps/api/geocode/json?region=jp&language=ja&latlng='.$lat_center.','.$lon_center.'&sensor=false';
+		$geo_google = json_decode(file_get_contents($geo_url) , true);
+		foreach($geo_google["results"] as $geo_val){
+			if($geo_val["types"][0]=="locality" && $geo_val["types"][1]=="political" && count($geo_val["types"])==2){
+				$area_name = explode(',',$geo_val["formatted_address"]);
+			}
+		}
+		if(isset($area_name))$this->template->content->area_name =  $area_name[1];
 	    }
 	}
 	$this->template->content->lat = $lat;

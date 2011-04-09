@@ -13,6 +13,7 @@
 <a href="<?php echo url::site(); ?>keitai">全ｴﾘｱの情報を見る</a><br>
 <hr size="1" noshade>
 ▼現在地<br>
+<?php if(isset($area_name))echo $area_name;?>
 <div style="clear:both;text-align:center;" align="center"><center><a href="http://www.google.co.jp/m/local?q=<?php echo $lat.",".$lon;?>&z=14"><img src="http://maps.google.com/maps/api/staticmap?center=<?php echo $lat.",".$lon;?>&zoom=14&size=230x100&format=gif&maptype=roadmap&sensor=false&markers=<?php echo $lat.",".$lon;?>" border="0"></a></center></div>
 <?php } ?>
 <hr size="1" noshade>
