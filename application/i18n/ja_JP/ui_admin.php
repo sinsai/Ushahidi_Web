@@ -171,7 +171,7 @@
 	'sent_from_website' => 'メッセージはウェブサイトから送られました',
 	'server_time' => 'サーバー時間',
 	'settings' => '設定',
-	'showing_page' => 'ページを表示',
+	'showing_page' => 'ページ目を表示',
 	'showing_results' => '結果を表示',
 	'special_category' => 'スペシャルカテゴリー',
 	'special_category_explanation' => 'This is a special category that will not show up on the report submission form for users submitting reports. This is used in conjunction with the "Trusted Reporters" feature.',

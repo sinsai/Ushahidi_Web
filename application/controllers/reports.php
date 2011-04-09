@@ -215,8 +215,11 @@ class Reports_Controller extends Main_Controller {
 
 			if ($total_pages > 1)
 			{ // If we want to show pagination
-				$this->template->content->pagination_stats = Kohana::lang('ui_admin.showing_page').' '.$current_page.' '.Kohana::lang('ui_admin.of').' '.$total_pages.' '.Kohana::lang('ui_admin.pages');
-
+				if((isset($_GET["l"]) && $_GET["l"] === "ja_JP") OR (!isset($_GET["l"]))){
+					$this->template->content->pagination_stats = "全".$total_pages."中".$current_page.Kohana::lang('ui_admin.showing_page');
+				}else{
+					$this->template->content->pagination_stats = Kohana::lang('ui_admin.showing_page').' '.$current_page.' '.Kohana::lang('ui_admin.of').' '.$total_pages.' '.Kohana::lang('ui_admin.pages');
+				}
 				$this->template->content->pagination = $pagination;
 			}
 			else
