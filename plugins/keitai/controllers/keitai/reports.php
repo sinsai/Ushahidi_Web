@@ -32,28 +32,17 @@ class Reports_Controller extends Keitai_Controller {
 
 		$this->template->content = new View('keitai/reports');
 		$this->template->content->c = "";
-		$this->template->content->sw = "";
-		$this->template->content->ne = "";
+		$this->template->content->latlong = "";
 		$this->template->content->l = "";
 		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0){
 			$this->template->content->c = $_GET['c'];
 		}
 		if(isset($_GET['sw'])){
-			$this->template->content->sw = $_GET['sw'];
-		}
-		if(isset($_GET['ne'])){
-			$this->template->content->ne = $_GET['ne'];
+			$this->template->content->latlong = $_GET['latlong'];
 		}
 		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0){
 			$this->template->content->l = $_GET['l'];
 		}
-		$get_params = "?";
-		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0)$get_params .= "c=".$_GET['c']."&";
-		if(isset($_GET['sw']))$get_params .= "sw=".$_GET['sw']."&";
-		if(isset($_GET['ne']))$get_params .= "ne=".$_GET['ne']."&";
-		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0)$get_params .= "l=".$_GET['l'];
-		$get_params = rtrim(rtrim($get_params,'&'),'?');
-		$this->template->content->get_params = $get_params;
 		$db = new Database;
 
 		$filter = ( $category_id )

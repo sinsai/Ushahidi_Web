@@ -27,8 +27,7 @@ else
 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" id="report-search" method="GET">
 <input type="hidden" name="c" value="<?php echo $c; ?>">
 <input type="hidden" name="l" value="<?php echo $l; ?>">
-<input type="hidden" name="sw" value="<?php echo $sw; ?>">
-<input type="hidden" name="ne" value="<?php echo $ne; ?>">
+<input type="hidden" name="latlong" value="<?php echo $latlong; ?>">
 <input type="text" name="keyword" value="<?php if(isset($_GET["keyword"])){echo $_GET["keyword"];}?>" />
 <input type="submit" name="submit" value="検索" />
 </form>
