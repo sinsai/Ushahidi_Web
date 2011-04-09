@@ -465,6 +465,7 @@ class Reports_Controller extends Main_Controller {
 					.":00 ".$post->incident_ampm;
 				$incident->incident_date = date( "Y-m-d H:i:s", strtotime($incident_date . " " . $incident_time) );
 				$incident->incident_dateadd = date("Y-m-d H:i:s",time());
+				$incident->incident_source = 3;
 				$incident->save();
 
 				// STEP 3: SAVE CATEGORIES
