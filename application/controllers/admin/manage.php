@@ -194,6 +194,7 @@ class Manage_Controller extends Admin_Controller
 					// Save Action
 					$category->parent_id = $post->parent_id;
 					$category->category_title = $post->category_title;
+					$category->category_type = 5;
 					$category->category_description = $post->category_description;
 					$category->category_color = $post->category_color;
 					$category->save();
