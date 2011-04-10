@@ -539,5 +539,8 @@
 	'osm_mapnik' => '地図 (by OSM)',
 	'virtualearth_satellite' => '衛星写真 (by Bing)',
 	'virtualearth_hybrid' => '地図&衛星写真 (by Bing)',
+	'google_satellite' => '衛星写真 (by Google Map)',
+	'google_hybrid' => '地図&衛星写真  (by Google Map)',
+	'google_normal' => '地図 (by Google Map)',
 	);
 ?>
