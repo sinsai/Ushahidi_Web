@@ -213,10 +213,10 @@ class map_Core {
 		$layers = array();
 
 		$layer = new stdClass();
-		$layer->active = FALSE;
+		$layer->active = TRUE;
 		$layer->name = 'google_satellite';
 		$layer->openlayers = "Google";
-		$layer->title = 'Google Maps Satellite';
+		$layer->title =  Kohana::lang('ui_main.google_satellite');
 		$layer->description = 'Google Maps Satellite Imagery.';
 		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
 		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';
@@ -227,10 +227,10 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = FALSE;
+		$layer->active = TRUE;
 		$layer->name = 'google_hybrid';
 		$layer->openlayers = "Google";
-		$layer->title = 'Google Maps Hybrid';
+		$layer->title = Kohana::lang('ui_main.google_hybrid');
 		$layer->description = 'Google Maps with roads and terrain.';
 		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
 		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';
@@ -241,10 +241,10 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = FALSE;
+		$layer->active = TRUE;
 		$layer->name = 'google_normal';
 		$layer->openlayers = "Google";
-		$layer->title = 'Google Maps Normal';
+		$layer->title = Kohana::lang('ui_main.google_normal');
 		$layer->description = 'Standard Google Maps Roads';
 		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
 		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';

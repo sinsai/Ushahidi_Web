@@ -533,5 +533,9 @@
 	'osm_mapnik' => 'Map (by OSM)',
 	'virtualearth_satellite' => 'Satellite (by Bing)',
 	'virtualearth_hybrid' => 'Map & Satellite (by Bing)',
+	'google_satellite' => 'Satellite (by Google Map)',
+	'google_hybrid' => 'Map & Satellite  (by Google Map)',
+	'google_normal' => 'Map (by Google Map)',
+	
 	);
 ?>
