@@ -27,6 +27,7 @@
 	'contact_title_index' => '문의 ',
 	'feedback' => '피드백 ',
 	'home' => '홈 ',
+	'or' => '혹은',
 	'reports' => '리포트',
 	'reports_title_index' => '리포트',
 	'reports_title_submit' => '리포트',

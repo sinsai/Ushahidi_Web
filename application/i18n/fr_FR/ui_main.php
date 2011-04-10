@@ -45,6 +45,7 @@
 	'modify_date' => 'Changer Date',
 	'news' => 'Nouvelles',
 	'official_news' => 'Nouvelles officielles et actualité',
+	'or' => 'Ou',
 	'pictures' => 'Photos',
 	'reports' => 'Rapports',
 	'reports_title_index' => 'Rapports',

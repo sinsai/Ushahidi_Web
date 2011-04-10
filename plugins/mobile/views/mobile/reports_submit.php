@@ -1,5 +1,5 @@
 <div class="report_submit">
-	<h2 class="main_title">Submit A Report</h2>
+	<h2 class="main_title"><?php echo Kohana::lang('ui_main.reports_submit_new'); ?></h2>
 	<?php print form::open(NULL, array('enctype' => 'multipart/form-data', 'id' => 'reportForm', 'name' => 'reportForm')); ?>
 	<input type="hidden" name="latitude" id="latitude" value="<?php echo $form['latitude']; ?>">
 	<input type="hidden" name="longitude" id="longitude" value="<?php echo $form['longitude']; ?>">
@@ -80,7 +80,7 @@
 		</div>
 		
 		<div class="report_row">
-			<h4><?php echo Kohana::lang('ui_main.reports_categories'); ?> (Select All That Apply)</h4>
+			<h4><?php echo Kohana::lang('ui_main.reports_categories'); ?></h4>
 			<div class="report_category" id="categories">
 				<?php
 				$selected_categories = array();
@@ -94,10 +94,10 @@
 		</div>
 		
 		<div class="report_row">
-			<h4>Location</h4>
-			<span class="location">Select A Location from the Drop-Down</span>
+			<h4><?php echo Kohana::lang('ui_main.reports_find_location'); ?></h4>
+			<span class="location"><?php echo Kohana::lang('ui_main.reports_select_city'); ?></span>
 			<?php print form::dropdown('select_city',$cities,'', ' class="select" '); ?>
-			<span class="location">OR Enter A Location <input id="set_from_gps" type="button" value="Set from GPS" style="display:none" /></span>
+			<span class="location"><?php echo Kohana::lang('ui_main.or'); ?> <?php echo Kohana::lang('ui_main.reports_location_name');?> <input id="set_from_gps" type="button" value="<?php echo Kohana::lang('ui_main.find_this_location'); ?>" style="display:none" /></span>
 			<?php print form::input('location_name', $form['location_name'], ' class="text long"'); ?>
 		</div>
 		

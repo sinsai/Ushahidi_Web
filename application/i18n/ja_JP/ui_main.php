@@ -270,6 +270,7 @@
 	'option' => '選択肢',
 	'optional' => '選択可能な',
 	'options' => '選択肢',
+	'or' => 'もしくは',
 	'organization' => '組織',
 	'organizations' => '組織',
 	'organization_description' => '組織の説明',

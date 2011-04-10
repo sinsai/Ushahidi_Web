@@ -46,11 +46,11 @@ $(function() {
 					else {
 						alert("Failed to set from GPS: " + status);
 					}
-					setFromGpsButton.val("Set from GPS");
+					setFromGpsButton.val(<?php echo Kohana::lang('ui_main.find_this_location'); ?>);
 				});
 			}, function(error) {
 				alert("Failed to set from GPS: " + error.message);
-				setFromGpsButton.val("Set from GPS");
+				setFromGpsButton.val("<?php echo Kohana::lang('ui_main.find_this_location'); ?>");
 			}, {"maximumAge":600000, "timeout":60000});
 		});
 	}

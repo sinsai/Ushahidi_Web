@@ -246,6 +246,7 @@
 	'option' => 'Option',
 	'optional' => 'Optional',
 	'options' => 'Optionen',
+	'or' => 'Oder',
 	'organization' => 'Organisation',
 	'organizations' => 'Organisationen',
 	'organization_description' => 'Organisations-Beschreibung',

@@ -358,7 +358,7 @@ class Reports_Controller extends Mobile_Controller {
 	private function _get_cities()
 	{
 		$cities = ORM::factory('city')->orderby('city', 'asc')->find_all();
-		$city_select = array('' => 'Select A Location from the Drop-Down');
+		$city_select = array('' => Kohana::lang('ui_main.reports_select_city'));
 
 		foreach ($cities as $city)
 		{

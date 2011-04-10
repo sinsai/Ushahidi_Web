@@ -127,6 +127,7 @@
 	'not_approved' => '未激活',
 	'not_approved_singular' => '未激活',
 	'official_news' => '官方&媒体消息',
+	'or' => '或',
 	'organization' => '救援组织&团队',
 	'organizations' => '组织',
 	'other_ushahidi_instances' => 'OTHER USHAHIDI INSTANCES',
