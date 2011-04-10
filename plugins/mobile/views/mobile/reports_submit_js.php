@@ -24,4 +24,34 @@ $(function() {
         collapsed: true,
         unique: false
 	});
+
+	if (navigator.geolocation) {
+		var setFromGpsButton = $("#set_from_gps");
+
+		setFromGpsButton.show();
+		setFromGpsButton.bind("click", function() {
+			$(this).val("Loading...");
+			navigator.geolocation.getCurrentPosition(function(position) {
+				var latitude = position.coords.latitude;
+				var longitude = position.coords.longitude;
+				$("#latitude").val(latitude);
+				$("#longitude").val(longitude);
+				var initialLocation = new google.maps.LatLng(latitude, longitude);
+				var geocoder = new google.maps.Geocoder();
+				geocoder.geocode({ "location": initialLocation }, function(results, status) {
+					if(status == google.maps.GeocoderStatus.OK) {
+						var address = results[0].formatted_address;
+						$("#location_name").val(address);
+					}
+					else {
+						alert("Failed to set from GPS: " + status);
+					}
+					setFromGpsButton.val("Set from GPS");
+				});
+			}, function(error) {
+				alert("Failed to set from GPS: " + error.message);
+				setFromGpsButton.val("Set from GPS");
+			}, {"maximumAge":600000, "timeout":60000});
+		});
+	}
 });

@@ -97,7 +97,7 @@
 			<h4>Location</h4>
 			<span class="location">Select A Location from the Drop-Down</span>
 			<?php print form::dropdown('select_city',$cities,'', ' class="select" '); ?>
-			<span class="location">OR Enter A Location</span>
+			<span class="location">OR Enter A Location <input id="set_from_gps" type="button" value="Set from GPS" style="display:none" /></span>
 			<?php print form::input('location_name', $form['location_name'], ' class="text long"'); ?>
 		</div>
 		
