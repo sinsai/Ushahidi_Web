@@ -1,4 +1,4 @@
-function initialize() {
+$(function() {
 	var myLatlng = new google.maps.LatLng(<?php echo $latitude; ?>,<?php echo $longitude; ?>);
 	var myOptions = {
 	  zoom: 12,
@@ -15,4 +15,4 @@ function initialize() {
 	});
 	
 	marker.setMap(map);
-}
+});

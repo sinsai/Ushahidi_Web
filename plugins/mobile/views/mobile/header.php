@@ -25,11 +25,7 @@ $(function() {
 </script>
 </head>
 
-<body <?php
-if ($show_map === TRUE) {
-	echo " onload=\"initialize()\"";
-}
-?>>
+<body>
 	<div id="container">
 		<div id="header">
 			<h1><img src="<?php echo url::site(); ?>plugins/mobile/views/images/logo.gif" alt="<?php echo $site_name.' - '.$site_tagline; ?>" /></h1>
