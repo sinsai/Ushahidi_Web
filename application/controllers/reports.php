@@ -179,9 +179,8 @@ class Reports_Controller extends Main_Controller {
 
 
                 // $query = 'SELECT id,category_title,category_color FROM category WHERE category_visible = 1 AND category_trusted = 0';
-                $query = 'SELECT id,category_title,category_color,category_image_thumb FROM category';
-
-                $query = $db->query($query);
+		$query = 'SELECT id,category_title,category_color,category_image_thumb FROM category ORDER BY category_type desc;';
+		$query = $db->query($query);
 		$category_master = array();
 		$localized_categories = array();
 		foreach($query as $row){
