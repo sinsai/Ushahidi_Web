@@ -20,7 +20,7 @@
 	<ul class="details">
 		<li>
 			<small>Location</small>: 
-			<?php echo $incident->location->location_name; ?>
+			<?php echo nl2br($incident->location->location_name); ?>
 		</li>
 		<li>
 			<small>Date</small>: 
@@ -32,7 +32,7 @@
 		</li>		
 		<li>
 			<small>Description</small>: <br />
-			<?php echo $incident->incident_description; ?>
+			<?php echo nl2br($incident->incident_description); ?>
 		</li>
 	</ul>
 </div>
