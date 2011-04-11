@@ -45,7 +45,13 @@ class mobile {
 			// If Mobile Configure Mobile Settings
 			if(isset($_SERVER['HTTP_USER_AGENT']) AND !$this->_is_keitai() AND $this->_is_mobile()
 				AND strrpos(url::current(), "mobile") === FALSE
-				AND Router::$controller != 'api') 
+
+				//// It's a temporary code, should be deleted later!////
+				AND strrpos(url::current(), "page/index/9") === FALSE
+				AND strrpos(url::current(), "contact") === FALSE 
+				////////////////////////////////////////////////////////
+
+				AND Router::$controller != 'api')
 			{
 				// Only add the events if we are on that controller
 				$request_url = "http://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];

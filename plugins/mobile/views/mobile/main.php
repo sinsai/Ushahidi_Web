@@ -69,6 +69,6 @@
 </div>
 <h2 class="block_title">More</h2>
 <div class="block">
-	<h2 class="other"><a href="#">Contact Us</a></h2>
-	<h2 class="other"><a href="#">About Us</a></h2>
+	<h2 class="other"><a href="<?php echo url::site()."contact"; ?>">Contact Us</a></h2>
+	<h2 class="other"><a href="<?php echo url::site()."page/index/9"; ?>">About Us</a></h2>
 </div>
