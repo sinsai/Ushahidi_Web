@@ -43,6 +43,7 @@ class Reports_Controller extends Main_Controller {
 		$this->template->content = new View('reports');
 		$this->themes->js = new View('reports_js');
 		// Get locale
+		$this->template->content->area_name = "";
 		$l = Kohana::config('locale.language.0');
 
 		if(isset($_SESSION["locale"])){
@@ -64,7 +65,6 @@ class Reports_Controller extends Main_Controller {
 		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0){
 			$this->template->content->l = $_GET['l'];
 		}
-
 		$db = new Database;
 
 		// Get incident_ids if we are to filter by category
@@ -96,7 +96,6 @@ class Reports_Controller extends Main_Controller {
 		{
 			$northeast = explode(",",$_GET['ne']);
 		}
-		$this->template->content->area_name = "";
 		if ( count($southwest) == 2 AND count($northeast) == 2 )
 		{
 			$lon_min = (float) $southwest[0];
