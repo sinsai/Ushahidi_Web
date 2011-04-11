@@ -154,6 +154,30 @@ class Reports_Controller extends Main_Controller {
 			$keyword_like = rtrim($keyword_like," AND ");
 		}
 
+if(isset($geo_url) && isset($_GET["mode"]) && $_GET["mode"]=="area"){
+		// Pagination
+		$pagination = new Pagination(array(
+				'query_string' => 'page',
+				'items_per_page' => (int) Kohana::config('settings.items_per_page'),
+				'total_items' => ORM::factory("incident")
+					->join($this->table_prefix.'location',$this->table_prefix.'location.id',$this->table_prefix.'incident.location_id',"LEFT OUTER")
+					->where("incident_active", 1)
+					->where($location_id_in)
+					->where($incident_id_in)
+					->where($keyword_like)
+					->count_all()
+				));
+		// Reports
+		$incidents = ORM::factory("incident")
+			->select($this->table_prefix.'incident.*,(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) as dist',false)
+			->join($this->table_prefix.'location',$this->table_prefix.'location.id',$this->table_prefix.'incident.location_id',"LEFT OUTER")
+			->where("incident_active", 1)
+			->where($location_id_in)
+			->where($incident_id_in)
+			->where($keyword_like)
+			->orderby('(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))', "asc",false)
+			->find_all((int) Kohana::config('settings.items_per_page'), $pagination->sql_offset);
+}else{
 		// Pagination
 		$pagination = new Pagination(array(
 				'query_string' => 'page',
@@ -166,7 +190,6 @@ class Reports_Controller extends Main_Controller {
 					->count_all()
 				));
 		// Reports
-
 		$incidents = ORM::factory("incident")
 			->where("incident_active", 1)
 			->where($location_id_in)
@@ -174,9 +197,8 @@ class Reports_Controller extends Main_Controller {
 			->where($keyword_like)
 			->orderby("incident_date", "desc")
 			->find_all((int) Kohana::config('settings.items_per_page'), $pagination->sql_offset);
+}
 		// Swap out category titles with their proper localizations using an array (cleaner way to do this?)
-
-
 
                 // $query = 'SELECT id,category_title,category_color FROM category WHERE category_visible = 1 AND category_trusted = 0';
                 $query = 'SELECT id,category_title,category_color,category_image_thumb FROM category';

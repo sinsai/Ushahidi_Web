@@ -42,6 +42,15 @@
 <input type="text" name="keyword" value="<?php if(isset($_GET["keyword"])){echo $_GET["keyword"];}?>" />
 <input type="submit" name="submit" value="検索" />
 </form>
+<form action="<?php echo $_SERVER['PHP_SELF'] ?>" id="area-search" method="GET">
+<input type="hidden" name="mode" value="area">
+<input type="hidden" name="c" value="<?php echo $c; ?>">
+<input type="hidden" name="l" value="<?php echo $l; ?>">
+<input type="hidden" name="sw" value="<?php echo $sw; ?>">
+<input type="hidden" name="ne" value="<?php echo $ne; ?>">
+<input type="hidden" name="keyword" value="<?php if(isset($_GET["keyword"])){echo $_GET["keyword"];}?>" />
+<input type="submit" name="submit" value="周辺のレポートを検索" />
+</form>
 
 
 
@@ -54,6 +63,7 @@
 					$incident_id = $incident->id;
 					$incident_title = html::specialchars($incident->incident_title);
 					$incident_description = html::specialchars($incident->incident_description);
+					if(isset($incident->dist))$incident_dist = $incident->dist;
 					//$incident_category = $incident->incident_category;
 					// Trim to 150 characters without cutting words
 					// XXX: Perhaps delcare 150 as constant
@@ -126,6 +136,7 @@
 
 						<div class="r_details">
 							<h3><a class="r_title" href="<?php echo url::site(); ?>reports/view/<?php echo $incident_id; ?>"><?php echo $incident_title; ?></a> <a href="<?php echo url::site(); ?>reports/view/<?php echo $incident_id; ?>#discussion" class="r_comments"><?php echo $comment_count; ?></a> <?php echo $incident_verified; ?></h3>
+							<?php if(isset($incident_dist))echo " 選択地点からの距離:$incident_dist"."km" ; ?> 
 							<p class="r_date r-3 bottom-cap"><?php echo $incident_date; ?></p>
 							<div class="r_description"> <?php echo $incident_description; ?> </div>
 							<p class="r_location"><a href="<?php echo url::site(); ?>reports/?l=<?php echo $location_id; ?>"><?php echo $location_name; ?></a></p>
