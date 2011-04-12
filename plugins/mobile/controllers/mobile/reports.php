@@ -106,7 +106,6 @@ class Reports_Controller extends Mobile_Controller {
 			}
 			
 			$incident->incident_description = preg_replace('/((https?|http)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))/', '<a href="$1">$1</a>', $incident->incident_description);
-			$incident->incident_description = nl2br($incident->incident_description);
 			$this->template->content->incident = $incident;
 			
 			$this->template->header->js->latitude = $incident->location->latitude;
