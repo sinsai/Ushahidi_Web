@@ -92,6 +92,22 @@ class Incidents_Api_Object extends Api_Object_Core {
                 }
             break;
             
+            // Get incidents by latitude and longitude distance
+            case "dist":
+                if ($this->api_service->verify_array_index($this->request, 'distance'))
+                { 
+                    $this->response_data = $this->_get_incidents_by_distance($this->request['distance']);
+                }
+                else
+                {
+                    $this->set_error_message(array(
+                        "error" => $this->api_service->get_error_msg(001, 'distance')
+                    ));
+                    
+                    return;
+                }
+            break;
+            
             // Get incidents by location id
             case "locid":
                 if ( ! $this->api_service->verify_array_index($this->request, 'id'))
@@ -282,7 +298,6 @@ class Incidents_Api_Object extends Api_Object_Core {
                 "location as l on l.id = i.location_id "."$where $limit";
 
         $items = $this->db->query($this->query);
-        
         // Set the no. of records returned
         $this->record_count = $items->count();
         
@@ -491,6 +506,27 @@ class Incidents_Api_Object extends Api_Object_Core {
             i.incident_active = 1 ";
         
         $sortby = "\nORDER BY $this->order_field $this->sort ";
+        
+        $limit = "\n LIMIT 0, $this->list_limit";
+        
+        return $this->_get_incidents($where.$sortby, $limit);
+    }
+    private function _get_incidents_by_distance($distance)
+    /**
+     * Get the incidents by latitude and longitude distance.
+     * 
+     */
+    {
+        $param = explode(',',$distance);
+
+        $where = "\nWHERE round(sqrt(pow((l.latitude - $param[1])/0.0111, 2) + pow((l.longitude - $param[0])/0.0091, 2)), 1) <= $param[2] AND i.incident_active = 1 ";
+        if(!isset($this->request['orderfield']) && !isset($this->request['sort'])){
+            $sortby = "\nORDER BY round(sqrt(pow((l.latitude - $param[1])/0.0111, 2) + pow((l.longitude - $param[0])/0.0091, 2)), 1) ASC ";
+        }elseif(!isset($this->order_field) && isset($this->request['sort'])){
+            $sortby = "\nORDER BY round(sqrt(pow((l.latitude - $param[1])/0.0111, 2) + pow((l.longitude - $param[0])/0.0091, 2)), 1) $this->sort ";
+		}else{
+            $sortby = "\nORDER BY $this->order_field $this->sort ";
+        }
         
         $limit = "\n LIMIT 0, $this->list_limit";
         
