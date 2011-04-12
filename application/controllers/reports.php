@@ -109,9 +109,9 @@ class Reports_Controller extends Main_Controller {
 			foreach($geo_google["results"] as $geo_val){
 				if($geo_val["types"][0]=="locality" && $geo_val["types"][1]=="political" && count($geo_val["types"])==2){
 					$area_name = explode(',',$geo_val["formatted_address"]);
+					$this->template->content->area_name =  $area_name[1];
 				}
 			}
-			$this->template->content->area_name =  $area_name[1];
 			$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE latitude >='.$lat_min.' AND latitude <='.$lat_max.' AND longitude >='.$lon_min.' AND longitude <='.$lon_max;
 
 			$query = $db->query($query);
