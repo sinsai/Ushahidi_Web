@@ -194,7 +194,7 @@
 		                                        $feed_date = date('Y/m/d', strtotime($feed->item_date));
 		                                        $feed_source = text::limit_chars($feed->feed->feed_name, 15, "...");
 		                                ?>
-		                                        <div class="official-detail"><a href="<?php echo $feed_link; ?>" target="_blank"><?php echo $feed_title ?></a></div>
+		                                        <div class="official-detail"><a href="<?php echo $feed_link; ?>" target="_blank"><?php echo html::specialchars($feed_title) ?></a></div>
 		                                <?php
 		                                }
 		                            }
@@ -212,7 +212,7 @@
 			<div class="floatbox">
 			
 				<!-- filters -->
-				<div class="filters clearingfix map_above">
+				<div class="filters-top clearingfix map_above">
 					<div class="map_description">
 						<h3>レポートを地図から探す</h3>
                         <div>◎をクリックすると、そのエリアで投稿されたレポートがご覧になれます。</div>
@@ -270,10 +270,10 @@
 								foreach ($incidents as $incident)
 								{
 									$incident_id = $incident->id;
-									$incident_title = text::limit_chars($incident->incident_title, 40, '...', True);
+									$incident_title = text::limit_chars(html::specialchars($incident->incident_title), 40, '...', True);
 									$incident_date = $incident->incident_date;
 									$incident_date = date('Y/m/d', strtotime($incident->incident_date));
-									$incident_location = $incident->location->location_name;
+									$incident_location = html::specialchars($incident->location->location_name);
 								?>
 								<tr>
 									<td><a href="<?php echo url::site() . 'reports/view/' . $incident_id; ?>"> <?php echo $incident_title ?></a></td>
@@ -311,10 +311,10 @@
 								foreach ($comment_incidents as $comment_incident)
 								{
 									$incident_id = $comment_incident->id;
-									$incident_title = text::limit_chars($comment_incident->incident_title, 40, '...', True);
+									$incident_title = text::limit_chars(html::specialchars($comment_incident->incident_title), 40, '...', True);
 									$incident_date = $comment_incident->incident_date;
 									$incident_date = date('Y/m/d', strtotime($comment_incident->comment_date));
-									$incident_location = $comment_incident->location->location_name;
+									$incident_location = html::specialchars($comment_incident->location->location_name);
 								?>
 								<tr>
 									<td><a href="<?php echo url::site() . 'reports/view/' . $incident_id; ?>"> <?php echo $incident_title ?></a></td>
