@@ -186,6 +186,7 @@
 		var markers;
 		$(document).ready(function() {
 			var incident_title = $("#incident_title").val();
+			incident_title = incident_title.replace(/&amp;/g, '&');
 			incident_title = incident_title.replace(/&lt;/g, '<');
 			incident_title = incident_title.replace(/&gt;/g, '>');
 			incident_title = incident_title.replace(/&quot;/g, '"');
