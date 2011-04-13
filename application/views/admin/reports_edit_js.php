@@ -185,6 +185,16 @@
 		var proj_900913 = new OpenLayers.Projection('EPSG:900913');
 		var markers;
 		$(document).ready(function() {
+			var incident_title = $("#incident_title").val();
+			incident_title = incident_title.replace(/&lt;/g, '<');
+			incident_title = incident_title.replace(/&gt;/g, '>');
+			incident_title = incident_title.replace(/&quot;/g, '"');
+			$("#incident_title").attr("value", incident_title);
+
+			var incident_description = $("#incident_description").val();
+			incident_description = incident_description.replace(/&amp;/g, '&');
+			$("#incident_description").attr("value", incident_description);
+
 			// Now initialise the map
 			$("#incident_title").attr("value", $("#incident_title").val().replace(/&quot;/g, '"'));
 			var options = {
