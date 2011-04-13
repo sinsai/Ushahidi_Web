@@ -18,6 +18,7 @@
 				if($address)$get_val .= '&address='.$address;
 				if($distance)$get_val .= '&distance='.$distance;
 				if($mode)$get_val .= '&mode='.$mode;
+				if($order)$get_val .= '&order='.$order;
 				$get_val = "?".ltrim($get_val,'&');
 				echo $get_val;
 			}else{
@@ -25,6 +26,7 @@
 				if($address)$get_val .= '&address='.$address;
 				if($distance)$get_val .= '&distance='.$distance;
 				if($mode)$get_val .= '&mode='.$mode;
+				if($order)$get_val .= '&order='.$order;
 				$get_val = "?".ltrim($get_val,'&');
 				echo $get_val;
 			}
@@ -38,6 +40,7 @@
 				if($address)echo '&address='.$address;
 				if($distance)echo '&distance='.$distance;
 				if($mode)echo '&mode='.$mode;
+				if($order)echo '&order='.$order;
 				echo '" >';
 				if(isset($category['category_image_thumb'])){
 				    echo '<img src="/ushahidi/media/uploads/'.$category['category_image_thumb'].'"/>';

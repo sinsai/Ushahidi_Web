@@ -60,6 +60,7 @@ class Reports_Controller extends Main_Controller {
 		$this->template->content->ne = valid::initGetVal('ne',"text");
 		$this->template->content->l = valid::initGetVal('l',"natural_numbewr");
 		$this->template->content->mode = valid::initGetVal('mode',"text");
+		$this->template->content->order = valid::initGetVal('order',"text");
 
 		$db = new Database;
 
