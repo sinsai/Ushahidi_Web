@@ -44,13 +44,12 @@ class Reports_Controller extends Main_Controller {
 		$this->themes->js = new View('reports_js');
 		// Get locale
 		$l = Kohana::config('locale.language.0');
-		$this->template->content->area_name = "";
-		$this->template->content->distance = "";
 		//FORMのhiddenタグ用パラメータ初期化と代入
 		if(isset($_SESSION["locale"])){
 			$_GET["l"] = $_SESSION["locale"];
 		}
 
+		$this->template->content->area_name = "";
 		$this->template->content->disp_distance = "";
 		$this->template->content->keyword = "";
 		$this->template->content->address = "";
