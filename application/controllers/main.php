@@ -268,9 +268,39 @@ class Main_Controller extends Template_Controller {
 		$this->template->content->phone_array = $phone_array;
 
 		// Get RSS News Feeds
-		$this->template->content->feeds = ORM::factory('feed_item')
+		$feed_arrays = ORM::factory('feed')
+			->where('feed_active',1)
 			->limit('10')
-			->orderby('item_date', 'desc')
+			->orderby('feed_update', 'asc')
+			->find_all();
+		$feeds = array();
+		foreach($feed_arrays as $val){
+			$feeds[]=array("id"=>$val->id,"name"=>$val->feed_name,"url"=>$val->feed_url);
+		}
+		foreach($feeds as $key => $this_feed){
+			$feeds[$key]["feed_item"] = ORM::factory('feed_item')
+				->limit('10')
+				->where('feed_id',$this_feed["id"])
+				->orderby('item_date', 'desc')
+				->find_all();
+		}
+		$this->template->content->feeds = $feeds;
+		// コメントつきインシデント取得
+		$db = new Database;
+		$query = 'SELECT incident_id FROM '.$this->table_prefix.'comment AS ic WHERE ic.comment_active = 1 GROUP BY incident_id ORDER BY MAX(comment_date) DESC LIMIT 0,20;';
+		$query = $db->query($query);
+		$incident_ids = array();
+		foreach($query as $items){
+			$incident_ids[$items->incident_id] =$items->incident_id;
+		}
+		$incident_ids = 'incident.id IN ('.implode(',',$incident_ids).')';
+		$this->template->content->comment_incidents = ORM::factory('incident')
+			->select($this->table_prefix.'incident.*,'.$this->table_prefix.'comment.id as comment_id,'.$this->table_prefix.'comment.comment_date')
+			->join($this->table_prefix.'comment',$this->table_prefix.'comment.incident_id',$this->table_prefix.'incident.id',"LEFT")
+			->where('incident_active', '1')
+			->where($incident_ids)
+			->orderby('comment_date', 'desc')
+			->limit('10')
 			->find_all();
 
         // Get The START, END and most ACTIVE Incident Dates

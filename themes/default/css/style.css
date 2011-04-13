@@ -628,6 +628,7 @@ ul.category-filters li.child{
 /* additional content */
 div.additional-content{
     padding: 15px;
+    margin-bottom:15px;
     background: #F0F0F0;
 }
 
@@ -663,6 +664,23 @@ div.content-block-right{
     background: #FFFFFF;
     width: 427px;
     float: right;
+}
+
+div.officialnews-container{
+	background: none repeat scroll 0 0 #FFFFFF;
+	padding:5px;
+}
+div.official-detail{
+	padding-top:5px;
+}
+div.newreports-container{
+	padding:10px;
+	background: none repeat scroll 0 0 #FFFFFF;
+}
+div.newcomments-container{
+	margin-top:20px;
+	padding:10px;
+	background: none repeat scroll 0 0 #FFFFFF;
 }
 
 /* -----------------------------------------------------------
@@ -815,6 +833,7 @@ h1.report-title {
 div.report-comments {
 	border-bottom:#000000 dotted 1px;
 	padding:5px 0px 5px 0px;
+	word-wrap: break-word;
 }
 
 div.report-comments h5 {
@@ -827,7 +846,7 @@ div.report-comments h5 {
 div.report-comment-box {
 	margin-bottom:15px;
 	padding:5px 0 0 10px;
-	
+	word-wrap: break-word;
 }
 
 div.comment-block {
@@ -1088,7 +1107,7 @@ div.incident-notation ul li{
 
 .more{
     float: right;
-    margin: 20px 20px 10px 10px;
+    margin: 10px 10px 10px 10px;
     color: #004276;
     font-weight: bold;
     text-decoration: underline;
