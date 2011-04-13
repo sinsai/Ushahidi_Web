@@ -96,7 +96,7 @@ class Reports_Controller extends Main_Controller {
 		$dbget_flg = true;
 		$this->template->content->choices_flg = false;
 		//指定地区の指定半径内インシデント取得処理
-		if(isset($_GET["address"]) && trim($_GET["address"]) !== ""){
+		if(isset($_GET["address"]) && trim($_GET["address"]) !== "" && isset($_GET["distance"]) && is_numeric($_GET["distance"]) && $_GET["distance"] > 0){
 			$address = urlencode($_GET["address"]);
 			// http://www.geocoding.jp/を利用して指定地区名の緯度経度を取得
 			$geocoding_url = 'http://www.geocoding.jp/api/?q='.$address;
