@@ -815,6 +815,7 @@ h1.report-title {
 div.report-comments {
 	border-bottom:#000000 dotted 1px;
 	padding:5px 0px 5px 0px;
+	word-wrap: break-word;
 }
 
 div.report-comments h5 {
@@ -827,7 +828,7 @@ div.report-comments h5 {
 div.report-comment-box {
 	margin-bottom:15px;
 	padding:5px 0 0 10px;
-	
+	word-wrap: break-word;
 }
 
 div.comment-block {
