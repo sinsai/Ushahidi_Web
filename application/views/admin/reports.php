@@ -174,8 +174,8 @@
 								foreach ($incidents as $incident)
 								{
 									$incident_id = $incident->id;
-									$incident_title = $incident->incident_title;
-									$incident_description = text::limit_chars($incident->incident_description, 150, "...", true);
+									$incident_title = html::specialchars($incident->incident_title);
+									$incident_description = text::limit_chars(html::specialchars($incident->incident_description), 150, "...", true);
 									$incident_date = $incident->incident_date;
 									$incident_date = date('Y/m/d', strtotime($incident->incident_date));
 									$incident_mode = $incident->incident_mode;	// Mode of submission... WEB/SMS/EMAIL?
@@ -263,7 +263,7 @@
 										$incident_translation .= "<div class=\"post-trans\">";
 										$incident_translation .= Kohana::lang('ui_main.translation'). $i . ": ";
 										$incident_translation .= "<a href=\"" . url::base() . 'admin/reports/translate/'. $translation->id .'/?iid=' . $incident_id . "\">"
-											. text::limit_chars($translation->incident_title, 150, "...", true)
+											. text::limit_chars(html::specialchars($translation->incident_title), 150, "...", true)
 											. "</a>";
 										$incident_translation .= "</div>";
 									}
@@ -276,8 +276,8 @@
 									?>>
 										<td class="col-1">
 											<div class="post">
-												<h4><a href="<?php echo url::site() . 'admin/reports/edit/' . $incident_id; ?>" class="more"><?php echo $incident_title; ?></a></h4>
-												<p><?php echo $incident_description; ?>... <a href="<?php echo url::base() . 'admin/reports/edit/' . $incident_id; ?>" class="more"><?php echo Kohana::lang('ui_main.more');?></a></p>
+												<h4><a href="<?php echo url::site() . 'admin/reports/edit/' . $incident_id; ?>" class="more"><?php echo html::specialchars($incident_title); ?></a></h4>
+												<p><?php echo html::specialchars($incident_description); ?>... <a href="<?php echo url::base() . 'admin/reports/edit/' . $incident_id; ?>" class="more"><?php echo Kohana::lang('ui_main.more');?></a></p>
 											</div>
 											<ul class="info">
 												<li class="none-separator"><?php echo Kohana::lang('ui_main.location');?>: <strong><?php echo $incident_location; ?></strong>, <strong><?php echo $countries[Kohana::config('settings.default_country')]; ?></strong></li>
