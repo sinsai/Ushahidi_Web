@@ -82,6 +82,8 @@ echo '<input type="radio" name="order" value="dist" checked>近隣順';
 						$incident_id = $incident->id;
 						$incident_title = html::specialchars($incident->incident_title);
 						$incident_description = html::specialchars($incident->incident_description);
+						$incident_description = preg_replace('/((https?|http)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))/', '<a href="$1">$1</a>', $incident_description);
+						$incident_description = nl2br($incident_description);
 						if(isset($incident->dist))$incident_dist = $incident->dist;
 						//$incident_category = $incident->incident_category;
 						// Trim to 150 characters without cutting words

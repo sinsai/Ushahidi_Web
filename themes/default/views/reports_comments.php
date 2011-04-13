@@ -11,7 +11,7 @@
 				<strong><?php echo  html::specialchars($comment->comment_author); ?></strong>&nbsp;(<?php echo date('Y/m/d', strtotime($comment->comment_date)); ?>)
 			</div>
 			
-			<div><?php echo  preg_replace('/((https?|http)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))/', '<a href="$1">$1</a>',html::specialchars($comment->comment_description)); ?></div>
+			<div><?php echo nl2br(preg_replace('/((https?|http)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))/', '<a href="$1">$1</a>',html::specialchars($comment->comment_description))); ?></div>
 	
 	  <div class="credibility">  
 	      <table class="rating-table" cellspacing="0" cellpadding="0" border="0">

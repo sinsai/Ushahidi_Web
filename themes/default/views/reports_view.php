@@ -14,7 +14,7 @@
   	  ?>	
 
 		<h1 class="report-title"><?php
-			echo $incident_title;
+			echo html::specialchars($incident_title);
 			
 			// If Admin is Logged In - Allow For Edit Link
 			if ($logged_in)
@@ -24,7 +24,7 @@
 		?></h1>
 	
 		<p class="report-when-where">
-			<span class="r_date"><?php echo $incident_time.' '.$incident_date; ?> </span>
+			<span class="r_date"><?php echo $incident_date.' '.$incident_time; ?> </span>
 			<span class="r_location"><?php echo  html::specialchars($incident_location); ?></span>
 		</p>
 	
@@ -57,7 +57,7 @@
 		
 		<div class="report-description-text">
 			<h5><?php echo Kohana::lang('ui_main.reports_description');?></h5>
-			<?php echo  $incident_description; 
+			<?php echo  nl2br(preg_replace('/((https?|http)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))/', '<a href="$1">$1</a>',html::specialchars($incident_description))); 
                               Event::run('ushahidi_action.report_extra', $incident_id);
                         ?>
 			<?php
