@@ -973,6 +973,7 @@ class Reports_Controller extends Main_Controller {
 			$incident_title = $incident->incident_title;
 			$incident_description = nl2br($incident->incident_description);
 			$incident_description = preg_replace('/((https?|http)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))/', '<a href="$1">$1</a>', $incident_description);
+			$incident_description = html::specialchars($incident_description);
 			Event::run('ushahidi_filter.report_title', $incident_title);
 			Event::run('ushahidi_filter.report_description', $incident_description);
 
