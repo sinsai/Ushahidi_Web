@@ -44,48 +44,13 @@ class Reports_Controller extends Main_Controller {
 		$this->themes->js = new View('reports_js');
 		// Get locale
 		$l = Kohana::config('locale.language.0');
-<<<<<<< HEAD
-=======
 		$this->template->content->area_name = "";
 		$this->template->content->disp_distance = "";
->>>>>>> ggslyman_feature384
 		//FORMのhiddenタグ用パラメータ初期化と代入
 		if(isset($_SESSION["locale"])){
 			$_GET["l"] = $_SESSION["locale"];
 		}
 
-<<<<<<< HEAD
-		$this->template->content->area_name = "";
-		$this->template->content->disp_distance = "";
-		$this->template->content->keyword = "";
-		$this->template->content->address = "";
-		$this->template->content->distance = "";
-		$this->template->content->c = "";
-		$this->template->content->sw = "";
-		$this->template->content->ne = "";
-		$this->template->content->l = "";
-		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0){
-			$this->template->content->c = $_GET['c'];
-		}
-		if(isset($_GET['sw']) && $_GET['sw'] !== ""){
-			$this->template->content->sw = $_GET['sw'];
-		}
-		if(isset($_GET['ne']) && $_GET['ne'] !== ""){
-			$this->template->content->ne = $_GET['ne'];
-		}
-		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0){
-			$this->template->content->l = $_GET['l'];
-		}
-		if(isset($_GET['keyword']) AND !empty($_GET['keyword']) AND $_GET['keyword']!==""){
-			$this->template->content->keyword = $_GET['keyword'];
-		}
-		if(isset($_GET['address']) AND !empty($_GET['address']) AND $_GET['address']!==""){
-			$this->template->content->address = $_GET['address'];
-		}
-		if(isset($_GET['distance']) AND is_numeric($_GET['distance'])){
-			$this->template->content->distance = $_GET['distance'];
-		}
-=======
 		// 引き回すGETパラメータのテンプレートへの引き渡し
 		$this->template->content->keyword = valid::initGetVal('keyword',"text");
 		$this->template->content->address = valid::initGetVal('address',"text");
@@ -94,7 +59,6 @@ class Reports_Controller extends Main_Controller {
 		$this->template->content->sw = valid::initGetVal('sw',"text");
 		$this->template->content->ne = valid::initGetVal('ne',"text");
 		$this->template->content->l = valid::initGetVal('l',"natural_numbewr");
->>>>>>> ggslyman_feature384
 
 		$db = new Database;
 
@@ -130,13 +94,6 @@ class Reports_Controller extends Main_Controller {
 		$dbget_flg = true;
 		$this->template->content->choices_flg = false;
 		//指定地区の指定半径内インシデント取得処理
-<<<<<<< HEAD
-		if(isset($_GET["mode"]) && $_GET["mode"]=="areasearch" && trim($_GET["address"]) !== ""){
-			$address = urlencode($_GET["address"]);
-			// http://www.geocoding.jp/を利用して中央地点の地名を取得
-			$geocoding_url = 'http://www.geocoding.jp/api/?q='.$address;
-			$geo_geocoding = simplexml_load_string(file_get_contents($geocoding_url));
-=======
 		if(isset($_GET["address"]) && trim($_GET["address"]) !== ""){
 			$address = urlencode($_GET["address"]);
 			// http://www.geocoding.jp/を利用して中央地点の地名を取得
@@ -163,7 +120,6 @@ class Reports_Controller extends Main_Controller {
 			}else{
 				$geo_geocoding = simplexml_load_string($geo_geocoding);
 			}
->>>>>>> ggslyman_feature384
 			//結果の取得とインシデントの取得
 			if(isset($geo_geocoding->coordinate)){
 				if(isset($geo_geocoding->coordinate->lat) && isset($geo_geocoding->coordinate->lng)){
@@ -197,9 +153,6 @@ class Reports_Controller extends Main_Controller {
 			$lat_center = ($lat_min+$lat_max) / 2;
 			// http://www.finds.jp/を利用して中央地点の地名を取得
 			$finds_url = 'http://www.finds.jp/ws/rgeocode.php?json&lat='.$lat_center.'&lon='.$lon_center;
-<<<<<<< HEAD
-			$geo_finds = json_decode(file_get_contents($finds_url) , true);
-=======
 		    $geo_finds = @file_get_contents($finds_url,false,stream_context_create(array('http' => array('timeout'=>$this->api_timeout))));
 			// APIのエラーハンドリング
 			if($geo_finds === FALSE){
@@ -222,7 +175,6 @@ class Reports_Controller extends Main_Controller {
 			}else{
 				$geo_finds = json_decode($geo_finds,true);
 			}
->>>>>>> ggslyman_feature384
 			if($geo_finds["status"]===200 || $geo_finds["status"]===201 ||$geo_finds["status"]===202){
 				$area_name = str_replace(' ','',$geo_finds["result"]["prefecture"]["pname"].$geo_finds["result"]["municipality"]["mname"]);
 				if(isset($area_name) && $area_name !== ""){
@@ -267,13 +219,9 @@ class Reports_Controller extends Main_Controller {
 			$keyword_like = implode(' AND ',$keyword_like);
 		}
 		if($dbget_flg){
-<<<<<<< HEAD
-			if(isset($_GET["mode"])){
-=======
 			// formからの送信の場合
 			if(isset($_GET["mode"])){
 				// 共通処理としてのページネーション
->>>>>>> ggslyman_feature384
 				// Pagination
 				$pagination = new Pagination(array(
 						'query_string' => 'page',
@@ -287,37 +235,22 @@ class Reports_Controller extends Main_Controller {
 							->count_all()
 						));
 					// Reports
-<<<<<<< HEAD
-					if(isset($lat_center)){
-						if(isset($_GET["order"]) && $_GET["order"]=="new"){
-=======
 					// 中心座標が取得できていれば
 					if(isset($lat_center)){
 						// ソート順を定義
 						if(isset($_GET["order"]) && $_GET["order"]=="new"){
 							// 新着順
->>>>>>> ggslyman_feature384
 							$order = array(
 								"incident_date"=>"desc",
 								'(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))'=>"asc"
 							);
 						}elseif(isset($_GET["order"]) && $_GET["order"]=="dist"){
-<<<<<<< HEAD
-=======
 							// 近隣順
->>>>>>> ggslyman_feature384
 							$order = array(
 								'(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))'=>"asc",
 								"incident_date"=>"desc"
 							);
 						}
-<<<<<<< HEAD
-						$select = $this->table_prefix.'incident.*,(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) as dist';
-					}else{
-						$order = array(
-							"incident_date"=>"desc"
-						);
-=======
 						// SELECT句に中心点からの距離を追加
 						$select = $this->table_prefix.'incident.*,(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) as dist';
 					}else{
@@ -326,7 +259,6 @@ class Reports_Controller extends Main_Controller {
 							"incident_date"=>"desc"
 						);
 						// SELECT句はincidentsの全レコード
->>>>>>> ggslyman_feature384
 						$select = $this->table_prefix.'incident.*';
 					}
 					if($_GET["mode"]=="areaorder"){
