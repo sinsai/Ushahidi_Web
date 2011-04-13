@@ -186,6 +186,7 @@
 		var markers;
 		$(document).ready(function() {
 			// Now initialise the map
+			$("#incident_title").attr("value", $("#incident_title").val().replace(/&quot;/g, '"'));
 			var options = {
 			units: "m"
 			, numZoomLevels: 16
