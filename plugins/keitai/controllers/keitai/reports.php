@@ -227,9 +227,9 @@ class Reports_Controller extends Keitai_Controller {
 		$form['incident_month'] = date('m');
 		$form['incident_day'] = date('d');
 		$form['incident_year'] = date('Y');
-		$form['incident_hour'] = "12";
-		$form['incident_minute'] = "00";
-		$form['incident_ampm'] = "pm";
+		$form['incident_hour'] = date('h');
+		$form['incident_minute'] = date('i');
+		$form['incident_ampm'] = date('a');
 		// initialize custom field array
 		// $form['custom_field'] = $this->_get_custom_form_fields($id,'',true);
 		//GET custom forms
