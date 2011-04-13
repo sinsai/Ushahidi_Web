@@ -40,25 +40,6 @@
 			}
 ?>
 <div style="margin:10px 0px 10px 0px;padding:5px 0px 5px 0px;">
-<?php
-	$sws = explode(',',$sw);
-	$nes = explode(',',$ne);
-	if(is_numeric($sws[0]) && is_numeric($sws[1]) && is_numeric($nes[0]) && is_numeric($nes[1])){
-?>
-<form action="<?php echo $_SERVER['PHP_SELF'] ?>" id="area-order" method="GET">
-<input type="hidden" name="mode" value="areaorder">
-<?php echo ($c) ? '<input type="hidden" name="c" value="'.$c.'">' : ""?>
-<?php echo ($l) ? '<input type="hidden" name="l" value="'.$l.'">' : ""?>
-<?php echo ($sw) ? '<input type="hidden" name="sw" value="'.$sw.'">' : ""?>
-<?php echo ($ne) ? '<input type="hidden" name="ne" value="'.$ne.'">' : ""?>
-<?php echo ($keyword) ? '<input type="hidden" name="keyword" value="'.$keyword.'">' : ""?>
-<?php echo ($address) ? '<input type="hidden" name="address" value="'.$address.'">' : ""?>
-<?php echo ($distance) ? '<input type="hidden" name="distance" value="'.$distance.'">' : ""?>
-<input type="submit" name="submit" value="指定地区に近いレポート順に並べる" />
-</form>
-<?php
-}
-?>
 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" id="area-search" method="GET">
 <input type="hidden" name="mode" value="areasearch">
 <?php echo ($c) ? '<input type="hidden" name="c" value="'.$c.'">' : ""?>
