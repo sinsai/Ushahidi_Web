@@ -43,12 +43,18 @@ class Reports_Controller extends Main_Controller {
 		$this->template->content = new View('reports');
 		$this->themes->js = new View('reports_js');
 		// Get locale
-		$this->template->content->area_name = "";
 		$l = Kohana::config('locale.language.0');
-
+		$this->template->content->area_name = "";
+		$this->template->content->distance = "";
+		//FORMのhiddenタグ用パラメータ初期化と代入
 		if(isset($_SESSION["locale"])){
 			$_GET["l"] = $_SESSION["locale"];
 		}
+
+		$this->template->content->disp_distance = "";
+		$this->template->content->keyword = "";
+		$this->template->content->address = "";
+		$this->template->content->distance = "";
 		$this->template->content->c = "";
 		$this->template->content->sw = "";
 		$this->template->content->ne = "";
@@ -56,15 +62,25 @@ class Reports_Controller extends Main_Controller {
 		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0){
 			$this->template->content->c = $_GET['c'];
 		}
-		if(isset($_GET['sw'])){
+		if(isset($_GET['sw']) && $_GET['sw'] !== ""){
 			$this->template->content->sw = $_GET['sw'];
 		}
-		if(isset($_GET['ne'])){
+		if(isset($_GET['ne']) && $_GET['ne'] !== ""){
 			$this->template->content->ne = $_GET['ne'];
 		}
 		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0){
 			$this->template->content->l = $_GET['l'];
 		}
+		if(isset($_GET['keyword']) AND !empty($_GET['keyword']) AND $_GET['keyword']!==""){
+			$this->template->content->keyword = $_GET['keyword'];
+		}
+		if(isset($_GET['address']) AND !empty($_GET['address']) AND $_GET['address']!==""){
+			$this->template->content->address = $_GET['address'];
+		}
+		if(isset($_GET['distance']) AND is_numeric($_GET['distance'])){
+			$this->template->content->distance = $_GET['distance'];
+		}
+
 		$db = new Database;
 
 		// Get incident_ids if we are to filter by category
@@ -96,41 +112,70 @@ class Reports_Controller extends Main_Controller {
 		{
 			$northeast = explode(",",$_GET['ne']);
 		}
-		if ( count($southwest) == 2 AND count($northeast) == 2 )
-		{
+		//指定地区の指定半径内インシデント取得でGoogleMAPAPIで緯度経度を取得できなかった場合DBを取りに行かないようにするためのフラグ
+		$dbget_flg = true;
+		$this->template->content->choices_flg = false;
+		//指定地区の指定半径内インシデント取得処理
+		if(isset($_GET["mode"]) && $_GET["mode"]=="areasearch" && trim($_GET["address"]) !== ""){
+			$address = urlencode($_GET["address"]);
+			// http://www.geocoding.jp/を利用して中央地点の地名を取得
+			$geocoding_url = 'http://www.geocoding.jp/api/?q='.$address;
+			$geo_geocoding = simplexml_load_string(file_get_contents($geocoding_url));
+			//結果の取得とインシデントの取得
+			if(isset($geo_geocoding->coordinate)){
+				if(isset($geo_geocoding->coordinate->lat) && isset($geo_geocoding->coordinate->lng)){
+					$lat_center = $geo_geocoding->coordinate->lat;
+					$lon_center = $geo_geocoding->coordinate->lng;
+					$area_name = $geo_geocoding->address;
+					$_GET["address"] = $this->template->content->area_name = trim($area_name);
+					if($_GET["distance"] >= 1){
+						$this->template->content->disp_distance = $_GET["distance"]."km";
+					}else{
+						$this->template->content->disp_distance = ($_GET["distance"]*1000)."m";
+					}
+					$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE (round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) <= '.$_GET["distance"];
+					$query = $db->query($query);
+					foreach ( $query as $items )
+					{
+						$location_ids[] =  $items->id;
+					}
+				}
+			}elseif(isset($geo_geocoding->choices)){
+				$this->template->content->choices_flg = true;
+				$dbget_flg = false;
+			}
+		//TOPの赤丸からのインシデント取得処理
+		}elseif ( count($southwest) == 2 AND count($northeast) == 2 ){
 			$lon_min = (float) $southwest[0];
 			$lon_max = (float) $northeast[0];
 			$lat_min = (float) $southwest[1];
 			$lat_max = (float) $northeast[1];
 			$lon_center = ($lon_min+$lon_max) / 2;
 			$lat_center = ($lat_min+$lat_max) / 2;
-			$geo_url = 'http://maps.google.com/maps/api/geocode/json?region=jp&language=ja&latlng='.$lat_center.','.$lon_center.'&sensor=false';
-			$geo_google = json_decode(file_get_contents($geo_url) , true);
-			foreach($geo_google["results"] as $geo_val){
-				if($geo_val["types"][0]=="locality" && $geo_val["types"][1]=="political" && count($geo_val["types"])==2){
-					$area_name = explode(',',$geo_val["formatted_address"]);
-					$this->template->content->area_name =  $area_name[1];
+			// http://www.finds.jp/を利用して中央地点の地名を取得
+			$finds_url = 'http://www.finds.jp/ws/rgeocode.php?json&lat='.$lat_center.'&lon='.$lon_center;
+			$geo_finds = json_decode(file_get_contents($finds_url) , true);
+			if($geo_finds["status"]===200 || $geo_finds["status"]===201 ||$geo_finds["status"]===202){
+				$area_name = str_replace(' ','',$geo_finds["result"]["prefecture"]["pname"].$geo_finds["result"]["municipality"]["mname"]);
+				if(isset($area_name) && $area_name !== ""){
+					$_GET["address"] = $this->template->content->area_name =  $area_name;
 				}
 			}
+			//指定範囲内のインシデントを取得
 			$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE latitude >='.$lat_min.' AND latitude <='.$lat_max.' AND longitude >='.$lon_min.' AND longitude <='.$lon_max;
-
 			$query = $db->query($query);
-
 			foreach ( $query as $items )
 			{
 				$location_ids[] =  $items->id;
 			}
-		}
-		elseif (isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0)
-		{
+		}elseif (isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0){
 			$location_ids[] = (int) $_GET['l'];
 		}
-
 		// Get the count
 		$incident_id_in = '1=1';
 		if (count($allowed_ids) > 0)
 		{
-			$incident_id_in = 'id IN ('.implode(',',$allowed_ids).')';
+			$incident_id_in = 'incident.id IN ('.implode(',',$allowed_ids).')';
 		}
 
 		$location_id_in = '1=1';
@@ -144,38 +189,102 @@ class Reports_Controller extends Main_Controller {
 			$keyword = str_replace("　"," ",$_GET["keyword"]);
 			$keywords = explode(" ",$keyword);
 		}
+		// キーワード検索の初期化（キーワードがない場合のエラー対応）
 		$keyword_like = "1=1";
 		if(isset($keywords) && count($keywords)){
-			$keyword_like = "";
+			$keyword_like = array();
 			foreach($keywords as $val){
-				$keyword_like .= "(incident_title like '%".addslashes($val)."%' OR incident_description like '%".addslashes($val)."%') AND ";
+				$keyword_like[] = "(incident_title like '%".addslashes($val)."%' OR incident_description like '%".addslashes($val)."%')";
 			}
-			$keyword_like = rtrim($keyword_like," AND ");
+			$keyword_like = implode(' AND ',$keyword_like);
 		}
-
-		// Pagination
-		$pagination = new Pagination(array(
-				'query_string' => 'page',
-				'items_per_page' => (int) Kohana::config('settings.items_per_page'),
-				'total_items' => ORM::factory("incident")
+		if($dbget_flg){
+			if(isset($_GET["mode"])){
+				// Pagination
+				$pagination = new Pagination(array(
+						'query_string' => 'page',
+						'items_per_page' => (int) Kohana::config('settings.items_per_page'),
+						'total_items' => ORM::factory("incident")
+							->join($this->table_prefix.'location',$this->table_prefix.'location.id',$this->table_prefix.'incident.location_id',"LEFT OUTER")
+							->where("incident_active", 1)
+							->where($location_id_in)
+							->where($incident_id_in)
+							->where($keyword_like)
+							->count_all()
+						));
+					// Reports
+					if(isset($lat_center)){
+						if(isset($_GET["order"]) && $_GET["order"]=="new"){
+							$order = array(
+								"incident_date"=>"desc",
+								'(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))'=>"asc"
+							);
+						}elseif(isset($_GET["order"]) && $_GET["order"]=="dist"){
+							$order = array(
+								'(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))'=>"asc",
+								"incident_date"=>"desc"
+							);
+						}
+						$select = $this->table_prefix.'incident.*,(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) as dist';
+					}else{
+						$order = array(
+							"incident_date"=>"desc"
+						);
+						$select = $this->table_prefix.'incident.*';
+					}
+					if($_GET["mode"]=="areaorder"){
+						$incidents = ORM::factory("incident")
+							->select($select,false)
+							->join($this->table_prefix.'location',$this->table_prefix.'location.id',$this->table_prefix.'incident.location_id',"LEFT OUTER")
+							->where("incident_active", 1)
+							->where($location_id_in)
+							->where($incident_id_in)
+							->where($keyword_like)
+							->orderby('(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))', "asc",false)
+							->find_all((int) Kohana::config('settings.items_per_page'), $pagination->sql_offset);
+					}elseif($_GET["mode"]=="areasearch"){
+						if(isset($_GET["order"]) && isset($_GET["order"])){
+							$escape = false;
+						}else{
+							$escape = true;
+						}
+						// Reports
+						$incidents = ORM::factory("incident")
+							->select($select,$escape)
+							->join($this->table_prefix.'location',$this->table_prefix.'location.id',$this->table_prefix.'incident.location_id',"LEFT OUTER")
+							->where("incident_active", 1)
+							->where($location_id_in)
+							->where($incident_id_in)
+							->where($keyword_like)
+							->orderby($order,NULL,$escape)
+							->find_all((int) Kohana::config('settings.items_per_page'), $pagination->sql_offset);
+					}
+			}else{
+				// Pagination
+				$pagination = new Pagination(array(
+						'query_string' => 'page',
+						'items_per_page' => (int) Kohana::config('settings.items_per_page'),
+						'total_items' => ORM::factory("incident")
+							->where("incident_active", 1)
+							->where($location_id_in)
+							->where($incident_id_in)
+							->where($keyword_like)
+							->count_all()
+						));
+				// Reports
+				$incidents = ORM::factory("incident")
 					->where("incident_active", 1)
 					->where($location_id_in)
 					->where($incident_id_in)
 					->where($keyword_like)
-					->count_all()
-				));
-		// Reports
-
-		$incidents = ORM::factory("incident")
-			->where("incident_active", 1)
-			->where($location_id_in)
-			->where($incident_id_in)
-			->where($keyword_like)
-			->orderby("incident_date", "desc")
-			->find_all((int) Kohana::config('settings.items_per_page'), $pagination->sql_offset);
+					->orderby("incident_date", "desc")
+					->find_all((int) Kohana::config('settings.items_per_page'), $pagination->sql_offset);
+			}
+		}else{
+			$incidents = array();
+			$pagination = new Pagination();
+		}
 		// Swap out category titles with their proper localizations using an array (cleaner way to do this?)
-
-
 
                 // $query = 'SELECT id,category_title,category_color FROM category WHERE category_visible = 1 AND category_trusted = 0';
 		$query = 'SELECT id,category_title,category_color,category_image_thumb FROM category ORDER BY category_type desc;';
@@ -844,7 +953,7 @@ class Reports_Controller extends Main_Controller {
 			$this->template->content->incident_location = $incident->location->location_name;
 			$this->template->content->incident_latitude = $incident->location->latitude;
 			$this->template->content->incident_longitude = $incident->location->longitude;
-			$this->template->content->incident_date = date('M j Y', strtotime($incident->incident_date));
+			$this->template->content->incident_date = date('Y/m/d', strtotime($incident->incident_date));
 			$this->template->content->incident_time = date('H:i', strtotime($incident->incident_date));
 			$this->template->content->incident_category = $incident->incident_category;
 
