@@ -22,6 +22,7 @@ class S_Twitter_Controller extends Controller {
 
 	public function index()
 	{
+	    return true;
 		// Grabbing tweets requires cURL so we will check for that here.
 		if (!function_exists('curl_exec'))
 		{
