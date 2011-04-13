@@ -96,7 +96,7 @@ class Reports_Controller extends Main_Controller {
 		$dbget_flg = true;
 		$this->template->content->choices_flg = false;
 		//指定地区の指定半径内インシデント取得処理
-		if(isset($_GET["address"]) && trim($_GET["address"]) !== ""){
+		if(isset($_GET["address"]) && trim($_GET["address"]) !== "" && isset($_GET["distance"]) && is_numeric($_GET["distance"]) && $_GET["distance"] > 0){
 			$address = urlencode($_GET["address"]);
 			// http://www.geocoding.jp/を利用して指定地区名の緯度経度を取得
 			$geocoding_url = 'http://www.geocoding.jp/api/?q='.$address;
@@ -155,6 +155,8 @@ class Reports_Controller extends Main_Controller {
 			$lat_center = ($lat_min+$lat_max) / 2;
 			$dist1 = (round(sqrt(pow(($lat_max - $lat_center)/0.0111, 2) + pow(($lon_max - $lon_center)/0.0091, 2)), 1));
 			$dist2 = (round(sqrt(pow(($lat_min - $lat_center)/0.0111, 2) + pow(($lon_min - $lon_center)/0.0091, 2)), 1));
+			var_dump($dist1);
+			var_dump($dist2);
 			// http://www.finds.jp/を利用して中央地点の地名を取得
 			$finds_url = 'http://www.finds.jp/ws/rgeocode.php?json&lat='.$lat_center.'&lon='.$lon_center;
 		    $geo_finds = @file_get_contents($finds_url,false,stream_context_create(array('http' => array('timeout'=>$this->api_timeout))));
