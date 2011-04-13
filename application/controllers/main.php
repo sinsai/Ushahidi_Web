@@ -285,7 +285,7 @@ class Main_Controller extends Template_Controller {
 				->find_all();
 		}
 		$this->template->content->feeds = $feeds;
-		// ƒRƒƒ“ƒg‚Â‚«ƒCƒ“ƒVƒfƒ“ƒgŽæ“¾
+		// ã‚³ãƒ¡ãƒ³ãƒˆã¤ãã‚¤ãƒ³ã‚·ãƒ‡ãƒ³ãƒˆå–å¾—
 		$db = new Database;
 		$query = 'SELECT incident_id FROM '.$this->table_prefix.'comment AS ic WHERE ic.comment_active = 1 GROUP BY incident_id ORDER BY MAX(comment_date) DESC LIMIT 0,20;';
 		$query = $db->query($query);
