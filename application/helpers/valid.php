@@ -393,5 +393,29 @@ class valid_Core {
 			return false;
 		}
 	}	
+	public static function initGetVal($get,$type="text"){
+		if(isset($_GET[$get])){
+			$get = $_GET[$get];
+		}else{
+			return null;
+		}
+		switch ($type){
+			case "text":
+				if(isset($get) && !empty($get) && $get !== "") $val = $get;
+				break;
+			case "number":
+				if(isset($get) && !empty($get) && $get !== "" && is_numeric($get) && $get > 0) $val = $get;
+				break;
+			case "natural_numbewr":
+				if(isset($get) && !empty($get) && $get !== "" && is_numeric($get) && $get > 0) $val = $get;
+				break;
+			default:
+		}
+		if(isset($val)){
+			return $val;
+		}else{
+			return null;
+		}
+	}
 
 } // End valid
