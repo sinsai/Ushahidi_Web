@@ -276,7 +276,7 @@ class Database_Core {
 	 * @param   string  string or array of column names to select
 	 * @return  Database_Core  This Database object.
 	 */
-	public function select($sql = '*')
+	public function select($sql = '*',$escape = true)
 	{
 		if (func_num_args() > 1)
 		{
@@ -306,8 +306,9 @@ class Database_Core {
 				{
 					$val = (strpos($val, '.') !== FALSE) ? $this->config['table_prefix'].$val : $val;
 				}
-
-				$val = $this->driver->escape_column($val);
+				if($escape){
+					$val = $this->driver->escape_column($val);
+				}
 			}
 
 			$this->select[] = $val;
@@ -672,7 +673,7 @@ class Database_Core {
 	 * @param   string        direction of the order
 	 * @return  Database_Core        This Database object.
 	 */
-	public function orderby($orderby, $direction = NULL)
+	public function orderby($orderby, $direction = NULL,$escape = true)
 	{
 		if ( ! is_array($orderby))
 		{
@@ -694,8 +695,11 @@ class Database_Core {
 			{
 				$column = $this->config['table_prefix'].$column;
 			}
-
-			$this->orderby[] = $this->driver->escape_column($column).' '.$direction;
+			if($escape){
+				$this->orderby[] = $this->driver->escape_column($column).' '.$direction;
+			}else{
+				$this->orderby[] = $column.' '.$direction;
+			}
 		}
 
 		return $this;
