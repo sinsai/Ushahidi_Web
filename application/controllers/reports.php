@@ -155,8 +155,6 @@ class Reports_Controller extends Main_Controller {
 			$lat_center = ($lat_min+$lat_max) / 2;
 			$dist1 = (round(sqrt(pow(($lat_max - $lat_center)/0.0111, 2) + pow(($lon_max - $lon_center)/0.0091, 2)), 1));
 			$dist2 = (round(sqrt(pow(($lat_min - $lat_center)/0.0111, 2) + pow(($lon_min - $lon_center)/0.0091, 2)), 1));
-			var_dump($dist1);
-			var_dump($dist2);
 			// http://www.finds.jp/を利用して中央地点の地名を取得
 			$finds_url = 'http://www.finds.jp/ws/rgeocode.php?json&lat='.$lat_center.'&lon='.$lon_center;
 		    $geo_finds = @file_get_contents($finds_url,false,stream_context_create(array('http' => array('timeout'=>$this->api_timeout))));
