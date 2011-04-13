@@ -15,7 +15,7 @@
  */
 
 class Reports_Controller extends Main_Controller {
-
+	var $api_timeout = 60;
 	var $logged_in;
 
 	function __construct()
@@ -44,41 +44,21 @@ class Reports_Controller extends Main_Controller {
 		$this->themes->js = new View('reports_js');
 		// Get locale
 		$l = Kohana::config('locale.language.0');
+		$this->template->content->area_name = "";
+		$this->template->content->disp_distance = "";
 		//FORMのhiddenタグ用パラメータ初期化と代入
 		if(isset($_SESSION["locale"])){
 			$_GET["l"] = $_SESSION["locale"];
 		}
 
-		$this->template->content->area_name = "";
-		$this->template->content->disp_distance = "";
-		$this->template->content->keyword = "";
-		$this->template->content->address = "";
-		$this->template->content->distance = "";
-		$this->template->content->c = "";
-		$this->template->content->sw = "";
-		$this->template->content->ne = "";
-		$this->template->content->l = "";
-		if(isset($_GET['c']) AND !empty($_GET['c']) AND $_GET['c']!=0){
-			$this->template->content->c = $_GET['c'];
-		}
-		if(isset($_GET['sw']) && $_GET['sw'] !== ""){
-			$this->template->content->sw = $_GET['sw'];
-		}
-		if(isset($_GET['ne']) && $_GET['ne'] !== ""){
-			$this->template->content->ne = $_GET['ne'];
-		}
-		if(isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0){
-			$this->template->content->l = $_GET['l'];
-		}
-		if(isset($_GET['keyword']) AND !empty($_GET['keyword']) AND $_GET['keyword']!==""){
-			$this->template->content->keyword = $_GET['keyword'];
-		}
-		if(isset($_GET['address']) AND !empty($_GET['address']) AND $_GET['address']!==""){
-			$this->template->content->address = $_GET['address'];
-		}
-		if(isset($_GET['distance']) AND is_numeric($_GET['distance'])){
-			$this->template->content->distance = $_GET['distance'];
-		}
+		// 引き回すGETパラメータのテンプレートへの引き渡し
+		$this->template->content->keyword = valid::initGetVal('keyword',"text");
+		$this->template->content->address = valid::initGetVal('address',"text");
+		$this->template->content->distance = valid::initGetVal('distance',"number");
+		$this->template->content->c = valid::initGetVal('c',"number");
+		$this->template->content->sw = valid::initGetVal('sw',"text");
+		$this->template->content->ne = valid::initGetVal('ne',"text");
+		$this->template->content->l = valid::initGetVal('l',"natural_numbewr");
 
 		$db = new Database;
 
@@ -89,7 +69,6 @@ class Reports_Controller extends Main_Controller {
 			$category_id = $db->escape($_GET['c']);
 			$query = 'SELECT ic.incident_id AS incident_id FROM '.$this->table_prefix.'incident_category AS ic INNER JOIN '.$this->table_prefix.'category AS c ON (ic.category_id = c.id)  WHERE c.id='.$category_id.' OR c.parent_id='.$category_id.';';
 			$query = $db->query($query);
-
 			foreach ( $query as $items )
 			{
 				$allowed_ids[] = $items->incident_id;
@@ -115,11 +94,32 @@ class Reports_Controller extends Main_Controller {
 		$dbget_flg = true;
 		$this->template->content->choices_flg = false;
 		//指定地区の指定半径内インシデント取得処理
-		if(isset($_GET["mode"]) && $_GET["mode"]=="areasearch" && trim($_GET["address"]) !== ""){
+		if(isset($_GET["address"]) && trim($_GET["address"]) !== ""){
 			$address = urlencode($_GET["address"]);
 			// http://www.geocoding.jp/を利用して中央地点の地名を取得
 			$geocoding_url = 'http://www.geocoding.jp/api/?q='.$address;
-			$geo_geocoding = simplexml_load_string(file_get_contents($geocoding_url));
+		    $geo_geocoding = @file_get_contents($geocoding_url,false,stream_context_create(array('http' => array('timeout'=>$this->api_timeout))));
+			// APIのエラーハンドリング
+			if($geo_geocoding === FALSE){
+				if(count($http_response_header) > 0){
+					$stat_tokens = explode(' ', $http_response_header[0]);
+					switch($stat_tokens[1]){
+						case 404:
+						// 404 Not found の場合
+						break;
+						case 500:
+						// 500 Internal Server Error の場合
+						break;
+						default:
+						// その他
+						break;
+					}
+				}else{
+					// タイムアウトの場合
+				}
+			}else{
+				$geo_geocoding = simplexml_load_string($geo_geocoding);
+			}
 			//結果の取得とインシデントの取得
 			if(isset($geo_geocoding->coordinate)){
 				if(isset($geo_geocoding->coordinate->lat) && isset($geo_geocoding->coordinate->lng)){
@@ -153,7 +153,28 @@ class Reports_Controller extends Main_Controller {
 			$lat_center = ($lat_min+$lat_max) / 2;
 			// http://www.finds.jp/を利用して中央地点の地名を取得
 			$finds_url = 'http://www.finds.jp/ws/rgeocode.php?json&lat='.$lat_center.'&lon='.$lon_center;
-			$geo_finds = json_decode(file_get_contents($finds_url) , true);
+		    $geo_finds = @file_get_contents($finds_url,false,stream_context_create(array('http' => array('timeout'=>$this->api_timeout))));
+			// APIのエラーハンドリング
+			if($geo_finds === FALSE){
+				if(count($http_response_header) > 0){
+					$stat_tokens = explode(' ', $http_response_header[0]);
+					switch($stat_tokens[1]){
+						case 404:
+						// 404 Not found の場合
+						break;
+						case 500:
+						// 500 Internal Server Error の場合
+						break;
+						default:
+						// その他
+						break;
+					}
+				}else{
+					// タイムアウトの場合
+				}
+			}else{
+				$geo_finds = json_decode($geo_finds,true);
+			}
 			if($geo_finds["status"]===200 || $geo_finds["status"]===201 ||$geo_finds["status"]===202){
 				$area_name = str_replace(' ','',$geo_finds["result"]["prefecture"]["pname"].$geo_finds["result"]["municipality"]["mname"]);
 				if(isset($area_name) && $area_name !== ""){
@@ -198,7 +219,9 @@ class Reports_Controller extends Main_Controller {
 			$keyword_like = implode(' AND ',$keyword_like);
 		}
 		if($dbget_flg){
+			// formからの送信の場合
 			if(isset($_GET["mode"])){
+				// 共通処理としてのページネーション
 				// Pagination
 				$pagination = new Pagination(array(
 						'query_string' => 'page',
@@ -212,23 +235,30 @@ class Reports_Controller extends Main_Controller {
 							->count_all()
 						));
 					// Reports
+					// 中心座標が取得できていれば
 					if(isset($lat_center)){
+						// ソート順を定義
 						if(isset($_GET["order"]) && $_GET["order"]=="new"){
+							// 新着順
 							$order = array(
 								"incident_date"=>"desc",
 								'(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))'=>"asc"
 							);
 						}elseif(isset($_GET["order"]) && $_GET["order"]=="dist"){
+							// 近隣順
 							$order = array(
 								'(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))'=>"asc",
 								"incident_date"=>"desc"
 							);
 						}
+						// SELECT句に中心点からの距離を追加
 						$select = $this->table_prefix.'incident.*,(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) as dist';
 					}else{
+						// 中心座標が取れていなければ新着順で固定
 						$order = array(
 							"incident_date"=>"desc"
 						);
+						// SELECT句はincidentsの全レコード
 						$select = $this->table_prefix.'incident.*';
 					}
 					if($_GET["mode"]=="areaorder"){

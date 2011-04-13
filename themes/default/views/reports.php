@@ -12,20 +12,24 @@
 			echo '<a class="category_menu" href="'.url::site().'reports/';
 			if(isset($_GET['sw'])){
 				echo '?sw='.$_GET['sw'];
-				if(isset($_GET['keyword']))echo '&keyword='.$_GET['keyword'];
+				if($keyword)echo '&keyword='.$keyword;
+				if($address)echo '&address='.$address;
+				if($distance)echo '&distance='.$distance;
 			}else{
-				if(isset($_GET['keyword']))echo '?keyword='.$_GET['keyword'];
+				if($keyword)echo '?keyword='.$keyword;
+				if($address)echo '&address='.$address;
+				if($distance)echo '&distance='.$distance;
 			}
 			if(isset($_GET['ne']))echo '&ne='.$_GET['ne'];
 			echo '"><img src="'.url::base().'/media/img/all.png" width="16" height="16"/>';
 			echo '<span>全カテゴリ</span></a>';
 			foreach($category_master as $key => $category){
 				echo '<a class="category_menu" href="'.url::site().'reports/?c='.$key;
-				if($sw !== "")echo '&sw='.$sw;
-				if($ne !== "")echo '&ne='.$ne;
-				if($keyword !== "")echo '&keyword='.$keyword;
-				if($address !== "")echo '&address='.$address;
-				if($distance !== "")echo '&distance='.$distance;
+				if($sw)echo '&sw='.$sw;
+				if($ne)echo '&ne='.$ne;
+				if($keyword)echo '&keyword='.$keyword;
+				if($address)echo '&address='.$address;
+				if($distance)echo '&distance='.$distance;
 				echo '" >';
 				if(isset($category['category_image_thumb'])){
 				    echo '<img src="/ushahidi/media/uploads/'.$category['category_image_thumb'].'"/>';
@@ -36,6 +40,25 @@
 			}
 ?>
 <div style="margin:10px 0px 10px 0px;padding:5px 0px 5px 0px;">
+<?php
+	$sws = explode(',',$sw);
+	$nes = explode(',',$ne);
+	if(is_numeric($sws[0]) && is_numeric($sws[1]) && is_numeric($nes[0]) && is_numeric($nes[1])){
+?>
+<form action="<?php echo $_SERVER['PHP_SELF'] ?>" id="area-order" method="GET">
+<input type="hidden" name="mode" value="areaorder">
+<?php echo ($c) ? '<input type="hidden" name="c" value="'.$c.'">' : ""?>
+<?php echo ($l) ? '<input type="hidden" name="l" value="'.$l.'">' : ""?>
+<?php echo ($sw) ? '<input type="hidden" name="sw" value="'.$sw.'">' : ""?>
+<?php echo ($ne) ? '<input type="hidden" name="ne" value="'.$ne.'">' : ""?>
+<?php echo ($keyword) ? '<input type="hidden" name="keyword" value="'.$keyword.'">' : ""?>
+<?php echo ($address) ? '<input type="hidden" name="address" value="'.$address.'">' : ""?>
+<?php echo ($distance) ? '<input type="hidden" name="distance" value="'.$distance.'">' : ""?>
+<input type="submit" name="submit" value="指定地区に近いレポート順に並べる" />
+</form>
+<?php
+}
+?>
 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" id="area-search" method="GET">
 <input type="hidden" name="mode" value="areasearch">
 <?php echo ($c) ? '<input type="hidden" name="c" value="'.$c.'">' : ""?>
