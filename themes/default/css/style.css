@@ -241,7 +241,25 @@ div#underfooter{
     clear: both;
     visibility: hidden;
 }
+.clearfix:after {
+	content: ".";  /* 新しい要素を作る */
+	display: block;  /* ブロックレベル要素に */
+	clear: both;
+	height: 0;
+	visibility: hidden;
+}
 
+.clearfix {
+	min-height: 1px;
+}
+
+* html .clearfix {
+	height: 1px;
+	/*\*//*/
+	height: auto;
+	overflow: hidden;
+	/**/
+}
 .clearingfix{
     display: block;
 }
@@ -414,6 +432,12 @@ div.filters{
     font-size: 85%;
     text-transform: uppercase;
     margin: 5px 0 15px;
+}
+
+div.filters-top{
+    font-size: 85%;
+    text-transform: uppercase;
+    margin: 15px 0 5px;
 }
 
 div.filters strong{
@@ -730,7 +754,7 @@ div.footer-credits{
     font-size: 70%;
     font-weight: bold;
     text-transform: uppercase;
-    margin: 0 20px 0 0;
+    margin: 0 0 20px 0;
 }
 /* footer credits links */
 div.footer-credits-links{
@@ -739,10 +763,10 @@ div.footer-credits-links{
 	overflow: hidden;
 	position: relative;
 	background-color: #FFF;
-	padding: 5px 10px;
+	padding: 5px 10px 15px 5px;
 }
 div.footer-credits-links ul {
-	margin: 0px;
+	margin-bottom: 10px;
 	text-align: center;
 	float: none;
 }
@@ -763,7 +787,11 @@ div.footer-credits-links ul li{
 	display: inline !important;
 	float: none;
 }
-
+div.footer-credit{
+	text-align:center;
+	color:#999999;
+	font-weight:bold;
+}
 
 
 /* -----------------------------------------------------------
@@ -2338,3 +2366,21 @@ a.category_menu{
     text-decoration:none;
     font-size:16px;
 }
+/* incidento search helper */
+div.left-container-header{
+	width:80px;
+	float:left;
+}
+div.left-container-detail{
+	width:410px;
+	float:left;
+}
+div#left_search_box{
+	float:left;
+	width:500px;
+}
+div#right_search_box{
+	float:left;
+	width:200px;
+}
+
