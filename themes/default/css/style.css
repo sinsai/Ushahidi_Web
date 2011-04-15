@@ -254,7 +254,7 @@ div#underfooter{
 	/**/
 }
 .clearingfix{
-	//display: block;
+	display: block;
 }
 
 .floatbox{
