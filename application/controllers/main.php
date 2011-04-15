@@ -293,12 +293,16 @@ class Main_Controller extends Template_Controller {
 		foreach($query as $items){
 			$incident_ids[$items->incident_id] =$items->incident_id;
 		}
-		$incident_ids = 'incident.id IN ('.implode(',',$incident_ids).')';
+		$incident_ids_in = '1=1';
+		if (count($incident_ids) > 0)
+		{
+			$incident_ids_in = 'incident.id IN ('.implode(',',$incident_ids).')';
+		}
 		$this->template->content->comment_incidents = ORM::factory('incident')
 			->select($this->table_prefix.'incident.*,'.$this->table_prefix.'comment.id as comment_id,'.$this->table_prefix.'comment.comment_date')
 			->join($this->table_prefix.'comment',$this->table_prefix.'comment.incident_id',$this->table_prefix.'incident.id',"LEFT")
 			->where('incident_active', '1')
-			->where($incident_ids)
+			->where($incident_ids_in)
 			->orderby('comment_date', 'desc')
 			->limit('10')
 			->find_all();
