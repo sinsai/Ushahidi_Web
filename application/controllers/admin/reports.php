@@ -398,6 +398,10 @@ class Reports_Controller extends Admin_Controller
 
         $this->template->content = new View('admin/reports_edit');
         $this->template->content->title = Kohana::lang('ui_admin.create_report');
+        $this->template->content->superadmin_flag = false;
+        if($this->auth->logged_in('superadmin')){
+            $this->template->content->superadmin_flag = true;
+        }
 
         // setup and initialize form field names
         $form = array
