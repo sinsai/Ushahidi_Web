@@ -3,6 +3,8 @@
 <ShortName>Sinsai.info</ShortName>
 <Description>Search reports on Sinsai.info</Description>
 <InputEncoding>UTF-8</InputEncoding>
+<Image width="64" height="64" type="image/vnd.microsoft.icon">http://www.sinsai.info/ushahidi/media/img/favicon.ico</Image>
+<Image width="16" height="16" type="image/png">http://www.sinsai.info/ushahidi/media/img/searchicon.png</Image>
 <Image width="16" height="16">
 data:image/x-icon;base64,AAABAAEAEBAAAAEACABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAlhQoAKokSACuJEgAsihQAM44dADSOIgA2jx8AOZEjADyTLQA9lC0AP5QtAEOWLgBCljEA
