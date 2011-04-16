@@ -10,7 +10,7 @@ Event::run('ushahidi_action.header_scripts');
 echo map::layers_scripts(TRUE);
 ?>
 <link rel="shortcut icon" href="/ushahidi/media/img/favicon.ico" type="image/x-icon" />
-<link rel="search" type="application/opensearchdescription+xml" title="Sinsai.info Search Bar" href="/ushahidi/media/sinsaiinfo.searchbar.xml">
+<link rel="search" type="application/opensearchdescription+xml" title="Sinsai.info" href="/ushahidi/media/sinsaiinfo.searchbar.xml">
 </head>
 
 <body id="page">
