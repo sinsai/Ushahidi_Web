@@ -1,7 +1,7 @@
 ﻿<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
                        xmlns:moz="http://www.mozilla.org/2006/browser/search/">
-<ShortName>Sinsai.infoレポート検索</ShortName>
-<Description>Sinsai.infoで投稿を検索</Description>
+<ShortName>Sinsai.info</ShortName>
+<Description>Search reports on Sinsai.info</Description>
 <InputEncoding>UTF-8</InputEncoding>
 <Image width="16" height="16">
 data:image/x-icon;base64,AAABAAEAEBAAAAEACABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAAAAAAAAAAAAAAAAAAA
