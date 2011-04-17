@@ -1,20 +1,8 @@
 SinsaiLoc = {
-  geocode: function(lat,lng,callback){
-    var geocoder = new GClientGeocoder();
-    geocoder.getLocations(new GLatLng(lat,lng),callback);
-  },
   show_addr: function(){
-    SinsaiLoc.geocode(window.localStorage.sinsailat, window.localStorage.sinsailng,function(res){
-      var result = "";
-      if (!response || response.Status.code != 200) {
-        result = "error";
-      }else{
-        result = response.Placemark[0].address;
-      }
-      $("#get_location").text("Update Location");
-      $("#del_location").show();
-      $("#loc_address").text(result);
-    });
+    $("#get_location").text("Update Location");
+    $("#del_location").show(window.localStorage.sinsailat+", "+window.localStorage.sinsailng);
+    $("#loc_address").text(result);
   }
 }
 
