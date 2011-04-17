@@ -8,10 +8,10 @@
 echo plugin::render('stylesheet');
 echo plugin::render('javascript');
 
-if ($show_map === TRUE)
-{
+//if ($show_map === TRUE)
+//{
 	echo "\n<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=true\"></script>\n";
-}
+//}
 ?>
 <script type="text/javascript">
 <!--//--><![CDATA[//><!--
