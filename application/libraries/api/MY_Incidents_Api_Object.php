@@ -203,6 +203,11 @@ class Incidents_Api_Object extends Api_Object_Core {
                 }
             break;
             
+            // Get incidents based on a box using two lat,lon coords
+            case "bounds":
+                $this->response_data = $this->_get_incidents_by_bounds($this->request['sw'],$this->request['ne'],$this->request['c']);
+            break;
+            
             // Error therefore set error message 
             default:
                 $this->set_error_message(array(
@@ -662,6 +667,78 @@ class Incidents_Api_Object extends Api_Object_Core {
         return $this->_get_incidents($where.$sortby, $limit);
         
     }
+
+    /**
+     * Get incidents within a certain lat,lon bounding box
+     *
+     * @param sw is the southwest lat,lon of the box
+     * @param ne is the northeast lat,lon of the box
+     * @param c is the categoryid
+     */
+    private function _get_incidents_by_bounds($sw, $ne, $c = 0)
+    {
+		// Get location_ids if we are to filter by location
+		$location_ids = array();
+
+		// Break apart location variables, if necessary
+		$southwest = array();
+		if (isset($sw))
+		{
+			$southwest = explode(",",$sw);
+		}
+
+		$northeast = array();
+		if (isset($ne))
+		{
+			$northeast = explode(",",$ne);
+		}
+
+		if ( count($southwest) == 2 AND count($northeast) == 2 )
+		{
+			$lon_min = (float) $southwest[0];
+			$lon_max = (float) $northeast[0];
+			$lat_min = (float) $southwest[1];
+			$lat_max = (float) $northeast[1];
+
+			$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE latitude >='.$lat_min.' AND latitude <='.$lat_max.' AND longitude >='.$lon_min.' AND longitude <='.$lon_max;
+
+			$items = $this->db->query($query);
+
+			foreach ( $items as $item )
+			{
+				$location_ids[] =  $item->id;
+			}
+		}
+		
+		$location_id_in = '1=1';
+		
+		if (count($location_ids) > 0)
+		{
+			$location_id_in = 'l.id IN ('.implode(',',$location_ids).')';
+		}
+		
+		$where = ' WHERE i.incident_active = 1 AND '.$location_id_in.' ';
+
+		// Fix for pulling categories using the bounding box
+		// Credits to Antonoio Lettieri http://github.com/alettieri
+		// Check if the specified category id is valid
+		if (Category_Model::is_valid_category($c))
+		{
+			// Filter incidents by the specified category
+			$join = "\nINNER JOIN ".$this->table_prefix."incident_category AS ic ON ic.incident_id = i.id ";
+			$join .= "\nINNER JOIN ".$this->table_prefix."category AS c ON c.id=ic.category_id ";
+
+			// Overwrite the current where clause in $where
+			$where = $join."\nWHERE c.id = $c AND i.incident_active = 1 AND $location_id_in";
+		}
+		
+		$sortby = " GROUP BY i.id ORDER BY $this->order_field $this->sort";
+		$limit = " LIMIT 0, $this->list_limit";
+		
+		return $this->_get_incidents($where.$sortby, $limit);
+        
+    }
+
 
     /**
      * Gets the number of approved reports

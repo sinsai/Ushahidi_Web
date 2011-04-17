@@ -41,4 +41,10 @@ class Category_Model extends ORM_Tree
 		
 		return $cats;
 	}
+	public static function is_valid_category($category_id)
+	{
+		return (preg_match('/^[1-9](\d*)$/', $category_id) > 0)
+				? self::factory('category', $category_id)->loaded
+				: FALSE;
+	}
 }
