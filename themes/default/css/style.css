@@ -942,7 +942,9 @@ div.report-additional-reports {
 	padding-top: 5px;
 	border-bottom:1px dotted #C0C2B8;
 }
-div.report-additional-reports .rb_report {  }
+div.report-additional-reports .rb_report {
+    width: 350px;
+}
 div.report-additional-reports h4 {
 	padding:0px 0px 5px 0px;
 	margin:0px;
