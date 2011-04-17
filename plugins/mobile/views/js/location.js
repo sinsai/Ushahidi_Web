@@ -1,8 +1,8 @@
 SinsaiLoc = {
   show_addr: function(){
     $("#get_location").text("Update Location");
-    $("#del_location").show(window.localStorage.sinsailat+", "+window.localStorage.sinsailng);
-    $("#loc_address").text(result);
+    $("#del_location").show();
+    $("#loc_address").text(window.localStorage.sinsailat+", "+window.localStorage.sinsailng);
   }
 }
 
