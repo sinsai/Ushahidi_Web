@@ -47,4 +47,16 @@ class Category_Model extends ORM_Tree
 				? self::factory('category', $category_id)->loaded
 				: FALSE;
 	}
+	public static function getCategories($parent=NULL)
+	{
+		$category = ORM::factory('category')->where('category_visible', '1');
+		
+		if ( $parent !== NULL AND is_numeric($parent) )
+		{
+			$category->where('parent_id', $parent);
+		}
+		
+		return $category->orderby('category_type','desc')
+						->find_all();
+	}
 }

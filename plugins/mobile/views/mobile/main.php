@@ -41,8 +41,17 @@
 		$category_title = $category_info[0];
 		$category_color = $category_info[1];
 		$category_image = '';
-		$category_count = $category_info[3];
 		$color_css = 'class="swatch" style="background-color:#'.$category_color.'"';
+		if($category_info[2] != NULL && file_exists(Kohana::config('upload.relative_directory').'/'.$category_info[2])) {
+			$category_image = html::image(array(
+				'src'=>Kohana::config('upload.relative_directory').'/'.$category_info[2],
+				'style'=>'float:left;padding-right:5px;',
+				'width' => '16',
+                'height' => '16',
+				));
+			$color_css = '';
+		}
+		$category_count = $category_info[3];
 		if (count($category_info[4]) == 0)
 		{
 			echo '<h2 class="other"><a href="'.url::site().'mobile/reports/index/'.$category.'"><div '.$color_css.'>'.$category_image.'</div>'.$category_title.'</a><span>'.$category_count.'</span></h2>';
