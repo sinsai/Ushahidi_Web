@@ -242,4 +242,62 @@ class Incident_Model extends ORM
 		}
 		return $array;
 	}
+	public static function get_incident_reports($filter,$order_string,$sql_offset)
+	{
+		$incidents = ORM::factory('incident')
+				->join('location', 'incident.location_id', 'location.id','INNER')
+				->join('media', 'incident.id', 'media.incident_id','LEFT')
+				->where($filter)
+				->orderby('incident_date', $order_string)
+				->find_all((int) Kohana::config('settings.items_per_page_admin'), $sql_offset);
+
+		return $incidents;
+	}
+	public static function get_incident_persons($filter)
+	{
+		$temp_incident_persons = ORM::factory('incident_person')
+				->where($filter)
+				->find_all();
+		$incident_persons = array();
+		foreach($temp_incident_persons as $incident_person){
+			$incident_persons[$incident_person->incident_id]['id'] = $incident_person->id;
+			$incident_persons[$incident_person->incident_id]['person_first'] = $incident_person->person_first;
+			$incident_persons[$incident_person->incident_id]['person_last'] = $incident_person->person_last;
+		}
+		return $incident_persons;
+	}
+	public static function get_incident_messages($filter)
+	{
+		$temp_incident_message = ORM::factory('message')
+				->where($filter)
+				->find_all();
+		$incident_message = array();
+		foreach($temp_incident_message as $message){
+			$incident_message[$message->incident_id]['message_from'] = $message->message_from;
+		}
+		return $incident_message;
+	}
+	public static function get_incident_incident_langs($filter)
+	{
+		$temp_incident_incident_lang = ORM::factory('incident_lang')
+				->where($filter)
+				->find_all();
+		$incident_incident_langs = array();
+		foreach($temp_incident_incident_lang as $incident_lang){
+			$incident_incident_langs[$incident_lang->incident_id]['id'] = $incident_lang->id;
+		}
+		return $incident_incident_langs;
+	}
+	public static function get_incident_incident_categories($filter)
+	{
+		$temp_incident_incident_categories = ORM::factory('incident_category')
+				->join('category','category.id','incident_category.category_id','LEFT OUTER')
+				->where($filter)
+				->find_all();
+		$incident_incident_categories = array();
+		foreach($temp_incident_incident_categories as $incident_category){
+			$incident_incident_categories[$incident_category->incident_id]['category_title'] = $incident_category->category->category_title;
+		}
+		return $incident_incident_categories;
+	}
 }

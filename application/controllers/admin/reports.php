@@ -311,22 +311,26 @@ class Reports_Controller extends Admin_Controller
             'items_per_page' => (int) Kohana::config('settings.items_per_page_admin'),
             'total_items'    => ORM::factory('incident')
 				->join('location', 'incident.location_id', 'location.id','INNER')
+				->join('media', 'incident.id', 'media.incident_id','LEFT')
 				->where($filter)
 				->count_all()
             ));
-
-		$incidents = ORM::factory('incident')
-				->join('location', 'incident.location_id', 'location.id','INNER')
-				->join('media', 'incident.id', 'media.incident_id','LEFT')
-				->where($filter)
-				->orderby('incident_date', $order_string)
-				->find_all((int) Kohana::config('settings.items_per_page_admin'), $pagination->sql_offset);
-
+		$incidents = Incident_Model::get_incident_reports($filter,$order_string,$pagination->sql_offset);
         $location_ids = array();
         foreach ($incidents as $incident)
         {
             $location_ids[] = $incident->location_id;
         }
+        foreach ($incidents as $incident)
+        {
+            $incident_ids[] = $incident->id;
+        }
+        //add_param_get
+        $filter = " incident_id IN (".implode(',',$incident_ids).")";
+        $incident_persons = Incident_Model::get_incident_persons($filter);
+        $incident_messages = Incident_Model::get_incident_messages($filter);
+		$incident_incident_langs = Incident_Model::get_incident_incident_langs($filter);
+		$incident_incident_categories = Incident_Model::get_incident_incident_categories($filter);
         
         //check if location_ids is not empty
         if( count($location_ids ) > 0 ) 
@@ -367,8 +371,11 @@ class Reports_Controller extends Admin_Controller
         $this->template->content->pagination = $pagination;
         $this->template->content->form_error = $form_error;
         $this->template->content->form_saved = $form_saved;
-        $this->template->content->form_action = $form_action;
-
+		// ORM•ª—£
+        $this->template->content->incident_persons = $incident_persons;
+        $this->template->content->incident_messages = $incident_messages;
+        $this->template->content->incident_incident_langs = $incident_incident_langs;
+        $this->template->content->incident_incident_categories = $incident_incident_categories;
         // Total Reports
         $this->template->content->total_items = $pagination->total_items;
 

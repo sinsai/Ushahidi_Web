@@ -174,8 +174,8 @@
 								foreach ($incidents as $incident)
 								{
 									$incident_id = $incident->id;
-									$incident_title = html::specialchars($incident->incident_title);
-									$incident_description = text::limit_chars(html::specialchars($incident->incident_description), 150, "...", true);
+									$incident_title = $incident->incident_title;
+									$incident_description = text::limit_chars($incident->incident_description, 150, "...", true);
 									$incident_date = $incident->incident_date;
 									$incident_date = date('Y/m/d', strtotime($incident->incident_date));
 									$incident_mode = $incident->incident_mode;	// Mode of submission... WEB/SMS/EMAIL?
@@ -188,7 +188,7 @@
 										if ($incident->incident_person->id)
 										{
 											// Report was submitted by a visitor
-											$submit_by = $incident->incident_person->person_first . " " . $incident->incident_person->person_last;
+											$submit_by = $incident_persons[$incident->id]['person_first'] . " " . $incident_persons[$incident->id]['person_last'];
 										}
 										else
 										{
@@ -205,22 +205,22 @@
 									elseif ($incident_mode == 2) 	// Submitted via SMS
 									{
 										$submit_mode = "SMS";
-										$submit_by = $incident->message->message_from;
+										$submit_by =$incident_messages[$incident->id]['message_from'];
 									}
 									elseif ($incident_mode == 3) 	// Submitted via Email
 									{
 										$submit_mode = "EMAIL";
-										$submit_by = $incident->message->message_from;
+										$submit_by =$incident_messages[$incident->id]['message_from'];
 									}
 									elseif ($incident_mode == 4) 	// Submitted via Twitter
 									{
 										$submit_mode = "TWITTER";
-										$submit_by = $incident->message->message_from;
+										$submit_by =$incident_messages[$incident->id]['message_from'];
 									}
 									elseif ($incident_mode == 5) 	// Submitted via Laconica
 									{
 										$submit_mode = "LACONICA";
-										$submit_by = $incident->message->message_from;
+										$submit_by =$incident_messages[$incident->id]['message_from'];
 									}
 									$tasukeai = false;
 									foreach ($incident->media as $media)
@@ -234,9 +234,10 @@
 
 									// Retrieve Incident Categories
 									$incident_category = "";
-									foreach($incident->incident_category as $category)
+									
+									foreach($incident_incident_categories[$incident->id] as $category)
 									{
-										$incident_category .= "<a href=\"#\">" . $category->category->category_title . "</a>&nbsp;&nbsp;";
+										$incident_category .= "<a href=\"#\">" . $category['category_title'] . "</a>&nbsp;&nbsp;";
 									}
 
 									// Incident Status
@@ -259,15 +260,17 @@
 									$i = 1;
 									$incident_translation  = "<div class=\"post-trans-new\">";
 									$incident_translation .= "<a href=\"" . url::base() . 'admin/reports/translate/?iid=' . $incident_id . "\">".strtoupper(Kohana::lang('ui_main.add_translation')).":</a></div>";
-									foreach ($incident->incident_lang as $translation) {
-										$incident_translation .= "<div class=\"post-trans\">";
-										$incident_translation .= Kohana::lang('ui_main.translation'). $i . ": ";
-										$incident_translation .= "<a href=\"" . url::base() . 'admin/reports/translate/'. $translation->id .'/?iid=' . $incident_id . "\">"
-											. text::limit_chars(html::specialchars($translation->incident_title), 150, "...", true)
-											. "</a>";
-										$incident_translation .= "</div>";
+									if(isset($incident_incident_langs[$incident->id])){
+										foreach ($incident_incident_langs[$incident->id] as $translation) {
+											$incident_translation .= "<div class=\"post-trans\">";
+											$incident_translation .= Kohana::lang('ui_main.translation'). $i . ": ";
+											$incident_translation .= "<a href=\"" . url::base() . 'admin/reports/translate/'. $translation['id'] .'/?iid=' . $incident_id . "\">"
+												. text::limit_chars($translation->incident_title, 150, "...", true)
+												. "</a>";
+											$incident_translation .= "</div>";
+										}
 									}
-									?>
+										?>
 									<tr <?php
 									if($tasukeai){
 									    echo "style='background-color:#cccccc;'";
@@ -276,7 +279,7 @@
 									?>>
 										<td class="col-1">
 											<div class="post">
-												<h4><a href="<?php echo url::site() . 'admin/reports/edit/' . $incident_id; ?>" class="more"><?php echo html::specialchars($incident_title); ?></a></h4>
+												<h4><a href="<?php echo url::site() . 'admin/reports/edit/' . $incident_id; ?>" class="more"><?php echo $incident_title; ?></a></h4>
 												<p><?php echo $incident_description; ?>... <a href="<?php echo url::base() . 'admin/reports/edit/' . $incident_id; ?>" class="more"><?php echo Kohana::lang('ui_main.more');?></a></p>
 											</div>
 											<ul class="info">
