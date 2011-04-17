@@ -35,6 +35,6 @@ $(function() {
 			&raquo;&nbsp;<a href="<?php echo url::site()."mobile"; ?>">Home</a><?php echo $breadcrumbs; ?>
 		</div>
 		<div id="location_bar">
-			Detect Location
+      <a href="javascript:void(0)" id="get_location">Detect Location</a> <a href="javascript:void(0)" id="del_location">[X]</a> <span id="loc_address"></span>
 		</div>
 		<div id="page">
