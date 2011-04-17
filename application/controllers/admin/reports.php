@@ -371,7 +371,7 @@ class Reports_Controller extends Admin_Controller
         $this->template->content->pagination = $pagination;
         $this->template->content->form_error = $form_error;
         $this->template->content->form_saved = $form_saved;
-		// ORM•ª—£
+		// ORM sepalate
         $this->template->content->incident_persons = $incident_persons;
         $this->template->content->incident_messages = $incident_messages;
         $this->template->content->incident_incident_langs = $incident_incident_langs;
