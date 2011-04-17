@@ -22,6 +22,7 @@ body{
     position: relative;
 }
 
+
 /* links */
 a{
     color: #3764aa;
@@ -99,7 +100,7 @@ div.rapidxwpr{
 /* header */
 div#header{
     position: relative;
-    height: 130px;
+    height: 80px;
     margin: 0px 0px 0px 0px;
 }
 
@@ -183,7 +184,6 @@ div#main{
     margin: 10px 0px 0px 0px;
     padding: 15px 15px;
 	/*padding: 15px 29px;*/
-	border:3px solid #e2e2e2;
 }
 
 div#mainmiddle{
@@ -252,18 +252,16 @@ div#underfooter{
 
 /* searchbox */
 div#searchbox{
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    border-top: 0;
-    padding:0;
+    float:left;
 }
 
 div#nations{
     float:right;
-    position: absolute;
-    top:45px;
+    position:absolute;
+    top:3px;
     right:0px;
+    padding: 0px;
+    margin: 0px;
 }
 
 div#nations a{
@@ -362,7 +360,6 @@ div.submit-incident a:hover{
 ------------------------------------------------------------*/
 /* mainmenu */
 div#mainmenu{
-   background: #b0cda1;
    width:960px;
    overflow:hidden;
 }
@@ -371,40 +368,26 @@ div#mainmenu ul{
     padding: 0px;
     margin: 0px;
     list-style: none;
-	background-color: #b0cda1;
 	overflow:hidden;
 	width:960px;
 }
 
+div#mainmenu ul{
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+	overflow:hidden;
+	width:960px;
+}
+
+
 div#mainmenu li{
     float: left;
-	margin:0;padding:0;
+	margin:5px;padding:0;
 	text-transform: uppercase;
     font-weight: bold;
-    font-size: 120%;
 }
 
-div#mainmenu a{
-    display: block;
-    padding: 10px 15px;
-	margin:0;
-    color: #fff;
-    overflow: hidden;
-	text-decoration:none;
-	background-color: #b0cda1;
-}
-
-div#mainmenu a:hover{
-    text-decoration: none;
-    color: #fff;
-    background: #128a2b;
-}
-
-div#mainmenu a.active{
-    text-decoration: none;
-    color: #fff;
-    background: #128a2b;
-}
 
 /* -----------------------------------------------------------
 	05. filters
@@ -463,9 +446,9 @@ a.share{
 /* map */
 div.map {
     border: #ccc 1px solid;
-    width: 623px;
+    width: 523px;
 	/*width: 573px;*/
-    height: 617px;
+    height: 517px;
 	/*height: 366px;*/
 	position: relative;
 	padding: -10px 10px;
@@ -479,7 +462,7 @@ div.map {
 	border-right: solid 1px #999;
 	border-bottom: solid 1px #999;*/
 	font-size: 10px;
-	width: 625px;
+	width: 525px;
 }
 #mapScale
 {
@@ -1751,7 +1734,7 @@ a.show-more {
 /* Reports View */
 .reports-box {}
 	
-	.rb_report { position:relative; border-top:1px solid #c0c2b8; overflow:auto; padding-bottom:10px; }
+	.rb_report { position:relative; border-top:1px solid #c0c2b8; overflow:hidden; padding-bottom:10px; }
 		.reports-box .hover { background:#fffded; }
 		.r_media { float:left; width:100px; margin:15px 15px 15px 0; }
 		.r_photo a { display:inline-block; padding: 2px; border:1px solid #c0c2b8;}
@@ -1768,8 +1751,8 @@ a.show-more {
 			.r_cat_tooltip a { background:#282828; display:inline-block; padding:3px 8px; color:#fff; text-transform:uppercase; font-size:10px; }
 			.r_cat_tooltip a:hover { text-decoration:none; color:#fff; }
 		
-		.r_details { float:left; width:782px; margin:15px 0; }
-			.r_details h3 { margin-bottom:0px; width:670px; }
+		.r_details { float:left; width:36   0px; margin:15px 0; }
+			.r_details h3 { margin-bottom:0px; width:380px; }
 			.r_details h3 a.r_title { font-size:14px; color:#353535; }
 			.hover .r_details h3 a.r_title { color:#3764AA; } 
 			.r_details h3 a.r_comments { color:#fff; font-size:11px; display:inline-block; text-align:center; height:19px; width:24px; padding:4px 0 3px; background:transparent url(../images/icon_sprite.png) 0 0 no-repeat; }
@@ -2180,6 +2163,7 @@ div.green-box {
 
 div.news-box{
     font-size:12px;line-height:1.2;
+    margin:5px;
 }
 
 div.help-box {
@@ -2338,3 +2322,20 @@ a.category_menu{
     text-decoration:none;
     font-size:16px;
 }
+
+div#left-pane{
+    width:400px;
+    height:528px;
+    overflow-y: scroll;
+    padding:5px;
+    float:left;
+    border:1px solid #CCCCCC;
+}
+
+div#right-pane{
+    width:500px;
+    float:left;
+}
+
+
+

@@ -50,6 +50,16 @@ class Reports_Controller extends Main_Controller {
 		if(isset($_SESSION["locale"])){
 			$_GET["l"] = $_SESSION["locale"];
 		}
+		
+		// Map and Slider Blocks
+		$div_map = new View('main_map');
+		$div_timeline = new View('main_timeline');
+			// Filter::map_main - Modify Main Map Block
+			Event::run('ushahidi_filter.map_main', $div_map);
+			// Filter::map_timeline - Modify Main Map Block
+			Event::run('ushahidi_filter.map_timeline', $div_timeline);
+		$this->template->content->div_map = $div_map;
+		$this->template->content->div_timeline = $div_timeline;
 
 		// 引き回すGETパラメータのテンプレートへの引き渡し
 		$this->template->content->keyword = valid::initGetVal('keyword',"text");
@@ -422,7 +432,134 @@ class Reports_Controller extends Main_Controller {
 
 		$this->template->header->action_name = Kohana::lang('ui_main.reports_title_index');
 
+        // Get The START, END and most ACTIVE Incident Dates
+		$startDate = "";
+		$endDate = "";
+		$active_month = 0;
+		$active_startDate = 0;
+		$active_endDate = 0;
+
+		$db = new Database();
+		// First Get The Most Active Month
+		$query = $db->query('SELECT incident_date, count(*) AS incident_count FROM '.$this->table_prefix.'incident WHERE incident_active = 1 GROUP BY DATE_FORMAT(incident_date, \'%Y-%m\') ORDER BY incident_count DESC LIMIT 1');
+		foreach ($query as $query_active)
+		{
+			$active_month = date('n', strtotime($query_active->incident_date));
+			$active_year = date('Y', strtotime($query_active->incident_date));
+			$active_startDate = strtotime($active_year . "-" . $active_month . "-01");
+			$active_endDate = strtotime($active_year . "-" . $active_month .
+				"-" . date('t', mktime(0,0,0,$active_month,1))." 23:59:59");
+		}
+
+        // Next, Get the Range of Years
+		$query = $db->query('SELECT DATE_FORMAT(incident_date, \'%Y\') AS incident_date FROM '.$this->table_prefix.'incident WHERE incident_active = 1 GROUP BY DATE_FORMAT(incident_date, \'%Y\') ORDER BY incident_date');
+		foreach ($query as $slider_date)
+		{
+			$years = $slider_date->incident_date;
+			$startDate .= "<optgroup label=\"" . $years . "\">";
+			for ( $i=1; $i <= 12; $i++ ) {
+				if ( $i < 10 )
+				{
+					$i = "0" . $i;
+				}
+				$startDate .= "<option value=\"" . strtotime($years . "-" . $i . "-01") . "\"";
+				if ( $active_month &&
+						( (int) $i == ( $active_month - 1)) )
+				{
+					$startDate .= " selected=\"selected\" ";
+				}
+				$startDate .= ">" . date('M', mktime(0,0,0,$i,1)) . " " . $years . "</option>";
+			}
+			$startDate .= "</optgroup>";
+
+			$endDate .= "<optgroup label=\"" . $years . "\">";
+			for ( $i=1; $i <= 12; $i++ )
+			{
+				if ( $i < 10 )
+				{
+					$i = "0" . $i;
+				}
+				$endDate .= "<option value=\"" . strtotime($years . "-" . $i . "-" . date('t', mktime(0,0,0,$i,1))." 23:59:59") . "\"";
+                // Focus on the most active month or set December as month of endDate
+				if ( $active_month &&
+						( ( (int) $i == ( $active_month + 1)) )
+						 	|| ($i == 12 && preg_match('/selected/', $endDate) == 0))
+				{
+					$endDate .= " selected=\"selected\" ";
+				}
+				$endDate .= ">" . date('M', mktime(0,0,0,$i,1)) . " " . $years . "</option>";
+			}
+			$endDate .= "</optgroup>";
+		}
+
+
+		$this->template->content->div_timeline->startDate = $startDate;
+		$this->template->content->div_timeline->endDate = $endDate;
+		
+		// Javascript Header
+		$this->themes->map_enabled = TRUE;
+		$this->themes->main_page = TRUE;
+
+		// Map Settings
+		$clustering = Kohana::config('settings.allow_clustering');
+		$marker_radius = Kohana::config('map.marker_radius');
+		$marker_opacity = Kohana::config('map.marker_opacity');
+		$marker_stroke_width = Kohana::config('map.marker_stroke_width');
+		$marker_stroke_opacity = Kohana::config('map.marker_stroke_opacity');
+
+        // pdestefanis - allows to restrict the number of zoomlevels available
+		$numZoomLevels = Kohana::config('map.numZoomLevels');
+		$minZoomLevel = Kohana::config('map.minZoomLevel');
+	   	$maxZoomLevel = Kohana::config('map.maxZoomLevel');
+
+		// pdestefanis - allows to limit the extents of the map
+		$lonFrom = Kohana::config('map.lonFrom');
+		$latFrom = Kohana::config('map.latFrom');
+		$lonTo = Kohana::config('map.lonTo');
+		$latTo = Kohana::config('map.latTo');
+
+		$this->themes->js = new View('main_js');
+		$this->themes->js->json_url = ($clustering == 1) ?
+			"json/cluster" : "json";
+		$this->themes->js->marker_radius =
+			($marker_radius >=1 && $marker_radius <= 10 ) ? $marker_radius : 5;
+		$this->themes->js->marker_opacity =
+			($marker_opacity >=1 && $marker_opacity <= 10 )
+			? $marker_opacity * 0.1  : 0.9;
+		$this->themes->js->marker_stroke_width =
+			($marker_stroke_width >=1 && $marker_stroke_width <= 5 ) ? $marker_stroke_width : 2;
+		$this->themes->js->marker_stroke_opacity =
+			($marker_stroke_opacity >=1 && $marker_stroke_opacity <= 10 )
+			? $marker_stroke_opacity * 0.1  : 0.9;
+
+		// pdestefanis - allows to restrict the number of zoomlevels available
+		$this->themes->js->numZoomLevels = $numZoomLevels;
+		$this->themes->js->minZoomLevel = $minZoomLevel;
+		$this->themes->js->maxZoomLevel = $maxZoomLevel;
+
+		// pdestefanis - allows to limit the extents of the map
+		$this->themes->js->lonFrom = $lonFrom;
+		$this->themes->js->latFrom = $latFrom;
+		$this->themes->js->lonTo = $lonTo;
+		$this->themes->js->latTo = $latTo;
+
+		$this->themes->js->default_map = Kohana::config('settings.default_map');
+		$this->themes->js->default_zoom = Kohana::config('settings.default_zoom');
+		$this->themes->js->latitude = Kohana::config('settings.default_lat');
+		$this->themes->js->longitude = Kohana::config('settings.default_lon');
+		$this->themes->js->default_map_all = Kohana::config('settings.default_map_all');
+		//
+		$this->themes->js->active_startDate = $active_startDate;
+		$this->themes->js->active_endDate = $active_endDate;
+
+		//$myPacker = new javascriptpacker($js , 'Normal', false, false);
+		//$js = $myPacker->pack();
+
 		$this->template->header->header_block = $this->themes->header_block();
+
+
+
+
 	}
 
 	/**

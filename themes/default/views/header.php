@@ -13,55 +13,12 @@ echo map::layers_scripts(TRUE);
 </head>
 
 <body id="page">
+
 <!-- wrapper -->
 <div class="rapidxwpr floatholder">
 
 <!-- header -->
 <div id="header">
-
-<!-- searchbox -->
-<div id="searchbox">
-<!-- languages -->
-<!-- <?php echo $languages;?> -->
-<!-- / languages -->
-<!-- searchform -->
-<?php echo $search; ?>
-<!-- / searchform -->
-<br sytle="clear:both;"/>
-<div id="nations">
-SELECT LANGUAGE<br>
-<?php
-$nations = array("ja_JP","en_US","ko_KR","zh_CN","de_DE","fr_FR","it_IT");
-foreach ($nations as $nation){
-    echo "<a href='?l=".$nation."'><img src='".url::base()."/media/img/flags/".$nation.".png' ></a>";
-}
-?>
-</div>
-
-</div>
-<!-- / searchbox -->
-
-<!-- logo -->
-<div id="logo">
-
-<h1><a href="/"><img src="/ushahidi//media/img/logo.gif" alt="東北沖地震 震災情報サイト sinsai.info: 3/11 東北地方太平洋沖地震,Earthquake Tohoku area in Japan 3/11" /></a></h1>
-<span class="dnone"><?php echo $site_tagline; ?></span>
-
-</div>
-<!-- / logo -->
-
-<!-- submit incident -->
-<?php echo $submit_btn; ?>
-<!-- / submit incident -->
-
-</div>
-<!-- / header -->
-
-<!-- main body -->
-<div id="middle">
-<div class="background layoutleft">
-
-<!-- mainmenu -->
 <div id="mainmenu">
 <ul>
 <!-- <?php nav::main_tabs($this_page); ?> -->
@@ -75,24 +32,14 @@ if (isset($_GET['l']) && !empty($_GET['l']))
 	$lang = "?l=".$_GET['l'];
 	}
 }
-
-// Home
-$menu .= "<li><a href=\"".url::site()."main".$lang."\" ";
-$menu .= ($this_page == 'home') ? " class=\"active\"" : "";
-$menu .= ">".Kohana::lang('ui_main.home')."</a></li>";
-
-// Reports List
-$menu .= "<li><a href=\"".url::site()."reports".$lang."\" ";
-$menu .= ($this_page == 'reports') ? " class=\"active\"" : "";
-$menu .= ">".Kohana::lang('ui_main.reports')."</a></li>";
-
-// Reports Submit
-//if (Kohana::config('settings.allow_reports'))
-//{
-//$menu .= "<li><a href=\"".url::site()."reports/submit\" ";
-//$menu .= ($this_page == 'reports_submit') ? " class=\"active\"":"";
-//$menu .= ">".Kohana::lang('ui_main.submit')."</a></li>";
-//}
+    
+//Reports Submit
+if (Kohana::config('settings.allow_reports'))
+{
+$menu .= "<li><a href=\"".url::site()."reports/submit\" ";
+$menu .= ($this_page == 'reports_submit') ? " class=\"active\"":"";
+$menu .= ">".Kohana::lang('ui_main.submit')."</a></li>";
+}
 
 // Alerts
 $menu .= "<li><a href=\"".url::site()."alerts".$lang."\" ";
@@ -119,6 +66,36 @@ $menu .= ">".Kohana::lang('ui_main.'.$page->page_tab)."</a></li>";
 echo $menu;
 ?>
 </ul>
+<div id="nations">
+SELECT LANGUAGE 
+<?php
+$nations = array("ja_JP","en_US","ko_KR","zh_CN","de_DE","fr_FR","it_IT");
+foreach ($nations as $nation){
+    echo "<a href='?l=".$nation."'><img src='".url::base()."/media/img/flags/".$nation.".png' ></a>";
+}
+?>
+</div>
+</div>
+
+<hr style="border:1px solid #cccccc;">
+<!-- / mainmenu -->
+<!-- logo -->
+<div id="logo">
+
+<h1><a href="/"><img width="200" src="/ushahidi//media/img/logo.gif" alt="東北沖地震 震災情報サイト sinsai.info: 3/11 東北地方太平洋沖地震,Earthquake Tohoku area in Japan 3/11" /></a></h1>
+<span class="dnone"><?php echo $site_tagline; ?></span>
+</div>
+<!-- / logo -->
+<div id="searchbox">
+ここにggslymanの検索フォームがはいる
+</div>
+
 
 </div>
-<!-- / mainmenu -->
+<!-- / header -->
+
+<!-- main body -->
+<div id="middle">
+<div class="background layoutleft">
+
+
