@@ -498,6 +498,9 @@ div.map {
 	font-size: 10px;
 	width: 625px;
 }
+* html #mapStatus {
+	width: 620px;
+}
 #mapScale
 {
         min-width: 90px;
@@ -1625,7 +1628,8 @@ a.show-more {
 }
 /* Min-Height for IE */
 * html .big-block {
-	height:400px
+	display: inline-block;
+	height: 1%;
 }
 
 /*page title*/
@@ -1772,7 +1776,7 @@ a.show-more {
 /* Reports View */
 .reports-box {}
 	
-	.rb_report { position:relative; border-top:1px solid #c0c2b8; overflow:auto; padding-bottom:10px; }
+	.rb_report { position:relative; border-top:1px solid #c0c2b8; overflow:auto; padding-bottom:10px; width: 914px;}
 		.reports-box .hover { background:#fffded; }
 		.r_media { float:left; width:100px; margin:15px 15px 15px 0; }
 		.r_photo a { display:inline-block; padding: 2px; border:1px solid #c0c2b8;}
@@ -1801,7 +1805,7 @@ a.show-more {
 			.r_details h3 span.r_verified { background:#368C00; }
 			.r_details h3 span.r_unverified { background:#A60003; }
 			
-			p.r_date { position:absolute; top:0px; right:0px; padding:3px 5px 4px 23px; background:#e3e3e3 url(../images/icon_sprite.png) 0px -133px no-repeat; color:#908b88; }
+			p.r_date { position:absolute; top:0px; right:0px; padding:3px 5px 4px 23px; background: #e3e3e3 url(../images/icon_sprite.png) 0 -133px no-repeat; color:#908b88; }
 			
 			div.r_description { margin-bottom:5px; }
 			
@@ -2214,7 +2218,10 @@ div.help-box {
 	width:598px;
 	height:85px;
 	font-size:15px;
-	
+}
+
+* html div.help-box {
+	display: inline;
 }
 
 div.help-box p{
