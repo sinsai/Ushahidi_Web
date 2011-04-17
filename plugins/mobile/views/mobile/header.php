@@ -6,12 +6,12 @@
 <title><?php echo $site_name; ?></title>
 <?php
 echo plugin::render('stylesheet');
-echo plugin::render('javascript');
 
 //if ($show_map === TRUE)
 //{
 	echo "\n<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=true\"></script>\n";
 //}
+echo plugin::render('javascript');
 ?>
 <script type="text/javascript">
 <!--//--><![CDATA[//><!--
