@@ -34,4 +34,7 @@ $(function() {
 		<div id="navigation">
 			&raquo;&nbsp;<a href="<?php echo url::site()."mobile"; ?>">Home</a><?php echo $breadcrumbs; ?>
 		</div>
+		<div id="location_bar">
+			Detect Location
+		</div>
 		<div id="page">
