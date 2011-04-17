@@ -82,12 +82,12 @@ foreach ($nations as $nation){
 <!-- logo -->
 <div id="logo">
 
-<h1><a href="/"><img width="200" src="/ushahidi//media/img/logo.gif" alt="東北沖地震 震災情報サイト sinsai.info: 3/11 東北地方太平洋沖地震,Earthquake Tohoku area in Japan 3/11" /></a></h1>
+<h1><a href="/"><img width="200" src="<?php echo url::base();?>/media/img/logo.gif" alt="東北沖地震 震災情報サイト sinsai.info: 3/11 東北地方太平洋沖地震,Earthquake Tohoku area in Japan 3/11" /></a></h1>
 <span class="dnone"><?php echo $site_tagline; ?></span>
 </div>
 <!-- / logo -->
 <div id="searchbox">
-ここにggslymanの検索フォームがはいる
+<?php echo form_ex::reportSearchForm(url::base()."/reports")?>
 </div>
 
 
