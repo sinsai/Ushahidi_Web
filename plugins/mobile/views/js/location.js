@@ -2,7 +2,7 @@ SinsaiLoc = {
   show_addr: function(){
     $("#get_location").text("Update Location");
     $("#del_location").show();
-    $("#loc_address").text(window.localStorage.sinsailat+", "+window.localStorage.sinsailng);
+    $("#loc_address").text($.cookie('lat')+", "+$.cookie('lng'));
   }
 }
 
@@ -12,7 +12,7 @@ $(document).ready(function(){
     $("#navigation").css("margin-bottom","5px");
   }else{
     $("#del_location").hide();
-    if(window.localStorage.sinsailat && window.localStorage.sinsailng) {
+    if($.cookie('lat') && $.cookie('lng')) {
       SinsaiLoc.show_addr();
     }
     $("#get_location").click(function(){
