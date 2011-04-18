@@ -213,7 +213,7 @@ class map_Core {
 		$layers = array();
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'google_satellite';
 		$layer->openlayers = "Google";
 		$layer->title =  Kohana::lang('ui_main.google_satellite');
@@ -241,7 +241,7 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'google_normal';
 		$layer->openlayers = "Google";
 		$layer->title = Kohana::lang('ui_main.google_normal');
@@ -324,7 +324,7 @@ class map_Core {
 		$layers[$layer->name] = $layer;
 
 		$layer = new stdClass();
-		$layer->active = TRUE;
+		$layer->active = FALSE;
 		$layer->name = 'virtualearth_satellite';
 		$layer->openlayers = "VirtualEarth";
 		$layer->title = Kohana::lang('ui_main.virtualearth_satellite');
