@@ -44,6 +44,7 @@ class Mobile_Controller extends Template_Controller {
 
 		plugin::add_javascript('mobile/views/js/jquery');
 		plugin::add_javascript('mobile/views/js/jquery.treeview');
+		plugin::add_javascript('mobile/views/js/jquery.cookie');
 		plugin::add_javascript('mobile/views/js/expand');
 		plugin::add_javascript('mobile/views/js/location');
 		plugin::add_stylesheet('mobile/views/css/styles');

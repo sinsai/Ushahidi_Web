@@ -17,8 +17,8 @@ $(document).ready(function(){
     }
     $("#get_location").click(function(){
       navigator.geolocation.getCurrentPosition(function(result){
-        window.localStorage.sinsailat = result.coords.latitude;
-        window.localStorage.sinsailng = result.coords.longitude;
+        $.cookie('lat',result.coords.latitude);
+        $.cookie('lng',result.coords.longitude);
         SinsaiLoc.show_addr();
       });
     });
@@ -26,8 +26,8 @@ $(document).ready(function(){
       $("#get_location").text("Detect Location");
       $("#del_location").hide();
       $("#loc_address").text("");
-      window.localStorage.sinsailat = undefined;
-      window.localStorage.sinsailng = undefined;
+      $.cookie('lat',null);
+      $.cookie('lng',null);
     });
   }
 });
