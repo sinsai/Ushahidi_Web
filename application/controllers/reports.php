@@ -64,7 +64,10 @@ class Reports_Controller extends Main_Controller {
 		// 引き回すGETパラメータのテンプレートへの引き渡し
 		$this->template->content->keyword = valid::initGetVal('keyword',"text");
 		$this->template->content->address = valid::initGetVal('address',"text");
-		$this->template->content->distance = valid::initGetVal('distance',"number");
+		$zoom_level =  valid::initGetVal('distance',"number");
+        $distance_array = array(20,100,200,500,1000,2000,5000,10000,20000,50000,100000,200000);
+        echo $zoom_level;
+		$this->template->content->distance = $distance_array[$zoom_level]/1000;
 		$this->template->content->c = valid::initGetVal('c',"number");
 		$this->template->content->sw = valid::initGetVal('sw',"text");
 		$this->template->content->ne = valid::initGetVal('ne',"text");
@@ -544,9 +547,18 @@ class Reports_Controller extends Main_Controller {
 		$this->themes->js->latTo = $latTo;
 
 		$this->themes->js->default_map = Kohana::config('settings.default_map');
-		$this->themes->js->default_zoom = Kohana::config('settings.default_zoom');
-		$this->themes->js->latitude = Kohana::config('settings.default_lat');
-		$this->themes->js->longitude = Kohana::config('settings.default_lon');
+		if(isset($zoom_level)){
+		    $this->themes->js->default_zoom = $zoom_level;
+		}else{
+		    $this->themes->js->default_zoom = Kohana::config('settings.default_zoom');
+		}
+		if(isset($lat_center)){
+		    $this->themes->js->latitude = $lat_center;
+		    $this->themes->js->longitude = $lon_center ;
+		}else{
+		    $this->themes->js->latitude = Kohana::config('settings.default_lat');
+		    $this->themes->js->longitude = Kohana::config('settings.default_lon');
+		}
 		$this->themes->js->default_map_all = Kohana::config('settings.default_map_all');
 		//
 		$this->themes->js->active_startDate = $active_startDate;
