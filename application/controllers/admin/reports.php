@@ -311,7 +311,6 @@ class Reports_Controller extends Admin_Controller
             'items_per_page' => (int) Kohana::config('settings.items_per_page_admin'),
             'total_items'    => ORM::factory('incident')
 				->join('location', 'incident.location_id', 'location.id','INNER')
-				->join('media', 'incident.id', 'media.incident_id','LEFT')
 				->where($filter)
 				->count_all()
             ));
@@ -371,7 +370,7 @@ class Reports_Controller extends Admin_Controller
         $this->template->content->pagination = $pagination;
         $this->template->content->form_error = $form_error;
         $this->template->content->form_saved = $form_saved;
-		// ORM sepalate
+		// ORM•ª—£
         $this->template->content->incident_persons = $incident_persons;
         $this->template->content->incident_messages = $incident_messages;
         $this->template->content->incident_incident_langs = $incident_incident_langs;
