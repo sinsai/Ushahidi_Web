@@ -254,7 +254,7 @@ class form_ex_Core extends form_Core{
 		$scripts  = '<script><!--'.$end;
 		$scripts .= '$(document).ready(function(e) {'.$end;
 		$scripts .= '	try {'.$end;
-		$scripts .= '			$("#'.$category_select_id.'").msDropDown({visibleRows:'.(count($category_master)-1).', rowHeight:23})'.$end;
+		$scripts .= '			$("#'.$category_select_id.'").msDropDown({visibleRows:10, rowHeight:23})'.$end;
 		$scripts .= '	} catch(e) {'.$end;
 		$scripts .= '		alert(e.message);'.$end;
 		$scripts .= '	}'.$end;
@@ -315,7 +315,7 @@ class form_ex_Core extends form_Core{
 				$result .= '</div>'.$end;
 			$result .= '</div>'.$end;
 			$result .= '<div id="right_search_box">'.$end;
-			$result .= '<input type="submit" name="submit" value="指定の条件で&#13;&#10;レポートを検索" style="height:3em;width;150px;" />'.$end;
+			$result .= '<input type="submit" name="submit" value="指定の条件で&#13;&#10;レポートを検索" class="report-search-button" />'.$end;
 			$result .= '</div>'.$end;
 		$result .= '</div>'.$end;
 		$result .= '</form>'.$end;

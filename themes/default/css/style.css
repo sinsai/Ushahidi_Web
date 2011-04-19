@@ -241,13 +241,6 @@ div#underfooter{
     clear: both;
     visibility: hidden;
 }
-.clearfix:after {
-	content: ".";  /* 新しい要素を作る */
-	display: block;  /* ブロックレベル要素に */
-	clear: both;
-	height: 0;
-	visibility: hidden;
-}
 
 .clearfix {
 	min-height: 1px;
@@ -261,7 +254,7 @@ div#underfooter{
 	/**/
 }
 .clearingfix{
-    display: block;
+	display: block;
 }
 
 .floatbox{
@@ -2372,15 +2365,18 @@ div.left-container-header{
 	float:left;
 }
 div.left-container-detail{
-	width:460px;
+	width:410px;
 	float:left;
 }
 div#left_search_box{
 	float:left;
-	width:580px;
+	width:500px;
 }
 div#right_search_box{
 	float:left;
 	width:200px;
 }
-
+input.report-search-button{
+	height:4em;
+	width:120px;
+}
