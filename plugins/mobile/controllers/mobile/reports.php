@@ -57,16 +57,37 @@ class Reports_Controller extends Mobile_Controller {
 			}
 			$keyword_like = rtrim($keyword_like," AND ");
 		}
+    $query =  "SELECT DISTINCT i.*, l.location_name FROM `".$this->table_prefix."incident`".
+             " AS i JOIN `".$this->table_prefix."incident_category`".
+             " AS ic ON (i.`id` = ic.`incident_id`)".
+             " JOIN `".$this->table_prefix."category`".
+             " AS c ON (c.`id` = ic.`category_id`)".
+             " JOIN `".$this->table_prefix."location`".
+             " AS l ON (i.`location_id` = l.`id`)".
+             " WHERE `incident_active` = '1' AND $keyword_like $filter";
+    // Location
+    if(isset($_COOKIE["lat"]) && isset($_COOKIE["lng"]) && $_COOKIE["lat"] != "na" && $_COOKIE["lng"] != "na") {
+      $lat_center = (float)$_COOKIE["lat"];
+      $lon_center = (float)$_COOKIE["lng"];
+      //$query .= ' AND round(sqrt(pow(('.$this->table_prefix.'l.latitude - '.$lat_center.')/0.0111, 2) +'.
+      //  ' pow(('.$this->table_prefix.'l.longitude - '.$lon_center.')/0.0091, 2)), 1) <= 300';
+    }
 		// Pagination
 		$pagination = new Pagination(array(
 				'style' => 'mobile',
 				'query_string' => 'page',
 				'items_per_page' => (int) Kohana::config('mobile.items_per_page'),
-				'total_items' => $db->query("SELECT DISTINCT i.* FROM `".$this->table_prefix."incident` AS i JOIN `".$this->table_prefix."incident_category` AS ic ON (i.`id` = ic.`incident_id`) JOIN `".$this->table_prefix."category` AS c ON (c.`id` = ic.`category_id`) WHERE `incident_active` = '1' AND $keyword_like $filter")->count()
+				'total_items' => $db->query($query)->count()
 				));
 		$this->template->content->pagination = $pagination;
-
-		$incidents = $db->query("SELECT DISTINCT i.*, l.location_name FROM `".$this->table_prefix."incident` AS i JOIN `".$this->table_prefix."incident_category` AS ic ON (i.`id` = ic.`incident_id`) JOIN `".$this->table_prefix."category` AS c ON (c.`id` = ic.`category_id`) JOIN `".$this->table_prefix."location` AS l ON (i.`location_id` = l.`id`) WHERE `incident_active` = '1' AND $keyword_like $filter ORDER BY incident_date DESC LIMIT ". (int) Kohana::config('mobile.items_per_page') . " OFFSET ".$pagination->sql_offset);
+    $query_for_incidents = $query;
+    if(isset($_COOKIE["lat"]) && isset($_COOKIE["lng"]) && $_COOKIE["lat"] != "na" && $_COOKIE["lng"] != "na") {
+      $query_for_incidents .= ' ORDER BY (round(sqrt(pow(('.$this->table_prefix.'l.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'l.longitude - '.$lon_center.')/0.0091, 2)), 1)) ASC LIMIT ';
+    }else{
+      $query_for_incidents .= " ORDER BY incident_date DESC LIMIT ";
+    }
+    $query_for_incidents .= (int) Kohana::config('mobile.items_per_page') . " OFFSET ".$pagination->sql_offset;
+    $incidents = $db->query($query_for_incidents);
 		
 		// If Category Exists
 		if ($category_id)
