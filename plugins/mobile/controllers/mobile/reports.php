@@ -87,7 +87,6 @@ class Reports_Controller extends Mobile_Controller {
       $query_for_incidents .= " ORDER BY incident_date DESC LIMIT ";
     }
     $query_for_incidents .= (int) Kohana::config('mobile.items_per_page') . " OFFSET ".$pagination->sql_offset;
-    print_r($query_for_incidents);
     $incidents = $db->query($query_for_incidents);
 		
 		// If Category Exists
