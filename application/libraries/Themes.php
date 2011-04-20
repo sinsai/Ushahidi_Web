@@ -117,9 +117,9 @@ class Themes_Core {
 		
 		$core_js .= html::script($this->js_url."media/js/jquery", true);
 		$core_js .= html::script($this->js_url."media/js/jquery.ui.min", true);
-		$core_js .= html::script($this->js_url."media/js/jquery.pngFix.pack", true);
+		$core_js .= html::script($this->js_url."media/js/jquery.pngFix", true);
 		$core_js .= html::script($this->js_url."media/js/jquery.dd.js", true);
-		
+		$core_js .= html::script('media/js/jquery.query-1.2.3', true);
 		if ($this->map_enabled)
 		{
 			$core_js .= $this->api_url;
@@ -163,7 +163,6 @@ class Themes_Core {
 		// Inline Javascript
 		$inline_js = "<script type=\"text/javascript\">
                         <!--//
-function runScheduler(img){img.onload = null;img.src = '".url::site().'scheduler'."';}
 			".'$(document).ready(function(){$(document).pngFix();});'.$this->js.
                         "//-->
                         </script>";

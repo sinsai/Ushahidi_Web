@@ -152,6 +152,9 @@
 								</div>
 							</div>
 							<div class="row">
+<?php
+							if($superadmin_flag){
+?>
 								<h4><a href="#" id="category_toggle" class="new-cat"><?php echo Kohana::lang('ui_main.new_category');?></a><?php echo Kohana::lang('ui_main.categories');?> 
 								<span><?php echo Kohana::lang('ui_main.select_multiple');?>.</span></h4>
 								<?php print $new_category_toggle_js; ?>
@@ -177,6 +180,9 @@
                                     print '</span>';
                                     ?> 
                                 </div>
+<?php
+							}
+?>
 
 			                    <div class="report_category">
                         	    <?php

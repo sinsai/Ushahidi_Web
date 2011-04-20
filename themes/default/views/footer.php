@@ -34,13 +34,44 @@
 					?>
 				</ul>
 				<?php if($site_copyright_statement != '') { ?>
-      		<p class="copyright"><?php echo $site_copyright_statement; ?></p>
       	<?php } ?>
 			</div>
 			<!-- / footer menu -->
 
 			<!-- footer credits links -->
-			<div class="footer-credits-links"><ul><li><a href="http://aws.amazon.com/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/Powered-by-Amazon-Web-Services.jpeg" alt="Amazon-Web-Services" style="vertical-align:middle" /></a></li><li><a href="http://heartbeats.jp/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/powered-by-heartbeats.gif" alt="heartbeats" style="vertical-align:middle" /></a></li><li><a href="http://www.gree.co.jp/" target="_blank"><img src="<?php echo url::base(); ?>/media/img/powered-by-gree.gif" alt="gree" style="vertical-align:middle" /></a></li></ul></div>
+			<div class="footer-credits-links">
+				<div class="footer-credit">
+					Powered by
+				</div>
+				<ul>
+					<li>
+						<a href="http://aws.amazon.com/" target="_blank">
+							<img src="<?php echo url::base(); ?>/media/img/Powered-by-Amazon-Web-Services.jpeg" alt="Amazon-Web-Services" style="vertical-align:middle" />
+						</a>
+					</li>
+					<li>
+						<a href="http://heartbeats.jp/" target="_blank">
+							<img src="<?php echo url::base(); ?>/media/img/powered-by-heartbeats.gif" alt="heartbeats" style="vertical-align:middle" />
+						</a>
+					</li>
+					<li>
+						<a href="http://www.gree.co.jp/" target="_blank">
+							<img src="<?php echo url::base(); ?>/media/img/powered-by-gree.gif" alt="gree" style="vertical-align:middle" />
+						</a>
+					</li>
+					<li>
+						<a href="http://www.nttdata.co.jp/" target="_blank">
+							<img src="<?php echo url::base(); ?>/media/img/nttdata-gi.gif" alt="nttdata" style="vertical-align:middle" />
+						</a>
+					</li>
+					<li>
+						<a href="http://www.yahoo.co.jp/" target="_blank">
+							<img src="<?php echo url::base(); ?>/media/img/logo_yahoo.gif" alt="yahoo" style="vertical-align:middle" />
+						</a>
+					</li>
+				</ul>
+			</div>
+      		<div style="text-align:center;margin-top:10px;"><p class="copyright">Copyright&nbsp;&copy;&nbsp;sinsai.info&nbsp;All&nbsp;Rights&nbsp;Reserved.&nbsp;<?php echo $site_copyright_statement; ?></p></div>
 			<!-- / footer credits links -->
 
 <?php /*
@@ -57,11 +88,6 @@
 
 	<?php /*echo $ushahidi_stats;*/ ?>
 	<?php echo $google_analytics; ?>
-
-	<!-- Task Scheduler -->
-     <!--
-	<img src="<?php echo url::base(); ?>media/img/spacer.gif" alt="" height="1" width="1" border="0" onload="runScheduler(this)" />
-     -->
 	<?php
 	// Action::main_footer - Add items before the </body> tag
 	Event::run('ushahidi_action.main_footer');

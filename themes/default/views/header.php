@@ -3,14 +3,17 @@
 <head>
 <title><?php echo (isset($action_name))? (html::specialchars($action_name)."：".$site_name) : $site_name; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="東日本大震災,被災地,震災,地震,復興,支援,津波,災害,救援,物資,情報,shinsai,インフォ,311,ボランティア" />
+<meta name="description" content="sinsai.infoでは、2011年3月11日に発生した東日本大震災の被災地周辺情報を収集し公開しています。インターネットを活用して、みなさまからの投稿だけでなく、twitterのつぶやきなどをピックアップして、幅広いカテゴリの情報を提供しています。ボランティアスタッフ一同、被災地の皆様の1日でも早い復興をお祈りしております。" />
 <?php echo $header_block; ?>
 <?php
 // Action::header_scripts - Additional Inline Scripts from Plugins
 Event::run('ushahidi_action.header_scripts');
 echo map::layers_scripts(TRUE);
-echo html::script('media/js/jquery.query-1.2.3', true);
+
 ?>
 <link rel="shortcut icon" href="/ushahidi/media/img/favicon.ico" type="image/x-icon" />
+<link rel="search" type="application/opensearchdescription+xml" title="Sinsai.info" href="/ushahidi/media/sinsaiinfo.searchbar.xml">
 </head>
 
 <body id="page">
@@ -68,7 +71,7 @@ echo $menu;
 ?>
 </ul>
 <div id="nations">
-SELECT LANGUAGE 
+LANGUAGE 
 <?php
 $nations = array("ja_JP","en_US","ko_KR","zh_CN","de_DE","fr_FR","it_IT");
 foreach ($nations as $nation){

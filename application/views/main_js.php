@@ -20,7 +20,7 @@
 		// Map Object
 		var map;
 		// Selected Category
-		var currentCat;
+		var currentCat =  $.query.get('c')[1];
 		// Selected Layer
 		var thisLayer;
 		// WGS84 Datum
@@ -154,8 +154,6 @@
 			if (mapLoad > 0)
 			{
 				// Get Current Category
-				currCat = $("#currentCat").val();
-
 				// Get Current Start Date
 				currStartDate = $("#startDate").val();
 
@@ -169,7 +167,7 @@
 				currCenter = map.getCenter();
 
 				// Refresh Map
-				addMarkers(currCat, currStartDate, currEndDate, currZoom, currCenter);
+				addMarkers(currentCat, currStartDate, currEndDate, currZoom, currCenter);
 			}
 		}
 
@@ -178,8 +176,8 @@
 			// Prevent this event from running on the first load
 			if (mapLoad > 0)
 			{
+			    
 				// Get Current Category
-				currCat = $("#currentCat").val();
 
 				// Get Current Start Date
 				currStartDate = $("#startDate").val();
@@ -194,7 +192,7 @@
 				currCenter = map.getCenter();
 
 				// Refresh Map
-				addMarkers(currCat, currStartDate, currEndDate, currZoom, currCenter);
+				addMarkers(currentCat, currStartDate, currEndDate, currZoom, currCenter);
 			}
 		}
 
@@ -204,13 +202,14 @@
 		*/
 		function refreshGraph(startDate, endDate)
 		{
-			var currentCat = gCategoryId;
-
+			var currentCat = $.query.get("c")[1];
+            
 			// refresh graph
 			if (!currentCat || currentCat == '0')
 			{
 				currentCat = '0';
 			}
+			
 
 			var startTime = new Date(startDate * 1000);
 			var endTime = new Date(endDate * 1000);
@@ -367,7 +366,7 @@
 				'theme': null
 				};
 			map = new OpenLayers.Map('map', options);
-			map.addControl( new OpenLayers.Control.LoadingPanel({minSize: new OpenLayers.Size(573, 366)}) );
+			map.addControl( new OpenLayers.Control.LoadingPanel({minSize: new OpenLayers.Size(500, 517)}) );
 			
 			<?php echo map::layers_js(TRUE); ?>
 			map.addLayers(<?php echo map::layers_array(TRUE); ?>);
@@ -554,7 +553,7 @@
 			  return n >= ('' + endTime) ;
 			})[0];
 			
-			gCategoryId = '0';
+			gCategoryId = $.query.get('c')[0];
 			gMediaType = 0;
 			//$("#startDate").val(startTime);
 			//$("#endDate").val(endTime);
@@ -604,11 +603,10 @@
         function setCenter(sw,ne,c){
             $.ajax({
                   type: "GET",
-                  url: "<?echo url::base()?>reports/index/?sw=" + sw + "&ne=" + ne + "&c" + c + "&distance=" + map.zoom,
+                  url: "<?echo url::base()?>reports/index/" + $.query.set("sw",sw).set("ne",ne).set("zoom",map.zoom).toString(),
                   cache: false,
                   success: function(html){
-                    console.log("<?echo url::base()?>reports/index/?sw=" + sw + "&ne=" + ne + "&c=" + c + "&distance=" + map.zoom);
-                    $('#left-pane').html(html);
+                    $('#report-pane').html(html);
                   }
             });
         }
@@ -625,17 +623,15 @@ jQuery(document).ready(function(){
 	else {
 		$('#view_this_location').hide();
 	}
-	
+	$( "#tab" ).tabs();
     $.ajax({
           type: "GET",
           url: "<?echo url::base()?>reports" + location.search,
           cache: false,
           success: function(html){
-            $('#left-pane').html(html);
+            $('#report-pane').html(html);
           }
     });
-    
-    
 });
 
 		/*		

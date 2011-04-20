@@ -1,6 +1,13 @@
 <!-- main body -->
 <div id="main">
-<div id="left-pane">
+<div id="tab">
+<ul>
+	<li><a href="#report-pane"><?php echo Kohana::lang('ui_main.report'); ?></a></li>
+	<li><a href="#comment-pane"><?php echo Kohana::lang('ui_main.comment'); ?></a></li>
+</ul>
+<div id="report-pane">
+</div>
+<div id="comment-pane">
 			<h5><?php echo Kohana::lang('ui_main.comments_listed'); ?></h5>
 			<table class="table-list">
 				<thead>
@@ -39,15 +46,51 @@
 				</tbody>
 			</table>
 </div>
+</div>
+<div class="map_description">
+    ◎をクリックすると、そのエリアで投稿されたレポートがご覧になれます。
+</div>
 <!-- content -->
-
 <div id="right-pane">
 <?php								
 // Map and Timeline Blocks
 echo $div_map;
 echo $div_timeline;
 ?>
+                <div style="float:left;font-size:large;padding:5px;">
+                        <?php
+                        // Action::main_filters - Add items to the main_filters
+                        //Event::run('ushahidi_action.map_main_filters');
+                        $menu = "";
+	$menu .= "<a href=\"#\" id=\"view_this_location\">現在地を表示</a>";
+	$menu .= "&nbsp;&nbsp;";
+	$menu .= "<a target=\"bigmap\" href=\"".url::site()."bigmap\" ";
+                        $menu .= ">全画面表示</a>";
+                        echo $menu;
+                        ?>
+                </div>
+				<ul id="kml_switch" class="category-filters" style="float:right;">
+					<?php
+					foreach ($layers as $layer => $layer_info)
+					{
+						$layer_name = $layer_info[0];
+						$layer_color = $layer_info[1];
+						$layer_url = $layer_info[2];
+						$layer_file = $layer_info[3];
+						$layer_link = (!$layer_url) ?
+							url::base().Kohana::config('upload.relative_directory').'/'.$layer_file :
+							$layer_url;
+						echo '<li><a href="#" id="layer_'. $layer .'"
+						onclick="switchLayer(\''.$layer.'\',\''.$layer_link.'\',\''.$layer_color.'\'); return false;"><div class="swatch" style="background-color:#'.$layer_color.'"></div>
+						<div>'.$layer_name.'</div></a></li>';
+					}
+					?>
+				</ul>
+				
 </div>
+				<!-- Layers (KML/KMZ) -->
+				
+
 <br style="clear:both;"/>
 	<?php if($site_message != '') { ?>
 		<div class="news-box">

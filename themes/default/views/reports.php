@@ -101,7 +101,6 @@ echo $report_stats;
 				}
 					?>
 			</div>
-			<?php echo $lon?>
 			<script language="text/javascript">
 			<!--
 			<?php if(isset($lon)){?>

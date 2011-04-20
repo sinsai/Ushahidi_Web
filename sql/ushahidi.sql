@@ -680,7 +680,9 @@ CREATE TABLE IF NOT EXISTS `message`                                            
     `message_type` TINYINT default 1 COMMENT '1 - INBOX, 2 - OUTBOX (From Admin)',  -- field description
     `message_date` DATETIME default NULL,                                           -- field description
     `message_level` TINYINT NULL DEFAULT 0 COMMENT '0 - UNREAD, 1 - READ, 99 - SPAM',                                         -- field description
-PRIMARY KEY (`id`)
+    `type` tinyint(3) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `incident_id` (`incident_id`,`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

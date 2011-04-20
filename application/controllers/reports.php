@@ -56,7 +56,7 @@ class Reports_Controller extends Main_Controller {
 		// 引き回すGETパラメータのテンプレートへの引き渡し
 		$this->template->content->keyword = valid::initGetVal('keyword',"text");
 		$this->template->content->address = valid::initGetVal('address',"text");
-		$zoom_level =  valid::initGetVal('distance',"number");
+		$zoom_level =  valid::initGetVal('zoom',"number");
         if(!isset($zoom_level)) $zoom_level = 10;
         $distance = form_ex::zoomToK($zoom_level);
         $this->template->content->zoom_level = $zoom_level;

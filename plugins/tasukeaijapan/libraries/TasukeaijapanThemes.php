@@ -138,7 +138,6 @@ class TasukeaijapanThemes {
 		// Inline Javascript
 		$inline_js = "<script type=\"text/javascript\">
                         <!--//
-function runScheduler(img){img.onload = null;img.src = '".url::site().'scheduler'."';}
 			".'$(document).ready(function(){$(document).pngFix();});'.$this->js.
                         "//-->
                         </script>";

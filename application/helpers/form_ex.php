@@ -203,7 +203,7 @@ class form_ex_Core extends form_Core{
 	/* Created 2011/04/15 ggslyman                                  */
 	/* 使用するGETパラメータ                                        */
 	/* address 住所テキストボックスに入力する値                     */
-	/* distance 検索半径 ドロップダウンリストより入力               */
+	/* zoom ズームレベル（検索半径） ドロップダウンリストより入力               */
 	/* category 選択カテゴリ ドロップダウンより入力                 */
 	/* keyword 検索キーワード キーワードテキストボックスより入力    */
 	/* sort レポートのソート順 チェックボックスより指定             */
@@ -226,15 +226,12 @@ class form_ex_Core extends form_Core{
 		$addr_text .= '" />周辺の'.$end;
 		// 住所入力欄 end
 		// 検索半径
-		$select_dist = '半径<select name="distance">'.$end;
-		
-		if(isset($_GET["distance"]) && $_GET["distance"]==0)$_GET["distance"] =0;
-		if(!isset($_GET["distance"])) $_GET["distance"] = 3;
-		if(isset($_GET["distance"])) $distance_selected[$_GET["distance"]]["selected"] = 'selected';
-		
+		$select_dist = '半径<select name="zoom">'.$end;
+
+		$zoom = isset($_GET["zoom"]) ? floor($_GET["zoom"]) : 15;
 		// option生成
 		foreach(form_ex::zoomMap() as $key => $val){
-		    $selected =  isset($_GET["distance"]) && $key == $_GET["distance"] ? " selected ": "";
+		    $selected =  $key == $zoom ? " selected ": "";
 			$select_dist .= '<option value="'.$key.'" '.$selected.'>'.form_ex::distanceDescription($val).'</option>'.$end;
 		}
 		$select_dist .= '</select>のレポート'.$end;

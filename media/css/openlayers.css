@@ -5,6 +5,10 @@ div.olMap {
     cursor: default;
 }
 
+* html div.olMap {
+	width: 618px;
+}
+
 div.olMapViewport {
     text-align: left;
 }

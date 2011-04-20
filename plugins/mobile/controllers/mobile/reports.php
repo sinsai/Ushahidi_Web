@@ -336,7 +336,16 @@ class Reports_Controller extends Mobile_Controller {
 			$this->template->header->js->longitude = $form['longitude'];
 		}
 	}
-	
+
+	/**
+	 * Report Thanks Page
+	 */
+	function thanks()
+	{
+		$this->template->header->show_map = FALSE;
+		$this->template->content = new View('mobile/reports_submit_thanks');
+	}
+
 	/*
 	 * Retrieves Categories
 	 */
