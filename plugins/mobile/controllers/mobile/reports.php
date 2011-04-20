@@ -57,16 +57,26 @@ class Reports_Controller extends Mobile_Controller {
 			}
 			$keyword_like = rtrim($keyword_like," AND ");
 		}
+    $query =  "SELECT DISTINCT i.*, l.location_name FROM `".$this->table_prefix."incident`".
+             " AS i JOIN `".$this->table_prefix."incident_category`".
+             " AS ic ON (i.`id` = ic.`incident_id`)".
+             " JOIN `".$this->table_prefix."category`".
+             " AS c ON (c.`id` = ic.`category_id`)".
+             " JOIN `".$this->table_prefix."location`".
+             " AS l ON (i.`location_id` = l.`id`)".
+             " WHERE `incident_active` = '1' AND $keyword_like $filter"
 		// Pagination
 		$pagination = new Pagination(array(
 				'style' => 'mobile',
 				'query_string' => 'page',
 				'items_per_page' => (int) Kohana::config('mobile.items_per_page'),
-				'total_items' => $db->query("SELECT DISTINCT i.* FROM `".$this->table_prefix."incident` AS i JOIN `".$this->table_prefix."incident_category` AS ic ON (i.`id` = ic.`incident_id`) JOIN `".$this->table_prefix."category` AS c ON (c.`id` = ic.`category_id`) WHERE `incident_active` = '1' AND $keyword_like $filter")->count()
+				'total_items' => $db->query($query)->count()
 				));
 		$this->template->content->pagination = $pagination;
-
-		$incidents = $db->query("SELECT DISTINCT i.*, l.location_name FROM `".$this->table_prefix."incident` AS i JOIN `".$this->table_prefix."incident_category` AS ic ON (i.`id` = ic.`incident_id`) JOIN `".$this->table_prefix."category` AS c ON (c.`id` = ic.`category_id`) JOIN `".$this->table_prefix."location` AS l ON (i.`location_id` = l.`id`) WHERE `incident_active` = '1' AND $keyword_like $filter ORDER BY incident_date DESC LIMIT ". (int) Kohana::config('mobile.items_per_page') . " OFFSET ".$pagination->sql_offset);
+    $query_for_incidents = $query.
+                           " ORDER BY incident_date DESC LIMIT ".
+                           (int) Kohana::config('mobile.items_per_page') . " OFFSET ".$pagination->sql_offset;
+    $incidents = $db->query($query_for_incidents);
 		
 		// If Category Exists
 		if ($category_id)
