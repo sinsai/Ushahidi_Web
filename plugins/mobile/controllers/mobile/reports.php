@@ -64,7 +64,7 @@ class Reports_Controller extends Mobile_Controller {
              " AS c ON (c.`id` = ic.`category_id`)".
              " JOIN `".$this->table_prefix."location`".
              " AS l ON (i.`location_id` = l.`id`)".
-             " WHERE `incident_active` = '1' AND $keyword_like $filter"
+             " WHERE `incident_active` = '1' AND $keyword_like $filter";
 		// Pagination
 		$pagination = new Pagination(array(
 				'style' => 'mobile',
