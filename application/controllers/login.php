@@ -331,7 +331,7 @@ class Login_Controller extends Template_Controller {
 		if( array_key_exists('resetemail',$post->errors()))
 			return;
 
-		if( !$users->email_exists( $post->email ) )
+		if( !$users->email_exists( $post->resetemail ) )
 			$post->add_error('resetemail','invalid');
 	}
 	
