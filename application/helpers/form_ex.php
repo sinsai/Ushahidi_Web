@@ -165,6 +165,39 @@ class form_ex_Core extends form_Core{
 		// Combine the sorted and unsorted attributes and create an HTML string
 		return html::attributes(array_merge($sorted, $attr));
 	}
+	
+	function zoomMap(){
+	    return array(
+		       17 => 20,
+		       16 => 100,
+		       15 => 200,
+		       14 => 500,
+		       13 => 1000,
+		       12 => 2000,
+		       11 => 5000,
+		       10 => 10000,
+		       9 => 20000,
+		       8 => 50000,
+		       7 => 100000,
+		       6 => 200000
+		);
+	}
+	
+	function zoomToK($zoom){
+		$map = form_ex::zoomMap();
+		if( isset( $map[$zoom] ) ){
+		    return $map[$zoom];
+		}
+		return 500;
+	}
+	
+	function distanceDescription($distance){
+	    if($distance > 1000){
+	        return floor($distance / 1000) ."km";
+	    }
+	    return $distance."m";
+	}
+	
 	/*                                                              */
 	/* 共通レポート検索フォームヘルパー                             */
 	/* Created 2011/04/15 ggslyman                                  */
@@ -194,28 +227,15 @@ class form_ex_Core extends form_Core{
 		// 住所入力欄 end
 		// 検索半径
 		$select_dist = '半径<select name="distance">'.$end;
-		//配列べたうち
-		$distance_selected = array(
-			   0=>array("selected"=>"","value"=>  0,"disp"=>"20m")
-			,  1=>array("selected"=>"","value"=>  1,"disp"=>"100m")
-			,  2=>array("selected"=>"","value"=>  2,"disp"=>"200m")
-			,  3=>array("selected"=>"","value"=>  3,"disp"=>"500m")
-			,  4=>array("selected"=>"","value"=>  4,"disp"=>"1km")
-			, 5=>array("selected"=>"","value"=> 5,"disp"=>"2km")
-			, 6=>array("selected"=>"","value"=> 6,"disp"=>"5km")
-			, 7=>array("selected"=>"","value"=> 7,"disp"=>"10km")
-			, 8=>array("selected"=>"","value"=> 8,"disp"=>"20km")
-			,9=>array("selected"=>"","value"=>9,"disp"=>"50km")
-			,10=>array("selected"=>"","value"=>10,"disp"=>"100km")
-			,11=>array("selected"=>"","value"=>11,"disp"=>"200km")
-		);
+		
 		if(isset($_GET["distance"]) && $_GET["distance"]==0)$_GET["distance"] =0;
 		if(!isset($_GET["distance"])) $_GET["distance"] = 3;
 		if(isset($_GET["distance"])) $distance_selected[$_GET["distance"]]["selected"] = 'selected';
 		
 		// option生成
-		foreach($distance_selected as $key => $val){
-			$select_dist .= '<option value="'.$val["value"].'" '.$val["selected"].'>'.$val["disp"].'</option>'.$end;
+		foreach(form_ex::zoomMap() as $key => $val){
+		    $selected =  isset($_GET["distance"]) && $key == $_GET["distance"] ? " selected ": "";
+			$select_dist .= '<option value="'.$key.'" '.$selected.'>'.form_ex::distanceDescription($val).'</option>'.$end;
 		}
 		$select_dist .= '</select>のレポート'.$end;
 		// 検索半径 end

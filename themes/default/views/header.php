@@ -8,6 +8,7 @@
 // Action::header_scripts - Additional Inline Scripts from Plugins
 Event::run('ushahidi_action.header_scripts');
 echo map::layers_scripts(TRUE);
+echo html::script('media/js/jquery.query-1.2.3', true);
 ?>
 <link rel="shortcut icon" href="/ushahidi/media/img/favicon.ico" type="image/x-icon" />
 </head>
@@ -87,7 +88,7 @@ foreach ($nations as $nation){
 </div>
 <!-- / logo -->
 <div id="searchbox">
-<?php echo form_ex::reportSearchForm(url::base()."/reports")?>
+<?php echo form_ex::reportSearchForm(url::base())?>
 </div>
 
 

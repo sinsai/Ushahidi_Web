@@ -37,6 +37,8 @@ class Reports_Controller extends Main_Controller {
 	// TODO: Do we need this $cluster_id var? I dont see it being used anywhere. (BH)
 	public function index($cluster_id = 0)
 	{
+		$this->template->header  = new View('none');
+		$this->template->footer  = new View('none');
 		// Cacheable Controller
 		$this->is_cachable = TRUE;
 		$this->template->header->this_page = 'reports';
@@ -50,24 +52,15 @@ class Reports_Controller extends Main_Controller {
 		if(isset($_SESSION["locale"])){
 			$_GET["l"] = $_SESSION["locale"];
 		}
-		
-		// Map and Slider Blocks
-		$div_map = new View('main_map');
-		$div_timeline = new View('main_timeline');
-			// Filter::map_main - Modify Main Map Block
-			Event::run('ushahidi_filter.map_main', $div_map);
-			// Filter::map_timeline - Modify Main Map Block
-			Event::run('ushahidi_filter.map_timeline', $div_timeline);
-		$this->template->content->div_map = $div_map;
-		$this->template->content->div_timeline = $div_timeline;
 
 		// 引き回すGETパラメータのテンプレートへの引き渡し
 		$this->template->content->keyword = valid::initGetVal('keyword',"text");
 		$this->template->content->address = valid::initGetVal('address',"text");
 		$zoom_level =  valid::initGetVal('distance',"number");
-        $distance_array = array(20,100,200,500,1000,2000,5000,10000,20000,50000,100000,200000);
-        echo $zoom_level;
-		$this->template->content->distance = $distance_array[$zoom_level]/1000;
+        if(!isset($zoom_level)) $zoom_level = 10;
+        $distance = form_ex::zoomToK($zoom_level);
+        $this->template->content->zoom_level = $zoom_level;
+		$this->template->content->distance = $distance;
 		$this->template->content->c = valid::initGetVal('c',"number");
 		$this->template->content->sw = valid::initGetVal('sw',"text");
 		$this->template->content->ne = valid::initGetVal('ne',"text");
@@ -109,7 +102,7 @@ class Reports_Controller extends Main_Controller {
 		$dbget_flg = true;
 		$this->template->content->choices_flg = false;
 		//指定地区の指定半径内インシデント取得処理
-		if(isset($_GET["address"]) && trim($_GET["address"]) !== "" && isset($_GET["distance"]) && is_numeric($_GET["distance"]) && $_GET["distance"] > 0){
+		if(isset($_GET["address"]) && trim($_GET["address"]) !== "" && $distance > 0){
 			$address = urlencode($_GET["address"]);
 			// http://www.geocoding.jp/を利用して指定地区名の緯度経度を取得
 			$geocoding_url = 'http://www.geocoding.jp/api/?q='.$address;
@@ -140,14 +133,12 @@ class Reports_Controller extends Main_Controller {
 				if(isset($geo_geocoding->coordinate->lat) && isset($geo_geocoding->coordinate->lng)){
 					$lat_center = $geo_geocoding->coordinate->lat;
 					$lon_center = $geo_geocoding->coordinate->lng;
+					$this->template->content->lat = $lat_center;
+					$this->template->content->lon = $lon_center;
 					$area_name = $geo_geocoding->address;
 					$_GET["address"] = $this->template->content->area_name = trim($area_name);
-					if($_GET["distance"] >= 1){
-						$this->template->content->disp_distance = $_GET["distance"]."km";
-					}else{
-						$this->template->content->disp_distance = ($_GET["distance"]*1000)."m";
-					}
-					$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE (round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) <= '.$_GET["distance"];
+				    $this->template->content->disp_distance = form_ex::distanceDescription($distance);
+					$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE (round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) <= '.$distance;
 					$query = $db->query($query);
 					foreach ( $query as $items )
 					{
@@ -166,6 +157,8 @@ class Reports_Controller extends Main_Controller {
 			$lat_max = (float) $northeast[1];
 			$lon_center = ($lon_min+$lon_max) / 2;
 			$lat_center = ($lat_min+$lat_max) / 2;
+			$this->template->content->lat = $lat_center;
+			$this->template->content->lon = $lon_center;
 			$dist1 = (round(sqrt(pow(($lat_max - $lat_center)/0.0111, 2) + pow(($lon_max - $lon_center)/0.0091, 2)), 1));
 			$dist2 = (round(sqrt(pow(($lat_min - $lat_center)/0.0111, 2) + pow(($lon_min - $lon_center)/0.0091, 2)), 1));
 			// http://www.finds.jp/を利用して中央地点の地名を取得
@@ -495,74 +488,6 @@ class Reports_Controller extends Main_Controller {
 			$endDate .= "</optgroup>";
 		}
 
-
-		$this->template->content->div_timeline->startDate = $startDate;
-		$this->template->content->div_timeline->endDate = $endDate;
-		
-		// Javascript Header
-		$this->themes->map_enabled = TRUE;
-		$this->themes->main_page = TRUE;
-
-		// Map Settings
-		$clustering = Kohana::config('settings.allow_clustering');
-		$marker_radius = Kohana::config('map.marker_radius');
-		$marker_opacity = Kohana::config('map.marker_opacity');
-		$marker_stroke_width = Kohana::config('map.marker_stroke_width');
-		$marker_stroke_opacity = Kohana::config('map.marker_stroke_opacity');
-
-        // pdestefanis - allows to restrict the number of zoomlevels available
-		$numZoomLevels = Kohana::config('map.numZoomLevels');
-		$minZoomLevel = Kohana::config('map.minZoomLevel');
-	   	$maxZoomLevel = Kohana::config('map.maxZoomLevel');
-
-		// pdestefanis - allows to limit the extents of the map
-		$lonFrom = Kohana::config('map.lonFrom');
-		$latFrom = Kohana::config('map.latFrom');
-		$lonTo = Kohana::config('map.lonTo');
-		$latTo = Kohana::config('map.latTo');
-
-		$this->themes->js = new View('main_js');
-		$this->themes->js->json_url = ($clustering == 1) ?
-			"json/cluster" : "json";
-		$this->themes->js->marker_radius =
-			($marker_radius >=1 && $marker_radius <= 10 ) ? $marker_radius : 5;
-		$this->themes->js->marker_opacity =
-			($marker_opacity >=1 && $marker_opacity <= 10 )
-			? $marker_opacity * 0.1  : 0.9;
-		$this->themes->js->marker_stroke_width =
-			($marker_stroke_width >=1 && $marker_stroke_width <= 5 ) ? $marker_stroke_width : 2;
-		$this->themes->js->marker_stroke_opacity =
-			($marker_stroke_opacity >=1 && $marker_stroke_opacity <= 10 )
-			? $marker_stroke_opacity * 0.1  : 0.9;
-
-		// pdestefanis - allows to restrict the number of zoomlevels available
-		$this->themes->js->numZoomLevels = $numZoomLevels;
-		$this->themes->js->minZoomLevel = $minZoomLevel;
-		$this->themes->js->maxZoomLevel = $maxZoomLevel;
-
-		// pdestefanis - allows to limit the extents of the map
-		$this->themes->js->lonFrom = $lonFrom;
-		$this->themes->js->latFrom = $latFrom;
-		$this->themes->js->lonTo = $lonTo;
-		$this->themes->js->latTo = $latTo;
-
-		$this->themes->js->default_map = Kohana::config('settings.default_map');
-		if(isset($zoom_level)){
-		    $this->themes->js->default_zoom = $zoom_level;
-		}else{
-		    $this->themes->js->default_zoom = Kohana::config('settings.default_zoom');
-		}
-		if(isset($lat_center)){
-		    $this->themes->js->latitude = $lat_center;
-		    $this->themes->js->longitude = $lon_center ;
-		}else{
-		    $this->themes->js->latitude = Kohana::config('settings.default_lat');
-		    $this->themes->js->longitude = Kohana::config('settings.default_lon');
-		}
-		$this->themes->js->default_map_all = Kohana::config('settings.default_map_all');
-		//
-		$this->themes->js->active_startDate = $active_startDate;
-		$this->themes->js->active_endDate = $active_endDate;
 
 		//$myPacker = new javascriptpacker($js , 'Normal', false, false);
 		//$js = $myPacker->pack();

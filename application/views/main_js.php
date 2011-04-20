@@ -115,12 +115,10 @@
             selectedFeature = event;
             // Since KML is user-generated, do naive protection against
             // Javascript.
-
 			zoom_point = event.feature.geometry.getBounds().getCenterLonLat();
 			lon = zoom_point.lon;
 			lat = zoom_point.lat;
-
-			var content = "<div class=\"infowindow\"><div class=\"infowindow_image\"></div><div class=\"infowindow_list\">"+event.feature.attributes.name + "</div><div style=\"clear:both;\"></div>";
+			var content = "<div class=\"infowindow\"><div class=\"infowindow_image\"></div><div class=\"infowindow_list\">レポート件数："+event.feature.attributes.count + "<br><a href='javascript:setCenter(\"" + event.feature.attributes.sw +"\",\""+event.feature.attributes.ne + "\",\"" + event.feature.attributes.c + "\");'>⇒詳細を表示</a></div><div style=\"clear:both;\"></div>";
 			content = content + "\n<div class=\"infowindow_meta\"><a href='javascript:zoomToSelectedFeature("+ lon + ","+ lat +", 1)'>[+]ズームイン</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='javascript:zoomToSelectedFeature("+ lon + ","+ lat +", -1)'>[-]ズームアウト</a></div>";
 			content = content + "</div>";			
 
@@ -600,8 +598,21 @@
 					gMap.getCenter(),null,null,null,null,"json");
 				gTimeline.playOrPause('raindrops');
 			});
+			
 		});
-		
+        
+        function setCenter(sw,ne,c){
+            $.ajax({
+                  type: "GET",
+                  url: "<?echo url::base()?>reports/index/?sw=" + sw + "&ne=" + ne + "&c" + c + "&distance=" + map.zoom,
+                  cache: false,
+                  success: function(html){
+                    console.log("<?echo url::base()?>reports/index/?sw=" + sw + "&ne=" + ne + "&c=" + c + "&distance=" + map.zoom);
+                    $('#left-pane').html(html);
+                  }
+            });
+        }
+	
 jQuery(document).ready(function(){
 	if(navigator.geolocation){
 		$('#view_this_location').click(function() {
@@ -614,6 +625,17 @@ jQuery(document).ready(function(){
 	else {
 		$('#view_this_location').hide();
 	}
+	
+    $.ajax({
+          type: "GET",
+          url: "<?echo url::base()?>reports" + location.search,
+          cache: false,
+          success: function(html){
+            $('#left-pane').html(html);
+          }
+    });
+    
+    
 });
 
 		/*		

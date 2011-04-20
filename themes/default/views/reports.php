@@ -1,11 +1,8 @@
-<!-- main body -->
-<div id="main">
-<div id="left-pane">
-			<?php
-			// Filter::report_stats - The block that contains reports list statistics
-			Event::run('ushahidi_filter.report_stats', $report_stats);
-			echo $report_stats;
-			?>
+<?php
+// Filter::report_stats - The block that contains reports list statistics
+Event::run('ushahidi_filter.report_stats', $report_stats);
+echo $report_stats;
+?>
 <?php
 
 ?>
@@ -104,18 +101,14 @@
 				}
 					?>
 			</div>
+			<?php echo $lon?>
+			<script language="text/javascript">
+			<!--
+			<?php if(isset($lon)){?>
+			var lonlat = new OpenLayers.LonLat(<?php echo $lon?>,<?php echo $lat?>).transform(proj_4326, map.getProjectionObject());
+			map.setCenter(lonlat, <?echo $zoom_level ?>);
+			//-->
+			<?php }?>
+			</script>
 			<?php echo $pagination; ?>
-</div>
-<!-- content -->
-
-<div id="right-pane">
-<?php								
-// Map and Timeline Blocks
-echo $div_map;
-echo $div_timeline;
-?>
-</div>
-</div>
-<!-- / main body -->
-
 
