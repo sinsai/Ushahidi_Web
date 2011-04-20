@@ -12,7 +12,7 @@ $(document).ready(function(){
     $("#navigation").css("margin-bottom","5px");
   }else{
     $("#del_location").hide();
-    if($.cookie('lat') && $.cookie('lng')) {
+    if($.cookie('lat') && $.cookie('lng') && $.cookie('lat') != "na" && $.cookie('lng') != "na") {
       SinsaiLoc.show_addr();
     }
     $("#get_location").click(function(){
@@ -26,8 +26,8 @@ $(document).ready(function(){
       $("#get_location").text("Detect Location");
       $("#del_location").hide();
       $("#loc_address").text("");
-      $.cookie('lat',null);
-      $.cookie('lng',null);
+      $.cookie('lat',"na");
+      $.cookie('lng',"na");
     });
   }
 });
