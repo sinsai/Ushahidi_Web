@@ -315,22 +315,12 @@ class Reports_Controller extends Admin_Controller
 				->count_all()
             ));
 		$incidents = Incident_Model::get_incident_reports($filter,$order_string,$pagination->sql_offset);
+
         $location_ids = array();
         foreach ($incidents as $incident)
         {
             $location_ids[] = $incident->location_id;
         }
-        foreach ($incidents as $incident)
-        {
-            $incident_ids[] = $incident->id;
-        }
-        //add_param_get
-        $filter = " incident_id IN (".implode(',',$incident_ids).")";
-        $incident_persons = Incident_Model::get_incident_persons($filter);
-        $incident_messages = Incident_Model::get_incident_messages($filter);
-		$incident_incident_langs = Incident_Model::get_incident_incident_langs($filter);
-		$incident_incident_categories = Incident_Model::get_incident_incident_categories($filter);
-        
         //check if location_ids is not empty
         if( count($location_ids ) > 0 ) 
         {
@@ -345,8 +335,28 @@ class Reports_Controller extends Admin_Controller
         {
             $locations = array();
         }
-
         $this->template->content->locations = $locations;
+
+        $incident_ids = array();
+        foreach ($incidents as $incident)
+        {
+            $incident_ids[] = $incident->id;
+        }
+        if ( count($incident_ids) > 0 )
+        {
+            //add_param_get
+            $filter = " incident_id IN (".implode(',',$incident_ids).")";
+            $incident_persons = Incident_Model::get_incident_persons($filter);
+            $incident_messages = Incident_Model::get_incident_messages($filter);
+            $incident_incident_langs = Incident_Model::get_incident_incident_langs($filter);
+            $incident_incident_categories = Incident_Model::get_incident_incident_categories($filter);
+        }
+        else {
+            $incident_persons = '';
+            $incident_messages = '';
+            $incident_incident_langs = '';
+            $incident_incident_categories = '';
+        }
 
         //GET countries
         $countries = array();
