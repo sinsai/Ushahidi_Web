@@ -76,6 +76,7 @@ def put_to_db(tweet)
              4
            else; 0
            end
+    # type 5 alredy in use
     message = Message.insert(
                 :parent_id=>0,
                 :incident_id=>0,
@@ -113,7 +114,7 @@ def put_to_db(tweet)
   end
 end
 
-hashtags = %w(#jishin #j_j_helpme #hinan #anpi #311care #genpatsu)
+hashtags = %w(#jishin #j_j_helpme #hinan #anpi #311care)
 
 uri = URI.parse('http://stream.twitter.com/1/statuses/filter.json')
 
