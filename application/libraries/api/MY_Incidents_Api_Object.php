@@ -208,6 +208,9 @@ class Incidents_Api_Object extends Api_Object_Core {
                 $this->response_data = $this->_get_incidents_by_bounds($this->request['sw'],$this->request['ne'],$this->request['c']);
             break;
             
+            case "keyword":
+                    $this->response_data = $this->_get_incidents_by_keyword($this->request['c'],$this->request['keyword'],$this->request['distance']);
+            break;
             // Error therefore set error message 
             default:
                 $this->set_error_message(array(
@@ -238,6 +241,10 @@ class Incidents_Api_Object extends Api_Object_Core {
             $this->set_list_limit($this->request['limit']);
         }               
         
+        if ($this->api_service->verify_array_index($this->request, 'offset'))
+        {
+            $this->set_list_offset($this->request['offset']);
+        } 
         // Check if the orderfield parameter has been specified
         if ($this->api_service->verify_array_index($this->request, 'orderfield'))
         {
@@ -301,7 +308,6 @@ class Incidents_Api_Object extends Api_Object_Core {
                 ."FROM ".$this->table_prefix."incident AS i "
                 ."INNER JOIN ".$this->table_prefix.
                 "location as l on l.id = i.location_id "."$where $limit";
-
         $items = $this->db->query($this->query);
         // Set the no. of records returned
         $this->record_count = $items->count();
@@ -537,6 +543,49 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
+    
+    private function _get_incidents_by_keyword($catid,$keyword,$distance)
+    /**
+     * Get the incidents by keyword
+     * 
+     */
+    {
+        $param = explode(',',$distance);
+        $join = "\nINNER JOIN ".$this->table_prefix."incident_category AS 
+            ic ON ic.incident_id = i.id";
+        
+        $join .= "\nINNER JOIN ".$this->table_prefix."category AS c ON 
+            c.id = ic.category_id ";
+      
+        if( intval($catid) != 0){
+            $where = $join."\nWHERE c.id = $catid AND";
+        }else{
+            $where = "\nWHERE ";
+        }
+        
+        $keyword_raw = (isset($keyword))? mysql_real_escape_string($keyword) : "";          
+        $keyword_raw = strip_tags($keyword_raw);
+        $keyword_raw =  Input::instance()->xss_clean($keyword_raw);
+        $keywords = explode(' ', $keyword_raw);
+        
+        if (is_array($keywords) && !empty($keywords) && $keyword_raw != "") 
+        {
+            $match = " MATCH(i.incident_title,i.incident_description) AGAINST(\"*D+1:2,2:1 $keyword_raw\" IN BOOLEAN MODE) AND";
+            $where .= $match;
+        }
+        $where .=  "\nround(sqrt(pow((l.latitude - $param[1])/0.0111, 2) + pow((l.longitude - $param[0])/0.0091, 2)), 1) <= $param[2] AND i.incident_active = 1 ";
+        if(!isset($this->request['orderfield']) && !isset($this->request['sort'])){
+            $sortby = "\nORDER BY round(sqrt(pow((l.latitude - $param[1])/0.0111, 2) + pow((l.longitude - $param[0])/0.0091, 2)), 1) ASC ";
+        }elseif(!isset($this->order_field) && isset($this->request['sort'])){
+            $sortby = "\nORDER BY round(sqrt(pow((l.latitude - $param[1])/0.0111, 2) + pow((l.longitude - $param[0])/0.0091, 2)), 1) $this->sort ";
+		}else{
+            $sortby = "\nORDER BY $this->order_field $this->sort ";
+        }
+        $limit = "\n LIMIT $this->list_offset, $this->list_limit";
+        
+        return $this->_get_incidents($where.$sortby, $limit);
+    }
+    
 
     /**
      * Get the incidents by location id
