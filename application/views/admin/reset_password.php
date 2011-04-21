@@ -60,11 +60,11 @@
 			<?php } else { ?>
             <tr>
               <td><strong><?php echo Kohana::lang('ui_main.password_reset_prompt')?></strong><br />
-              <?php print form::input('resetemail', '', 
+              <?php print form::input('email', '', 
 						' class="login_text"'); ?></td>
             </tr>
             <tr>
-              <td><input type="submit" id="resetemail" name="submit" value="Reset password" class="login_btn" />
+              <td><input type="submit" id="email" name="submit" value="Reset password" class="login_btn" />
               <br /><br />
               <a href="<?php echo url::site().'login'?>">Login</a>
               </td>
