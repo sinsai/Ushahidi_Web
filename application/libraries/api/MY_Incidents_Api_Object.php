@@ -205,7 +205,10 @@ class Incidents_Api_Object extends Api_Object_Core {
             
             // Get incidents based on a box using two lat,lon coords
             case "bounds":
-                $this->response_data = $this->_get_incidents_by_bounds($this->request['sw'],$this->request['ne'],$this->request['c']);
+                if(!isset($this->request['keyword'])){
+                    $this->request['keyword'] = "";
+                }
+                $this->response_data = $this->_get_incidents_by_bounds($this->request['sw'],$this->request['ne'],$this->request['c'],$this->request['keyword']);
             break;
             
             case "keyword":
@@ -500,7 +503,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nGROUP BY i.id ORDER BY $this->order_field $this->sort";
         
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
 
         /* Not elegant but works */
         return $this->_get_incidents($where.$sortby, $limit);
@@ -518,7 +521,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nORDER BY $this->order_field $this->sort ";
         
-        $limit = "\n LIMIT 0, $this->list_limit";
+        $limit = "\n LIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -539,7 +542,7 @@ class Incidents_Api_Object extends Api_Object_Core {
             $sortby = "\nORDER BY $this->order_field $this->sort ";
         }
         
-        $limit = "\n LIMIT 0, $this->list_limit";
+        $limit = "\n LIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -596,7 +599,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nGROUP BY i.id ORDER BY $this->order_field $this->sort";
         
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -611,7 +614,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nGROUP BY i.id ORDER BY $this->order_field $this->sort";
         
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -632,7 +635,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nORDER BY $this->order_field $this->sort";
         
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -654,7 +657,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nORDER BY $this->order_field $this->sort";
         
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -688,7 +691,7 @@ class Incidents_Api_Object extends Api_Object_Core {
                 i.incident_active = 1";
                 
         $sortby = "\nGROUP BY i.id ORDER BY $this->order_field $this->sort";
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -711,7 +714,7 @@ class Incidents_Api_Object extends Api_Object_Core {
                 i.incident_active = 1";
                 
         $sortby = "\nGROUP BY i.id ORDER BY $this->order_field $this->sort";
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
         
@@ -724,7 +727,7 @@ class Incidents_Api_Object extends Api_Object_Core {
      * @param ne is the northeast lat,lon of the box
      * @param c is the categoryid
      */
-    private function _get_incidents_by_bounds($sw, $ne, $c = 0)
+    private function _get_incidents_by_bounds($sw, $ne, $c = 0,$keyword = "")
     {
 		// Get location_ids if we are to filter by location
 		$location_ids = array();
@@ -765,8 +768,18 @@ class Incidents_Api_Object extends Api_Object_Core {
 		{
 			$location_id_in = 'l.id IN ('.implode(',',$location_ids).')';
 		}
-		
-		$where = ' WHERE i.incident_active = 1 AND '.$location_id_in.' ';
+
+        $keyword_raw = (isset($keyword))? mysql_real_escape_string($keyword) : "";          
+        $keyword_raw = strip_tags($keyword_raw);
+        $keyword_raw =  Input::instance()->xss_clean($keyword_raw);
+        $keywords = explode(' ', $keyword_raw);
+        $match = "";
+        if (is_array($keywords) && !empty($keywords) && $keyword_raw != "") 
+        {
+            $match = " MATCH(i.incident_title,i.incident_description) AGAINST(\"*D+1:2,2:1 $keyword_raw\" IN BOOLEAN MODE) AND";
+        }
+
+		$where = ' WHERE '.$match.' i.incident_active = 1 AND '.$location_id_in.' ';
 
 		// Fix for pulling categories using the bounding box
 		// Credits to Antonoio Lettieri http://github.com/alettieri
@@ -778,11 +791,11 @@ class Incidents_Api_Object extends Api_Object_Core {
 			$join .= "\nINNER JOIN ".$this->table_prefix."category AS c ON c.id=ic.category_id ";
 
 			// Overwrite the current where clause in $where
-			$where = $join."\nWHERE c.id = $c AND i.incident_active = 1 AND $location_id_in";
+			$where = $join."\nWHERE $match c.id = $c AND i.incident_active = 1 AND $location_id_in";
 		}
 		
 		$sortby = " GROUP BY i.id ORDER BY $this->order_field $this->sort";
-		$limit = " LIMIT 0, $this->list_limit";
+		$limit = " LIMIT $this->list_offset, $this->list_limit";
 		
 		return $this->_get_incidents($where.$sortby, $limit);
         
