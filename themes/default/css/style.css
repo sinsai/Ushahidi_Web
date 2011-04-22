@@ -617,19 +617,23 @@ ul.category-filters li{
 	list-style-type:none;
 }
 
-ul.category-filters li a{
-    display: block;
+ul.category-filters li a {
+    display: inline-block;
     padding: 8px 10px 8px 10px;
 /*    padding: 8px 10px 8px 35px; maxf change */
     font-size: 14px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-weight: bold;
     text-decoration: none;
     color: #3F3F3F;
-    border: #E7E3DA 0px solid;
-    position: relative;
-    line-height: 17px;
-    overflow: hidden;
+    /*border: #E7E3DA 0px solid;*/
+    line-height: 1.2;
+    width: 261px;
+}
+
+ul.category-filters li a img {
+	padding-right: 0.5em;
+	vertical-align: middle;
 }
 
 ul.category-filters li a:hover, ul.category-filters li a.active {
