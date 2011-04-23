@@ -117,6 +117,27 @@ class Mobile_Controller extends Template_Controller {
             ->find_all();
 	}
 	
+	//no action is here.
+	//locatation to other controll.
+	public function __call($method, $arg)
+	{
+		$urlParameter = "/".$method;
+		if ( is_array($arg) && count($arg)>0 )
+		{
+			$urlParameter .= "/".implode("/", $arg);
+		} else {
+		}
+		$urlParameter .= "?".$_SERVER['QUERY_STRING'];
+		
+		if ( !in_array(substr($urlParameter, -1), array("?","&")) )
+		{
+			$urlParameter.="&";
+		}
+		$urlParameter .= "full=1";
+		
+		url::redirect($urlParameter);
+	}
+	
 	private function _category_count($category_id = false)
 	{
 		if ($category_id)
