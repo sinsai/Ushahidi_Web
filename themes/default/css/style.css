@@ -2390,3 +2390,8 @@ div#right_search_box{
 	width:200px;
 }
 
+/* banners */
+div.banner img{
+    margin-top:14px;
+}
+

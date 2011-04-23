@@ -202,6 +202,12 @@
 				</div>
 			<!--content-container-->
 			</div>
+                        <!--banner area-->
+                        <div class="banner">
+                            <a href="http://tasukeaijapan.jp/" target="_blank"><img src="/ushahidi/themes/default/images/banner_tasukeai.jpg" alt="助け合いジャパン"/ style="width:285;height:45"></a>
+                            <a href="http://www.hack4.jp/" target="_blank" rel="nofollow"><img src="http://sites.google.com/site/hackforjapan/RelatedInfo/unity/234x60.png" style="width:234px;height:60px;" alt="Hack For Japan 「コードでつなぐ。想いと想い」"></a>
+                        </div>
+                        <!--banner area-->
 		<!-- / right column -->
 		</div>
 		<!-- content column -->
