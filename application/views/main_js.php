@@ -98,13 +98,14 @@
 		/*
 		Close Popup
 		*/
-		function onPopupClose(evt)
+		function onPopupClose(event)
 		{
-            // selectControl.unselect(selectedFeature);
-			for (var i=0; i<map.popups.length; ++i)
-			{
-				map.removePopup(map.popups[i]);
-			}
+            selectControl.unselect(selectedFeature);
+            selectedFeature = null;
+			//for (var i=0; i<map.popups.length; ++i)
+			//{
+			//	map.removePopup(map.popups[i]);
+			//}
         }
 
 		/*
@@ -112,7 +113,7 @@
 		*/
         function onFeatureSelect(event)
 		{
-            selectedFeature = event;
+            selectedFeature = event.feature;
             // Since KML is user-generated, do naive protection against
             // Javascript.
 
