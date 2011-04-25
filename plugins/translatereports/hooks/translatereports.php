@@ -91,12 +91,12 @@ class translatereports {
 		
 		if (Kohana::config('translatereports.languages') == NULL)
 		{
-            if( count($this->cache->get('locales')) > 0 )
-            {
-                $view->locales = $this->cache->get('locales');
-            } else {
-                $view->locales = locale::get_i18n();
-            }
+			if( count($this->cache->get('locales')) > 0 )
+			{
+				$view->locales = $this->cache->get('locales');
+			} else {
+				$view->locales = locale::get_i18n();
+			}
 		}else{
 			$view->locales = Kohana::config('translatereports.languages');
 		}
@@ -184,12 +184,12 @@ class translatereports {
 		
 		if (Kohana::config('translatereports.languages') == NULL)
 		{
-            if( count($this->cache->get('locales')) > 0 )
-            {
-                $view->locales = $this->cache->get('locales');
-            } else {
-                $view->locales = locale::get_i18n();
-            }
+			if( count($this->cache->get('locales')) > 0 )
+			{
+				$view->locales = $this->cache->get('locales');
+			} else {
+				$view->locales = locale::get_i18n();
+			}
 		}else{
 			$view->locales = Kohana::config('translatereports.languages');
 		}

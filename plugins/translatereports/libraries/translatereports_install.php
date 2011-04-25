@@ -44,6 +44,6 @@ class Translatereports_Install {
 	 */
 	public function uninstall()
 	{
-#		$this->db->query('DROP TABLE `'.Kohana::config('database.default.table_prefix').'translatereports`');
+		$this->db->query('DROP TABLE `'.Kohana::config('database.default.table_prefix').'translatereports`');
 	}
 }
