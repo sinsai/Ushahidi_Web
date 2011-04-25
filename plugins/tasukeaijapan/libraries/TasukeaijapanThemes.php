@@ -138,7 +138,7 @@ class TasukeaijapanThemes {
 		// Inline Javascript
 		$inline_js = "<script type=\"text/javascript\">
                         <!--//
-			".'$(document).ready(function(){$(document).pngFix();});'.$this->js.
+			".'$(document).ready(function(){$("#map").pngFix();});'.$this->js.
                         "//-->
                         </script>";
 		
