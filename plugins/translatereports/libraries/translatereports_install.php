@@ -30,7 +30,7 @@ class Translatereports_Install {
 	{
 		// Create the database tables.
 		// Also include table_prefix in name
-		$this->db->query('CREATE TABLE `'.Kohana::config('database.default.table_prefix').'translatereports` (
+		$this->db->query('CREATE TABLE if not exists `'.Kohana::config('database.default.table_prefix').'translatereports` (
 				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 				  `incident_id` bigint(20) NOT NULL,
 				  `lang` varchar(10) NOT NULL DEFAULT \'0\',
@@ -44,6 +44,6 @@ class Translatereports_Install {
 	 */
 	public function uninstall()
 	{
-		$this->db->query('DROP TABLE `'.Kohana::config('database.default.table_prefix').'translatereports`');
+#		$this->db->query('DROP TABLE `'.Kohana::config('database.default.table_prefix').'translatereports`');
 	}
 }
