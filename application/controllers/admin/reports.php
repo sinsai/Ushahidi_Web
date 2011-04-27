@@ -1650,7 +1650,7 @@ class Reports_Controller extends Admin_Controller
         $categories = ORM::factory('category')
             ->where('category_visible', '1')
             ->where('parent_id', '0')
-            ->orderby('category_title', 'ASC')
+            ->orderby('category_type', 'DESC')
             ->find_all();
 
         return $categories;
