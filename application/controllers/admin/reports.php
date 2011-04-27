@@ -380,6 +380,7 @@ class Reports_Controller extends Admin_Controller
         $this->template->content->pagination = $pagination;
         $this->template->content->form_error = $form_error;
         $this->template->content->form_saved = $form_saved;
+        $this->template->content->form_action = $form_action;
 		// ORM分離
         $this->template->content->incident_persons = $incident_persons;
         $this->template->content->incident_messages = $incident_messages;

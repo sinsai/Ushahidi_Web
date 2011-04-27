@@ -121,7 +121,7 @@
                     <input type="hidden" name="level" value="<?php echo $level ?>">
                     ページ番号<input type="text" name="page" value="" size="3">
                    フィルタ条件： <input size="15" type="text" name="filter" id="filtertext" value="<?php echo isset($_GET['filter']) ? $_GET['filter'] : "" ?>">
-                    <input type="submit" />
+                    <input type="submit" value="<?php echo Kohana::lang('ui_admin.submitting');?>"/>
                     現在担当のユーザ:<div id="user" style='float:right;'></div>
                   </span>
                   <script type="text/javascript">

@@ -210,5 +210,6 @@
 	'sort_asc' => '昇順',
 	'sort_desc' => '降順',
 	'down_range' => '絞込み',
+	'submitting' => '実行',
 	);
 ?>
