@@ -23,7 +23,6 @@
 						if($category_info[2] != NULL && file_exists(Kohana::config('upload.relative_directory').'/'.$category_info[2])) {
 							$category_image = html::image(array(
 								'src'=>Kohana::config('upload.relative_directory').'/'.$category_info[2],
-								'style'=>'float:left;padding-right:5px;'
 								));
 							$color_css = '';
 						}
@@ -42,7 +41,6 @@
                                                             if($child_info[2] != NULL && file_exists(Kohana::config('upload.relative_directory').'/'.$child_info[2])) {
                                                                     $child_image = html::image(array(
                                                                             'src'=>Kohana::config('upload.relative_directory').'/'.$child_info[2],
-                                                                            'style'=>'float:left;padding-right:5px;'
                                                                             ));
                                                                     $color_css = '';
                                                             }
