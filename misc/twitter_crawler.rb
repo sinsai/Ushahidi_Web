@@ -37,7 +37,8 @@ end
 def expand_url(url)
   uri = url.kind_of?(URI) ? url : URI.parse(url)
   Net::HTTP.start(uri.host, uri.port) do |io|
-    r = io.head(uri.path)
+    path = uri.path.empty? ? "/" : uri.path
+    r = io.head(path)
     r['Location'] || uri.to_s
   end
 end
