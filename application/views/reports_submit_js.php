@@ -257,9 +257,13 @@
 			// Create the markers layer
 			markers = new OpenLayers.Layer.Markers("Markers");
 			map.addLayer(markers);
-			
+			var lon = $.query.get("lon") == "" ? <?php echo $longitude; ?> : $.query.get("lon") ;
+			var lat = $.query.get("lat") == "" ? <?php echo $latitude; ?> : $.query.get("lat") ;
+			var zoom = $.query.get("zoom") == "" ? <?php echo $default_zoom; ?> : $.query.get("zoom") ;
 			// create a lat/lon object
-			var myPoint = new OpenLayers.LonLat(<?php echo $longitude; ?>, <?php echo $latitude; ?>);
+			var myPoint = new OpenLayers.LonLat(lon, lat);
+			
+			
 			myPoint.transform(proj_4326, map.getProjectionObject());
 			
 			// create a marker positioned at a lon/lat
@@ -267,7 +271,7 @@
 			markers.addMarker(marker);
 			
 			// display the map centered on a latitude and longitude (Google zoom levels)
-			map.setCenter(myPoint, <?php echo $default_zoom; ?>);
+			map.setCenter(myPoint, zoom);
 			
 			// Detect Map Clicks
 			map.events.register("click", map, function(e){

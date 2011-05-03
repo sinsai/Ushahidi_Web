@@ -117,6 +117,8 @@ class Themes_Core {
 		$core_js .= html::script($this->js_url."media/js/jquery", true);
 		$core_js .= html::script($this->js_url."media/js/jquery.ui.min", true);
 		$core_js .= html::script($this->js_url."media/js/jquery.pngFix", true);
+		$core_js .= html::script($this->js_url."media/js/jquery.query-1.2.3", true);
+		
 		
 		if ($this->map_enabled)
 		{
