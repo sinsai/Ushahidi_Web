@@ -22,28 +22,6 @@ echo map::layers_scripts(TRUE);
 <!-- header -->
 <div id="header">
 
-<!-- searchbox -->
-<div id="searchbox">
-<!-- languages -->
-<!-- <?php echo $languages;?> -->
-<!-- / languages -->
-<!-- searchform -->
-<?php echo $search; ?>
-<!-- / searchform -->
-<br sytle="clear:both;"/>
-<div id="nations">
-SELECT LANGUAGE<br>
-<?php
-$nations = array("ja_JP","en_US","ko_KR","zh_CN","de_DE","fr_FR","it_IT");
-foreach ($nations as $nation){
-    echo "<a href='?l=".$nation."'><img src='".url::base()."/media/img/flags/".$nation.".png' ></a>";
-}
-?>
-</div>
-
-</div>
-<!-- / searchbox -->
-
 <!-- logo -->
 <div id="logo">
 
@@ -52,6 +30,22 @@ foreach ($nations as $nation){
 
 </div>
 <!-- / logo -->
+
+<!-- searchbox -->
+<div id="searchbox">
+<div id="nations">
+<p><span class="uppercase">Select Language</span>
+<?php
+$nations = array("ja_JP","en_US","ko_KR","zh_CN","de_DE","fr_FR","it_IT");
+foreach ($nations as $nation){
+    echo "<a href='?l=".$nation."'><img src='".url::base()."/media/img/flags/".$nation.".png' ></a>";
+}
+?>
+</p></div>
+<!-- / searchbox -->
+<!-- searchform -->
+<?php echo $search; ?>
+<!-- / searchform -->
 
 <!-- submit incident -->
 <?php echo $submit_btn; ?>
@@ -67,7 +61,6 @@ foreach ($nations as $nation){
 <!-- mainmenu -->
 <div id="mainmenu">
 <ul>
-<!-- <?php nav::main_tabs($this_page); ?> -->
 <?php
 $menu = "";
 $lang = "";
@@ -89,26 +82,10 @@ $menu .= "<li><a href=\"".url::site()."reports".$lang."\" ";
 $menu .= ($this_page == 'reports') ? " class=\"active\"" : "";
 $menu .= ">".Kohana::lang('ui_main.reports')."</a></li>";
 
-// Reports Submit
-//if (Kohana::config('settings.allow_reports'))
-//{
-//$menu .= "<li><a href=\"".url::site()."reports/submit\" ";
-//$menu .= ($this_page == 'reports_submit') ? " class=\"active\"":"";
-//$menu .= ">".Kohana::lang('ui_main.submit')."</a></li>";
-//}
-
 // Alerts
 $menu .= "<li><a href=\"".url::site()."alerts".$lang."\" ";
 $menu .= ($this_page == 'alerts') ? " class=\"active\"" : "";
 $menu .= ">".Kohana::lang('ui_main.alerts')."</a></li>";
-
-// Contacts
-if (Kohana::config('settings.site_contact_page'))
-{
-$menu .= "<li><a href=\"".url::site()."contact".$lang."\" ";
-$menu .= ($this_page == 'contact') ? " class=\"active\"" : "";
-$menu .= ">".Kohana::lang('ui_main.contact')."</a></li>";
-}
 
 // Custom Pages
 $pages = ORM::factory('page')->where('page_active', '1')->find_all();

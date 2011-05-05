@@ -226,10 +226,10 @@ class Themes_Core {
 		$search = "";
 		$search .= "<div class=\"search-form\">";
 		$search .= "<form method=\"get\" id=\"search\" action=\"".url::site()."search/\">";
-		$search .= "<ul>";
-		$search .= "<li><input type=\"text\" name=\"k\" value=\"\" class=\"text\" /></li>";
-		$search .= "<li><input type=\"submit\" name=\"b\" class=\"searchbtn\" value=\"search\" /></li>";
-		$search .= "</ul>";
+		$search .= "<p>";
+		$search .= "<input type=\"text\" name=\"k\" value=\"\" class=\"text\" />";
+		$search .= "<input type=\"submit\" name=\"b\" class=\"searchbtn\" value=\"search\" />";
+		$search .= "</p>";
 		$search .= "</form>";
 		$search .= "</div>";
 		
@@ -245,8 +245,10 @@ class Themes_Core {
 		
 		if (Kohana::config('settings.allow_reports'))
 		{
-			$btn .= "<div class=\"submit-incident clearingfix\">";
+			$btn .= "<div class=\"submit-incident\">";
+            $btn .= "<p>";
 			$btn .= "<a href=\"".url::site()."reports/submit"."\">".Kohana::lang('ui_main.submit')."</a>";
+            $btn .= "</p>";
 			$btn .= "</div>";
 		}
 		

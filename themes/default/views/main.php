@@ -4,6 +4,7 @@
 
 	<?php if($site_message != '') { ?>
 		<div class="news-box">
+            <h2 class="uppercase">News</h2>
 			<?php echo $site_message; ?>
 		</div>
 		<div class="help-box">
@@ -170,9 +171,8 @@
 			Event::run('ushahidi_action.main_sidebar');
 			?>
 			<!--content-container-->
-			<div class="content-container clearingfix">
 				<!--officialnews-container-->
-				<div class="officialnews-container">
+				<div class="officialnews-container section">
 					<div class="clearingfix">
 						<div style="float:left"><h5><?php echo Kohana::lang('ui_main.official_news'); ?></h5></div>
 						<div style="float:right"><a class="more" href="<?php echo url::site() . 'feeds' ?>"><?php echo Kohana::lang('ui_main.view_more'); ?></a></div>
@@ -198,16 +198,30 @@
 									echo "</div>";
 								}
 							?>
-				<!--officialnews-container-->
-				</div>
-			<!--content-container-->
-			</div>
-                        <!--banner area-->
-                        <div class="banner">
-                            <a href="http://tasukeaijapan.jp/" target="_blank"><img src="/ushahidi/themes/default/images/banner_tasukeai.jpg" alt="助け合いジャパン"/ style="width:285;height:45"></a>
-                            <a href="http://www.hack4.jp/" target="_blank" rel="nofollow"><img src="http://sites.google.com/site/hackforjapan/RelatedInfo/unity/234x60.png" style="width:234px;height:60px;" alt="Hack For Japan 「コードでつなぐ。想いと想い」"></a>
-                        </div>
-                        <!--banner area-->
+                </div><!-- / officialnews-container-->
+                <!-- #related-link -->
+            <div id="related-link" class="section">
+                <h5>関連リンク</h5>
+                <dl>
+                    <dt><a href="http://www.sinsai.info/ushahidi/page/index/1">安否確認・伝言板</a></dt>
+                    <dd>Googleパーソンファインダーや、各ケータイキャリアの災害掲示板などのリンク集。</dd>
+                </dl>
+                <dl>
+                    <dt><a href="http://www.sinsai.info/ushahidi/page/index/2">被災地画像/映像</a></dt>
+<dd>空撮/衛星画像や、各国TV番組の映像や政府のメッセージやなどのリンク集。</dd>
+                </dl>
+                <dl>
+                    <dt><a href="http://sinsai-info.blogspot.com/" target="_blank">sinsai.infoオフィシャルブログ</a></dt>
+                    <dd>ボランティアスタッフが、更新情報やお知らせなどをお伝えし
+ています。</dd>
+                </dl>
+                </div><!-- #related-link -->
+                <!--banner area-->
+                <div class="banner">
+                    <a href="http://tasukeaijapan.jp/" target="_blank"><img src="/ushahidi/themes/default/images/banner_tasukeai.jpg" alt="助け合いジャパン"/ style="width:285;height:45"></a>
+                    <a href="http://www.hack4.jp/" target="_blank" rel="nofollow"><img src="http://sites.google.com/site/hackforjapan/RelatedInfo/unity/234x60.png" style="width:234px;height:60px;" alt="Hack For Japan 「コードでつなぐ。想いと想い」"></a>
+                </div>
+                <!--banner area-->
 		<!-- / right column -->
 		</div>
 		<!-- content column -->
