@@ -92,7 +92,7 @@ class Reports_Controller extends Main_Controller {
 		{
 			$northeast = explode(",",$_GET['ne']);
 		}
-		//指定地区の指定半径内インシデント取得でGoogleMAPAPIで緯度経度を取得できなかった場合DBを取りに行かないようにするためのフラグ
+		//指定地区の指定半径内インシデント取得でAPIで緯度経度を取得できなかった場合DBを取りに行かないようにするためのフラグ
 		$dbget_flg = true;
 		$this->template->content->choices_flg = false;
 		//指定地区の指定半径内インシデント取得処理
