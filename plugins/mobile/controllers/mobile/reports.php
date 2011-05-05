@@ -67,6 +67,7 @@ class Reports_Controller extends Mobile_Controller {
 		//指定地区の指定半径内インシデント取得処理
 		$location_ids = array();
 		$select_dist = "";
+		$area_name = "";
 		if(isset($_GET["address"]) && trim($_GET["address"]) !== "" && isset($_GET["distance"]) && is_numeric($_GET["distance"]) && $_GET["distance"] > 0){
 			$address = urlencode($_GET["address"]);
 			// http://www.geocoding.jp/を利用して指定地区名の緯度経度を取得
@@ -148,7 +149,7 @@ class Reports_Controller extends Mobile_Controller {
 				));
 		$this->template->content->pagination = $pagination;
     $query_for_incidents = $query;
-    if(isset($_GET["order"])){
+    if($area_name){
 		// ソート順を定義
 		if(isset($_GET["order"]) && $_GET["order"]=="new"){
 			// 新着順
@@ -158,10 +159,8 @@ class Reports_Controller extends Mobile_Controller {
 			$query_for_incidents .= " ORDER BY (round(sqrt(pow((".$this->table_prefix."l.latitude - ".$lat_center.")/0.0111, 2) + pow((".$this->table_prefix."l.longitude - ".$lon_center.")/0.0091, 2)), 1)) ASC , incident_date DESC LIMIT ";
 		}
     }elseif(isset($_COOKIE["lat"]) && isset($_COOKIE["lng"]) && $_COOKIE["lat"] != "na" && $_COOKIE["lng"] != "na") {
-    	echo "2";
       $query_for_incidents .= " ORDER BY (round(sqrt(pow((".$this->table_prefix."l.latitude - ".$lat_center.")/0.0111, 2) + pow((".$this->table_prefix."l.longitude - ".$lon_center.")/0.0091, 2)), 1)) ASC LIMIT ";
     }else{
-    	echo "3";
       $query_for_incidents .= " ORDER BY incident_date DESC LIMIT ";
     }
     $query_for_incidents .= (int) Kohana::config('mobile.items_per_page') . " OFFSET ".$pagination->sql_offset;
