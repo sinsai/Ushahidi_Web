@@ -43,6 +43,18 @@ class Comments_Api_Object extends Api_Object_Core {
         {
             $this->by = $this->request['by'];
         }
+
+        if ($this->api_service->verify_array_index($this->request, 'limit'))
+        {
+            $this->set_list_limit($this->request['limit']);
+        } 
+        
+        if ($this->api_service->verify_array_index($this->request, 'offset'))
+        {
+            $this->set_list_offset($this->request['offset']);
+        }else{
+            $this->set_list_offset(0);
+        }
         
         switch ($this->by)
         {
@@ -130,12 +142,10 @@ class Comments_Api_Object extends Api_Object_Core {
         $json_item = array();
 
         $this->query = "SELECT * FROM comment $where $limit";
-        
         $items = $this->db->query($this->query);
 
         // Set the no. of records returned
         $this->record_count = $items->count();
-        
         if ($this->response_type == "xml") 
         {
             $xml->openMemory();
@@ -156,7 +166,7 @@ class Comments_Api_Object extends Api_Object_Core {
         {
             if ($this->response_type == "json") 
             {
-                $json_item = (array) $list_item;
+                $json_item[] = $list_item;
             }
             else 
             {
@@ -197,7 +207,6 @@ class Comments_Api_Object extends Api_Object_Core {
         else 
         {
             $json = array("payload" => array("comments" => $json_item));
-
             return $this->array_as_json($json);
         }
     }
@@ -211,7 +220,7 @@ class Comments_Api_Object extends Api_Object_Core {
     {
         $where = "\nWHERE comment_spam = 1";
         $where .= "\nORDER BY comment_date DESC";
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
 
         return $this->_get_comment_list($where, $limit); 
     }
@@ -228,7 +237,7 @@ class Comments_Api_Object extends Api_Object_Core {
     {
         $where = "\nWHERE comment_spam = 0";
         $where .= "\nORDER BY comment_date DESC";
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
 
         return $this->_get_comment_list($where, $limit); 
     }
@@ -245,7 +254,7 @@ class Comments_Api_Object extends Api_Object_Core {
     {
         $where = "\nWHERE comment_active = 1 AND comment_spam = 0";
         $where .= "\nORDER BY comment_date DESC";
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
 
         return $this->_get_comment_list($where, $limit); 
 
@@ -263,7 +272,7 @@ class Comments_Api_Object extends Api_Object_Core {
     {
         $where = "\nWHERE comment_active = 0 AND comment_spam = 0";
         $where .= "\nORDER BY comment_date DESC";
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
 
         return $this->_get_comment_list($where, $limit); 
     }

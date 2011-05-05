@@ -37,7 +37,8 @@ end
 def expand_url(url)
   uri = url.kind_of?(URI) ? url : URI.parse(url)
   Net::HTTP.start(uri.host, uri.port) do |io|
-    r = io.head(uri.path)
+    path = uri.path.empty? ? "/" : uri.path
+    r = io.head(path)
     r['Location'] || uri.to_s
   end
 end
@@ -58,11 +59,16 @@ def put_to_db(tweet)
                :reporter_email=>nil,
                :reporter_phone=>nil,
                :reporter_ip=>nil,
-             ).set(
-               :reporter_first=>tweet['user']['screen_name'],
-               :reporter_date=>Time.now # datetime
-             ).save_changes
-  reporter.set(:level_id=>Level.find(:level_weight => 0).id).save_changes unless reporter.level_id
+             )
+  # find*の結果に対してsetをするとUPDATEクエリーに'LIMIT 1'が含まれる問題に対応。 #430
+  reporters = Reporter.filter(:id=>reporter.id)
+  reporters.set(
+    :reporter_first=>tweet['user']['screen_name'],
+    :reporter_date=>Time.now # datetime
+  )
+  reporters.set(:level_id=>Level.find(:level_weight => 0).id) unless reporter.level_id
+  # reporterにもlevel_idを反映させるため
+  reporter = reporters.first
   tweet_date = Time.parse(tweet['created_at'])
   if reporter.level_id > 1
     type = case tweet['text']+tweet['text_raw']
@@ -71,7 +77,7 @@ def put_to_db(tweet)
            when /live at/, /ustre\.?am/, /#nhk/, /nico\.ms/, /lv\d+/, /nicovideo/
              2
            when /GIZMODO/i, /GIGAZINE/i, /NEWS4VIP/i, /APPBANK/i, /MAINICHI/i, /HEADLINES\.YAHOO/i
-            3
+             3
            when /拡散希望/, /コピペ/, /followme/
              4
            else; 0
