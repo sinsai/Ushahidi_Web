@@ -25,7 +25,7 @@ echo map::layers_scripts(TRUE);
 <!-- logo -->
 <div id="logo">
 
-<h1><a href="/"><img src="/ushahidi//media/img/logo.gif" alt="東北沖地震 震災情報サイト sinsai.info: 3/11 東北地方太平洋沖地震,Earthquake Tohoku area in Japan 3/11" /></a></h1>
+<h1><a href="/"><img src="/ushahidi/media/img/logo.gif" alt="東北沖地震 震災情報サイト sinsai.info: 3/11 東北地方太平洋沖地震,Earthquake Tohoku area in Japan 3/11" /></a></h1>
 <span class="dnone"><?php echo $site_tagline; ?></span>
 
 </div>
