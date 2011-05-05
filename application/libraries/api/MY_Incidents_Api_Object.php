@@ -314,7 +314,53 @@ class Incidents_Api_Object extends Api_Object_Core {
         $items = $this->db->query($this->query);
         // Set the no. of records returned
         $this->record_count = $items->count();
-        
+
+        $incidentids = array();
+        foreach($items as $item){
+			$incidentids[] = $item->incidentid;
+        }
+
+        // Fetch categories
+        $this->query = " SELECT c.category_title AS categorytitle, 
+            c.id as cid ,ic.incident_id as incidentid " . "FROM ".$this->table_prefix.
+            "category AS c INNER JOIN ".
+            $this->table_prefix."incident_category AS ic ON " .
+            "ic.category_id = c.id WHERE ic.incident_id IN(".implode(',',$incidentids).")";
+
+        $category_items_temp = $this->db->query( $this->query );
+        $category_items = array();
+        $temp_index = 1;
+        foreach($category_items_temp as $category_item){
+            $category_items[$category_item->incidentid][$temp_index]['categorytitle'] = $category_item->categorytitle;
+            $category_items[$category_item->incidentid][$temp_index]['cid'] = $category_item->cid;
+            $temp_index++;
+        }
+        unset($category_items_temp);
+        //fetch media associated with an incident
+        $this->query = "SELECT i.id as incidentid , m.id as mediaid, m.media_title AS 
+            mediatitle, " .
+            "m.media_type AS mediatype, m.media_link AS medialink, " .
+            "m.media_thumb AS mediathumb FROM ".$this->table_prefix.
+            "media AS m " . "INNER JOIN ".$this->table_prefix.
+            "incident AS i ON i.id = m.incident_id " .
+            "WHERE i.id IN(".implode(',',$incidentids).")";
+
+        $media_items = $this->db->query($this->query);
+        $media_items_temp = $this->db->query( $this->query );
+        $media_items = array();
+        $temp_index = 1;
+        foreach($media_items_temp as $media_item){
+            $media_items[$media_item->incidentid][$temp_index]['mediaid'] = $media_item->mediaid;
+            $media_items[$media_item->incidentid][$temp_index]['mediatitle'] = $media_item->mediatitle;
+            $media_items[$media_item->incidentid][$temp_index]['mediatype'] = $media_item->mediatype;
+            $media_items[$media_item->incidentid][$temp_index]['medialink'] = $media_item->medialink;
+            $media_items[$media_item->incidentid][$temp_index]['mediathumb'] = $media_item->mediathumb;
+            $temp_index++;
+        }
+        unset($media_items_temp);
+        unset($temp_index);
+
+
         $i = 0;
         
         //No record found.
@@ -342,33 +388,23 @@ class Incidents_Api_Object extends Api_Object_Core {
             $xml->writeElement('longitude',$item->locationlongitude);
             $xml->endElement();
             $xml->startElement('categories');
-
-            // Fetch categories
-            $this->query = " SELECT c.category_title AS categorytitle, 
-                c.id AS cid " . "FROM ".$this->table_prefix.
-                "category AS c INNER JOIN ".
-                $this->table_prefix."incident_category AS ic ON " .
-                "ic.category_id = c.id WHERE ic.incident_id =".
-                $item->incidentid;
-
-            $category_items = $this->db->query( $this->query );
             $json_report_categories[$item->incidentid] = array();           
-            foreach ($category_items as $category_item)
+            foreach ($category_items[$item->incidentid] as $category_item)
             {
                 if ($this->response_type == 'json')
                 {
                     $json_report_categories[$item->incidentid][] = array(
                             "category"=> array(
-                                "id" => $category_item->cid,
-                                "title" => $category_item->categorytitle
+                                "id" => $category_item['cid'],
+                                "title" => $category_item['categorytitle']
                             )
                         );
                 } 
                 else 
                 {
                     $xml->startElement('category');
-                    $xml->writeElement('id',$category_item->cid);
-                    $xml->writeElement('title', $category_item->categorytitle );
+                    $xml->writeElement('id',$category_item['cid']);
+                    $xml->writeElement('title', $category_item['categorytitle'] );
                     $xml->endElement();
                 }
                 
@@ -376,25 +412,15 @@ class Incidents_Api_Object extends Api_Object_Core {
 
             $xml->endElement();//end categories
 
-            //fetch media associated with an incident
-            $this->query = "SELECT m.id as mediaid, m.media_title AS 
-                mediatitle, " .
-                "m.media_type AS mediatype, m.media_link AS medialink, " .
-                "m.media_thumb AS mediathumb FROM ".$this->table_prefix.
-                "media AS m " . "INNER JOIN ".$this->table_prefix.
-                "incident AS i ON i.id = m.incident_id " .
-                "WHERE i.id =". $item->incidentid;
-
-            $media_items = $this->db->query($this->query);
             $json_report_media[$item->incidentid] = array();
 
-            if (count($media_items) > 0)
+            if (isset($media_items[$item->incidentid]) && count($media_items[$item->incidentid]) > 0)
             {
                 $xml->startElement('mediaItems');
                 
-                foreach ($media_items as $media_item)
+                foreach ($media_items[$item->incidentid] as $media_item)
                 {
-	                if ($media_item->mediatype != 1)
+	                if ($media_item['mediatype'] != 1)
 					{
                         $upload_path = "";
                     }
@@ -402,43 +428,43 @@ class Incidents_Api_Object extends Api_Object_Core {
                     if($this->response_type == 'json')
                     {	
                         $json_report_media[$item->incidentid] = array(
-                            "id" => $media_item->mediaid,
-                            "type" => $media_item->mediatype,
-                            "link" => $upload_path.$media_item->medialink,
-                            "thumb" => $upload_path.$media_item->mediathumb,
+                            "id" => $media_item['mediaid'],
+                            "type" => $media_item['mediatype'],
+                            "link" => $upload_path.$media_item['medialink'],
+                            "thumb" => $upload_path.$media_item['mediathumb'],
                         );
                     } 
                     else 
                     {
                         $xml->startElement('media');
                         
-                        if( $media_item->mediaid != "" )
+                        if( $media_item['mediaid'] != "" )
                         {
-                            $xml->writeElement('id',$media_item->mediaid);
+                            $xml->writeElement('id',$media_item['mediaid']);
                         }
 
-                        if( $media_item->mediatitle != "" )
+                        if( $media_item['mediatitle'] != "" )
                         {
                             $xml->writeElement('title',
-                                $media_item->mediatitle);
+                                $media_item['mediatitle']);
                         }
 
-                        if( $media_item->mediatype != "" )
+                        if( $media_item['mediatype'] != "" )
                         {
                             $xml->writeElement('type',
-                                $media_item->mediatype);
+                                $media_item['mediatype']);
                         }
 
-                        if( $media_item->medialink != "" ) 
+                        if( $media_item['medialink'] != "" ) 
                         {
                             $xml->writeElement('link',
-                                $upload_path.$media_item->medialink);
+                                $upload_path.$media_item['medialink']);
                         }
 
-                        if( $media_item->mediathumb != "" ) 
+                        if( $media_item['mediathumb'] != "" ) 
                         {
                             $xml->writeElement('thumb',
-                                $upload_path.$media_item->mediathumb);
+                                $upload_path.$media_item['mediathumb']);
                         }
 
                         $xml->endElement();
