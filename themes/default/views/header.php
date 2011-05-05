@@ -42,7 +42,6 @@ foreach ($nations as $nation){
 }
 ?>
 </p></div>
-<!-- / searchbox -->
 <!-- searchform -->
 <?php echo $search; ?>
 <!-- / searchform -->
@@ -51,6 +50,8 @@ foreach ($nations as $nation){
 <?php echo $submit_btn; ?>
 <!-- / submit incident -->
 
+</div>
+<!-- / searchbox -->
 </div>
 <!-- / header -->
 
