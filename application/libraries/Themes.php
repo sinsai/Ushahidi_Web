@@ -228,7 +228,7 @@ class Themes_Core {
 		$search .= "<form method=\"get\" id=\"search\" action=\"".url::site()."search/\">";
 		$search .= "<p>";
 		$search .= "<input type=\"text\" name=\"k\" value=\"\" class=\"text\" />";
-		$search .= "<input type=\"submit\" name=\"b\" class=\"searchbtn\" value=\"search\" />";
+		$search .= "<input type=\"submit\" name=\"b\" class=\"searchbtn\" value=\"サイト内検索\" />";
 		$search .= "</p>";
 		$search .= "</form>";
 		$search .= "</div>";

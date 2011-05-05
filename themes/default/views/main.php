@@ -131,10 +131,7 @@
 				<?php
 			}
 			?>
-			
-			
-			<br />
-		
+
 			<!-- additional content -->
 			<?php
 			if (Kohana::config('settings.allow_reports'))
