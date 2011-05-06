@@ -34,7 +34,9 @@ class Tasukeaiimport_Controller extends Template_Controller {
                 $active = 1;
                 $long = "";
                 $matches = array();
-                if(preg_match("/\s*\[ボランティア名称\]\s*\n([^\n]+)\n/", $message->body, $matches)){
+                if(strcmp($message->title["nil"],"true") != 0) {
+                    $title = (string)$message->title;
+                }else if(preg_match("/\s*\[ボランティア名称\]\s*\n([^\n]+)\n/", $message->body, $matches)){
                     $title = $matches[1];
                 }else if(preg_match("/\s*\[主催\]\s*([^\n]+)\n/", $message->body, $matches)){
                     $title = $matches[1];
@@ -44,7 +46,10 @@ class Tasukeaiimport_Controller extends Template_Controller {
                     $title = "無題";
                     $active = 0;
                 }
-                if(preg_match("/\s*\[緯度経度\]\s*\n([^,]+),([^\n]+)/", $message->body, $matches)){
+                if(strcmp($message->latitude["nil"],"true") != 0 && strcmp($message->longitude["nil"],"true") != 0){
+                    $lat = (float)$message->latitude;
+                    $long = (float)$message->longitude;
+                }else if(preg_match("/\s*\[緯度経度\]\s*\n([^,]+),([^\n]+)/", $message->body, $matches)){
                     $lat = $matches[1];
                     $long = $matches[2];
                 }
@@ -70,7 +75,7 @@ class Tasukeaiimport_Controller extends Template_Controller {
                 // STEP 1: SAVE LOCATION
                 if(isset($lat) && isset($long)){
                     $location = new Location_Model("");
-                    $location->location_name = $message->address." ";
+                    $location->location_name = (string)$message->address;
                     $location->latitude = $lat;
                     $location->longitude = $long;
                     $location->location_date = date("Y-m-d H:i:s",time());
@@ -80,7 +85,7 @@ class Tasukeaiimport_Controller extends Template_Controller {
                     
                 }
                 $incident->incident_title = $title;
-                $incident->incident_description = $message->body." ";
+                $incident->incident_description = (string)$message->body;
                 
                 
                 $incident->incident_date = date( "Y-m-d H:i:s", strtotime($message->{"created-at"}) );
@@ -106,7 +111,11 @@ class Tasukeaiimport_Controller extends Template_Controller {
                 
                 $incident_category = new Incident_Category_Model();
                 $incident_category->incident_id = $incident->id;
-                $incident_category->category_id = 13; //求む
+                if(strcmp($message->target,"2") == 0){
+                    $incident_category->category_id = 9; //救援物資
+                } else {
+                    $incident_category->category_id = 13; //求む
+                }
                 $incident_category->save();
 
         }
