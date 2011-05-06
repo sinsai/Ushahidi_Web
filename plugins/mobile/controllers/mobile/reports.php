@@ -16,6 +16,7 @@
 */
 
 class Reports_Controller extends Mobile_Controller {
+	var $api_timeout = 60;
 
     public function __construct()
     {
@@ -57,14 +58,81 @@ class Reports_Controller extends Mobile_Controller {
 			}
 			$keyword_like = rtrim($keyword_like," AND ");
 		}
-    $query =  "SELECT DISTINCT i.*, l.location_name FROM `".$this->table_prefix."incident`".
+		//ジオコーディング
+		$this->template->content->area_name = "";
+		$this->template->content->disp_distance = "";
+		//指定地区の指定半径内インシデント取得でAPIで緯度経度を取得できなかった場合DBを取りに行かないようにするためのフラグ
+		$dbget_flg = true;
+		$this->template->content->choices_flg = false;
+		//指定地区の指定半径内インシデント取得処理
+		$location_ids = array();
+		$select_dist = "";
+		$area_name = "";
+		if(isset($_GET["address"]) && trim($_GET["address"]) !== "" && isset($_GET["distance"]) && is_numeric($_GET["distance"]) && $_GET["distance"] > 0){
+			$address = urlencode($_GET["address"]);
+			// http://www.geocoding.jp/を利用して指定地区名の緯度経度を取得
+			$geocoding_url = 'http://www.geocoding.jp/api/?q='.$address;
+		    $geo_geocoding = @file_get_contents($geocoding_url,false,stream_context_create(array('http' => array('timeout'=>$this->api_timeout))));
+			// APIのエラーハンドリング
+			if($geo_geocoding === FALSE){
+				if(count($http_response_header) > 0){
+					$stat_tokens = explode(' ', $http_response_header[0]);
+					switch($stat_tokens[1]){
+						case 404:
+						// 404 Not found の場合
+						break;
+						case 500:
+						// 500 Internal Server Error の場合
+						break;
+						default:
+						// その他
+						break;
+					}
+				}else{
+					// タイムアウトの場合
+				}
+			}else{
+				$geo_geocoding = simplexml_load_string($geo_geocoding);
+			}
+			//結果の取得とインシデントの取得
+			if(isset($geo_geocoding->coordinate)){
+				if(isset($geo_geocoding->coordinate->lat) && isset($geo_geocoding->coordinate->lng)){
+					$lat_center = $geo_geocoding->coordinate->lat;
+					$lon_center = $geo_geocoding->coordinate->lng;
+					$area_name = $geo_geocoding->address;
+					$_GET["address"] = $this->template->content->area_name = trim($area_name);
+					if($_GET["distance"] >= 1){
+						$this->template->content->disp_distance = $_GET["distance"]."km";
+					}else{
+						$this->template->content->disp_distance = ($_GET["distance"]*1000)."m";
+					}
+					$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE (round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) <= '.$_GET["distance"];
+					$query = $db->query($query);
+					foreach ( $query as $items )
+					{
+						$location_ids[] =  $items->id;
+					}
+					$select_dist = ",(round(sqrt(pow((l.latitude - $lat_center)/0.0111, 2) + pow((l.longitude - $lon_center)/0.0091, 2)), 1)) as dist";
+				}
+			}elseif(isset($geo_geocoding->choices)){
+				$this->template->content->choices_flg = true;
+				$dbget_flg = false;
+			}
+		}
+		$location_id_in = '1=1';
+		if (count($location_ids) > 0)
+		{
+			$location_id_in = 'location_id IN ('.implode(',',$location_ids).')';
+		}
+    $query =  "SELECT DISTINCT i.*, l.location_name ".$select_dist.
+             " FROM `".$this->table_prefix."incident`".
              " AS i JOIN `".$this->table_prefix."incident_category`".
              " AS ic ON (i.`id` = ic.`incident_id`)".
              " JOIN `".$this->table_prefix."category`".
              " AS c ON (c.`id` = ic.`category_id`)".
              " JOIN `".$this->table_prefix."location`".
              " AS l ON (i.`location_id` = l.`id`)".
-             " WHERE `incident_active` = '1' AND $keyword_like $filter";
+             " WHERE `incident_active` = '1' AND $keyword_like AND $location_id_in $filter";
     // Location
     if(isset($_COOKIE["lat"]) && isset($_COOKIE["lng"]) && $_COOKIE["lat"] != "na" && $_COOKIE["lng"] != "na") {
       $lat_center = (float)$_COOKIE["lat"];
@@ -81,8 +149,17 @@ class Reports_Controller extends Mobile_Controller {
 				));
 		$this->template->content->pagination = $pagination;
     $query_for_incidents = $query;
-    if(isset($_COOKIE["lat"]) && isset($_COOKIE["lng"]) && $_COOKIE["lat"] != "na" && $_COOKIE["lng"] != "na") {
-      $query_for_incidents .= ' ORDER BY (round(sqrt(pow(('.$this->table_prefix.'l.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'l.longitude - '.$lon_center.')/0.0091, 2)), 1)) ASC LIMIT ';
+    if($area_name){
+		// ソート順を定義
+		if(isset($_GET["order"]) && $_GET["order"]=="new"){
+			// 新着順
+			$query_for_incidents .= " ORDER BY incident_date DESC , (round(sqrt(pow((".$this->table_prefix."l.latitude - ".$lat_center.")/0.0111, 2) + pow((".$this->table_prefix."l.longitude - ".$lon_center.")/0.0091, 2)), 1)) ASC LIMIT ";
+		}elseif(isset($_GET["order"]) && $_GET["order"]=="dist"){
+			// 近隣順
+			$query_for_incidents .= " ORDER BY (round(sqrt(pow((".$this->table_prefix."l.latitude - ".$lat_center.")/0.0111, 2) + pow((".$this->table_prefix."l.longitude - ".$lon_center.")/0.0091, 2)), 1)) ASC , incident_date DESC LIMIT ";
+		}
+    }elseif(isset($_COOKIE["lat"]) && isset($_COOKIE["lng"]) && $_COOKIE["lat"] != "na" && $_COOKIE["lng"] != "na") {
+      $query_for_incidents .= " ORDER BY (round(sqrt(pow((".$this->table_prefix."l.latitude - ".$lat_center.")/0.0111, 2) + pow((".$this->table_prefix."l.longitude - ".$lon_center.")/0.0091, 2)), 1)) ASC LIMIT ";
     }else{
       $query_for_incidents .= " ORDER BY incident_date DESC LIMIT ";
     }
