@@ -70,7 +70,7 @@ class Themes_Core {
 		$core_css .= "<!--[if lte IE 7]>".html::stylesheet($this->css_url."media/css/iehacks","",true)."<![endif]-->";
 		$core_css .= "<!--[if IE 7]>".html::stylesheet($this->css_url."media/css/ie7hacks","",true)."<![endif]-->";
 		$core_css .= "<!--[if IE 6]>".html::stylesheet($this->css_url."media/css/ie6hacks","",true)."<![endif]-->";
-			
+        $core_css .= "".html::stylesheet($this->css_url."media/css/jquery.tagInput","",true)."";
 		if ($this->map_enabled)
 		{
 			$core_css .= html::stylesheet($this->css_url."media/css/openlayers","",true);
@@ -118,6 +118,9 @@ class Themes_Core {
 		$core_js .= html::script($this->js_url."media/js/jquery.ui.min", true);
 		$core_js .= html::script($this->js_url."media/js/jquery.pngFix", true);
 		$core_js .= html::script($this->js_url."media/js/jquery.query-1.2.3", true);
+		$core_js .= html::script($this->js_url."media/js/jquery.query-1.2.3", true);
+		$core_js .= html::script($this->js_url."media/js/jquery.tagInput", true);
+		$core_js .= html::script($this->js_url."media/js/jquery.timers", true);
 		
 		
 		if ($this->map_enabled)

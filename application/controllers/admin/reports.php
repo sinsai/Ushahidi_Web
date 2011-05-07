@@ -442,6 +442,7 @@ class Reports_Controller extends Admin_Controller
             'incident_description'    => '',
             'tag' => '',
             'admin_tag' => '',
+            'admin_comment' => '',
             'incident_date'  => '',
             'incident_hour'      => '',
             'incident_minute'      => '',
@@ -748,7 +749,7 @@ class Reports_Controller extends Admin_Controller
                 $incident->incident_description = $post->incident_description;
                 $incident->tag = $post->tag;
                 $incident->admin_tag = $post->admin_tag;
-
+                $incident->admin_comment = $post->admin_comment;
                 $incident_date=explode("/",$post->incident_date);
                 // where the $_POST['date'] is a value posted by form in mm/dd/yyyy format
                 $incident_date=$incident_date[2]."-".$incident_date[0]."-".$incident_date[1];
@@ -1062,6 +1063,7 @@ class Reports_Controller extends Admin_Controller
                         'incident_description' => $incident->incident_description,
                         'tag' => $incident->tag,
                         'admin_tag' => $incident->admin_tag,
+                        'admin_comment' => $incident->admin_comment,
                         'incident_date' => date('m/d/Y', strtotime($incident->incident_date)),
                         'incident_hour' => date('h', strtotime($incident->incident_date)),
                         'incident_minute' => date('i', strtotime($incident->incident_date)),

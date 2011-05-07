@@ -103,11 +103,49 @@
 								<?php print form::textarea('incident_description', $form['incident_description'], ' rows="12" cols="40"') ?>
 								<h4><?php echo Kohana::lang('ui_main.tag');?>
 								<span><?php echo Kohana::lang('ui_main.tag_example');?>.</span> </h4>
-								<?php print form::input('tag', $form['tag']) ?>
+								<?php print form::input('tag', $form['tag'],"id='tag'") ?>
 								<h4><?php echo Kohana::lang('ui_main.admin_tag');?> 
 								<span><?php echo Kohana::lang('ui_main.admin_tag_example');?>.</span></h4>
-								<?php print form::textarea('admin_tag', $form['admin_tag'], ' rows="4" cols="40"') ?>
+								<?php print form::input('admin_tag', $form['admin_tag'], "id='admin_tag'") ?>
+								<h4><?php echo Kohana::lang('ui_main.admin_comment');?> 
+								</h4>
+								<?php print form::textarea('admin_comment', $form['admin_comment'], ' rows="4" cols="40"') ?>
 							</div>
+<script type="text/javascript">
+  var tags=[
+        {tag:"募集中"},{tag:"募集終了"},{tag:"デマ"}
+      ]
+
+  var admin_tags=[
+        {tag:"公開不要"},{tag:"公開保留"}
+      ]
+
+  $(function(){
+    $("#tag").tagInput({
+      tags:tags,
+      //jsonUrl:"tags.jsp",
+      sortBy:"frequency",
+      suggestedTags:["募集中","募集終了","デマ"],
+      tagSeparator:" ",
+      autoFilter:true,
+      autoStart:false,
+      //suggestedTagsPlaceHolder:$("#suggested"),
+      boldify:true
+    });
+    $("#admin_tag").tagInput({
+      tags:admin_tags,
+      //jsonUrl:"tags.jsp",
+      sortBy:"frequency",
+      suggestedTags:["公開保留","公開不要"],
+      tagSeparator:" ",
+      autoFilter:true,
+      autoStart:false,
+      //suggestedTagsPlaceHolder:$("#suggested"),
+      boldify:true
+    });
+  })
+
+</script>
 
 							<?php
 							// Action::report_form_admin - Runs just after the report description

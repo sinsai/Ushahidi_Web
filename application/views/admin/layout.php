@@ -35,6 +35,7 @@
 			OpenLayers.ImgPath = '".url::base().'media/img/openlayers/'."';
 			</script>";
 		echo html::stylesheet('media/css/openlayers','',true);
+		echo html::stylesheet('media/css/jquery.tagInput','',true);
 	}
 	
 	// Load jQuery
@@ -42,6 +43,8 @@
 	echo html::script('media/js/jquery.form', true);
 	echo html::script('media/js/jquery.validate.min', true);
 	echo html::script('media/js/jquery.ui.min', true);
+	echo html::script('media/js/jquery.tagInput', true);
+	echo html::script('media/js/jquery.timers', true);
 	echo html::script('media/js/selectToUISlider.jQuery', true);
 	echo html::script('media/js/jquery.hovertip-1.0', true);
 	echo html::stylesheet('media/css/jquery.hovertip-1.0', '', true);
