@@ -101,6 +101,12 @@
 							<div class="row">
 								<h4><?php echo Kohana::lang('ui_main.description');?> <span><?php echo Kohana::lang('ui_main.include_detail');?>.</span></h4>
 								<?php print form::textarea('incident_description', $form['incident_description'], ' rows="12" cols="40"') ?>
+								<h4><?php echo Kohana::lang('ui_main.tag');?>
+								<span><?php echo Kohana::lang('ui_main.tag_example');?>.</span> </h4>
+								<?php print form::textarea('tag', $form['tag'], ' rows="4" cols="40"') ?>
+								<h4><?php echo Kohana::lang('ui_main.admin_tag');?> 
+								<span><?php echo Kohana::lang('ui_main.admin_tag_example');?>.</span></h4>
+								<?php print form::textarea('admin_tag', $form['admin_tag'], ' rows="4" cols="40"') ?>
 							</div>
 
 							<?php

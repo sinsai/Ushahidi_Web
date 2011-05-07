@@ -49,6 +49,11 @@ class Reports_Controller extends Admin_Controller
 		{
 			$r_to = $this->input->xss_clean($_GET['to']);
 		}
+		$r_tag = "";
+		if( isset($_GET['tag']) )
+		{
+			$r_tag = mysql_real_escape_string($this->input->xss_clean($_GET['tag']));
+		}
 
 		$filter_range = "";
 		if( isset($r_from) && empty($r_to) )
@@ -60,6 +65,11 @@ class Reports_Controller extends Admin_Controller
 		} elseif( empty($r_from) && isset($r_to) )
 		{
 			$filter_range = "incident_date between \"".date("Y-m-d",1)." 00:00:00\" and \"".date("Y-m-d",strtotime($r_to))." 23:59:00\"";
+		}
+		
+		if( isset($r_tag) && $r_tag != "")
+		{
+			$filter_tag = "(tag like '%".$r_tag."%' or admin_tag like '%".$r_tag."%')";
 		}
 
 		$filter = '';
@@ -120,6 +130,7 @@ class Reports_Controller extends Admin_Controller
         $filter .= ((!empty($filter))? ((!empty($filter_via))? (" AND ".$filter_via):""):$filter_via);
         $filter .= ((!empty($filter))? ((!empty($filter_kw))? (" AND ".$filter_kw):""):$filter_kw);
         $filter .= ((!empty($filter))? ((!empty($filter_range))? (" AND ".$filter_range):""):$filter_range);
+        $filter .= ((!empty($filter))? ((!empty($filter_tag))? (" AND ".$filter_tag):""):$filter_tag);
 		if (empty($filter))
 		{
 			$filter = "1=1";
@@ -373,6 +384,7 @@ class Reports_Controller extends Admin_Controller
 
 		$this->template->content->from = $r_from;
 		$this->template->content->to = $r_to;
+		$this->template->content->tag = $r_tag;
 		$this->template->content->order = $order;
 		$this->template->content->filter = $filter_range;
         $this->template->content->countries = $countries;
@@ -428,6 +440,8 @@ class Reports_Controller extends Admin_Controller
             'locale'           => '',
             'incident_title'      => '',
             'incident_description'    => '',
+            'tag' => '',
+            'admin_tag' => '',
             'incident_date'  => '',
             'incident_hour'      => '',
             'incident_minute'      => '',
@@ -732,6 +746,8 @@ class Reports_Controller extends Admin_Controller
                 $incident->user_id = $_SESSION['auth_user']->id;
                 $incident->incident_title = $post->incident_title;
                 $incident->incident_description = $post->incident_description;
+                $incident->tag = $post->tag;
+                $incident->admin_tag = $post->admin_tag;
 
                 $incident_date=explode("/",$post->incident_date);
                 // where the $_POST['date'] is a value posted by form in mm/dd/yyyy format
@@ -1044,6 +1060,8 @@ class Reports_Controller extends Admin_Controller
                         'locale' => $incident->locale,
                         'incident_title' => $incident->incident_title,
                         'incident_description' => $incident->incident_description,
+                        'tag' => $incident->tag,
+                        'admin_tag' => $incident->admin_tag,
                         'incident_date' => date('m/d/Y', strtotime($incident->incident_date)),
                         'incident_hour' => date('h', strtotime($incident->incident_date)),
                         'incident_minute' => date('i', strtotime($incident->incident_date)),

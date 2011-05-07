@@ -24,6 +24,8 @@
 						<li><a href="?status=0" <?php if ($status != 'a' && $status !='v') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.show_all');?></a></li>
 						<li><a href="?status=a" <?php if ($status == 'a') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.awaiting_approval');?></a></li>
 						<li><a href="?status=v" <?php if ($status == 'v') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.awaiting_verification');?></a></li>
+						<li><a href="?tag=%E6%89%BF%E8%AA%8D%E4%B8%8D%E8%A6%81" <?php if ($tag == '承認不要') echo "class=\"active\""; ?>>承認不要</a></li>
+						<li><a href="?tag=%E6%89%BF%E8%AA%8D%E4%BF%9D%E7%95%99" <?php if ($tag == '承認保留') echo "class=\"active\""; ?>>承認保留</a></li>
 					</ul>
 					<script type="text/javascript"> 
 					$(function() {
@@ -64,6 +66,8 @@
 							<input size="12" type="text" id="from" name="from" value="<?php if(isset($from)) echo $from; ?>"/>
 							<label for="to">to</label>
 							<input size="12" type="text" id="to" name="to" value="<?php if(isset($to)) echo $to; ?>"/>
+							<label for="tag">tag</label>
+							<input size="12" type="text" id="tag" name="tag" value="<?php if(isset($tag)) echo $tag; ?>"/>
 							<a href="#" id="down_range"><?php echo Kohana::lang('ui_admin.down_range');?></a>
 							</form>
 							</div>
