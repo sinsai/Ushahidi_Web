@@ -88,14 +88,24 @@ $menu .= "<li><a href=\"".url::site()."alerts".$lang."\" ";
 $menu .= ($this_page == 'alerts') ? " class=\"active\"" : "";
 $menu .= ">".Kohana::lang('ui_main.alerts')."</a></li>";
 
+// StrickenAreaVolunteer
+$menu .= "<li><a href=\"".url::site()."reports/?c=13".$lang."\" ";
+$menu .= ($this_page == 'reports') ? " class=\"active\"" : "";
+$menu .= ">".Kohana::lang('ui_main.strickenareavolunteer')."</a></li>";
+
 // Custom Pages
 $pages = ORM::factory('page')->where('page_active', '1')->find_all();
 foreach ($pages as $page)
 {
-$menu .= "<li><a href=\"".url::site()."page/index/".$page->id.$lang."\" ";
-$menu .= ($this_page == 'page_'.$page->id) ? " class=\"active\"" : "";
-$menu .= ">".Kohana::lang('ui_main.'.$page->page_tab)."</a></li>";
+	$menu .= "<li><a href=\"".url::site()."page/index/".$page->id.$lang."\" ";
+	$menu .= ($this_page == 'page_'.$page->id) ? " class=\"active\"" : "";
+	$menu .= ">".Kohana::lang('ui_main.'.$page->page_tab)."</a></li>";
 }
+
+// App and API
+$menu .= "<li><a href=https://docs.google.com/document/d/12odG3IxDYHY7KeSa_wSUFkbctFPCtbN_JxZ_JUg-O2I/edit?hl=ja".$lang."\" ";
+$menu .= ($this_page == 'reports') ? " class=\"active\"" : "";
+$menu .= ">".Kohana::lang('ui_main.appandapi')."</a></li>";
 
 echo $menu;
 ?>
