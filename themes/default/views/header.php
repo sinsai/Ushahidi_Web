@@ -90,7 +90,6 @@ $menu .= ">".Kohana::lang('ui_main.alerts')."</a></li>";
 
 // StrickenAreaVolunteer
 $menu .= "<li><a href=\"".url::site()."reports/?c=13".$lang."\" ";
-$menu .= ($this_page == 'reports') ? " class=\"active\"" : "";
 $menu .= ">".Kohana::lang('ui_main.strickenareavolunteer')."</a></li>";
 
 // Custom Pages
@@ -104,7 +103,6 @@ foreach ($pages as $page)
 
 // App and API
 $menu .= "<li><a href=https://docs.google.com/document/d/12odG3IxDYHY7KeSa_wSUFkbctFPCtbN_JxZ_JUg-O2I/edit?hl=ja".$lang."\" ";
-$menu .= ($this_page == 'reports') ? " class=\"active\"" : "";
 $menu .= ">".Kohana::lang('ui_main.appandapi')."</a></li>";
 
 echo $menu;
