@@ -356,6 +356,7 @@ div.search-form input.searchbtn{
     border: none;
     cursor: pointer;
     font-size: 14px;
+    font-weight: bold;
     line-height: 1.2;
     width: 114px;
     height: 35px;
