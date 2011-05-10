@@ -862,7 +862,10 @@ class Reports_Controller extends Admin_Controller
                 }
 
                 // c. Photos
-                $filenames = upload::save('incident_photo');
+                if ( count($post->incident_photo) > 0 )
+                {
+                    $filenames = upload::save('incident_photo');
+                }
                 $i = 1;
                 foreach ($filenames as $filename) {
                     $new_filename = $incident->id . "_" . $i . "_" . time();

@@ -4,7 +4,8 @@ body {
 	margin:0;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
 	text-align:center;
-	background-image:url(../img/bkg_login.gif);
+	background-color: #B0CDA1;
+	color: #368C00;
 }
 body td {
 	font-family:Verdana, Arial, Helvetica, sans-serif;
@@ -147,28 +148,44 @@ label.error{
 
 /********* 404 ERROR PAGE *********/
 #error {
-	width:500px;
-	height:400px;
-	position:absolute;
-	top:50%;
-	left:50%;
-	margin:-200px auto auto -250px;
-	border:3px dotted #666;
 	text-align:left;
-	padding: 20px;
-	background-color: #FFFFCC;
-	background-image:url(../img/icon_alert_big.gif);
-	background-position:20px 20px;
+	background-color: #FFF;
+	background-image:url(../img/sinsai_icon_alert_big.gif);
+	background-position:80px 40px;
 	background-repeat:no-repeat;
+	margin-right: auto;
+	margin-bottom: 0px;
+	padding-top: 20px;
+	padding-right: 80px;
+	padding-bottom: 20px;
+	padding-left: 80px;
+	margin-left: auto;
+	margin-top: 40px;
+	width: 430px;
 }
 #error h1{
-	height:120px;
-	margin:50px 0 0 100px;
-	font-size:30px;
+	font-size:24px;
 	font-weight:bold;
-	color:#333333;
+	color:#358900;
 	font-family:Arial, Helvetica, sans-serif;
-	line-height:32px;
 	padding-left:30px;
+	margin-top: 0px;
+	margin-right: 0;
+	margin-bottom: 0;
+	margin-left: 20px;
+	padding-bottom: 20px;
+	padding-top: 30px;
+}
+
+#error p .toplink {
+	text-indent: -9999px;
+	display: block;
+	height: 55px;
+	width: 210px;
+	margin-right: auto;
+	margin-left: auto;
+	background-image: url(../img/sinsai_toplink.gif);
+	background-repeat: no-repeat;
+	background-position: 0px center;
 }
 /********* /404 ERROR PAGE *********/
