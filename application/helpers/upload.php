@@ -26,17 +26,10 @@ class upload_Core {
 		// Load file data from FILES if not passed as array
 		$file = is_array($file) ? $file : $_FILES[$file];
 
-<<<<<<< HEAD
-		if ($file['size'][0] === 0) {
+		if( $file['size'][0] == 0)
+		{
 			return array();
 		}
-=======
-        if( $file['size'][0] == 0)
-        {
-            return array();
-        }
->>>>>>> master
-
 		if ($filename === NULL)
 		{
 			// Use the default filename, with a timestamp pre-pended
