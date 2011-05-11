@@ -17,7 +17,16 @@ class VideoEmbed{
       //"http://one.revver.com/watch/", "http://www.metacafe.com/watch/", "http://www.liveleak.com/view?i=","http://dotsub.com/media/","http://vimeo.com/");
       $hosts = self::$video_hosts;
       $code = str_replace($hosts, "", $raw);
-      
+      if ((bool) filter_var($code, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
+      {
+          // Check shorten URL
+          $headers = @get_headers($code, 1);
+          if (isset($headers['Location']))
+          {
+              $raw = $headers['Location'];
+              $code = str_replace($hosts, "", $raw);
+          }
+      }
    
       //find host
       $host1 = strpos($raw, "youtube.com", 1);
