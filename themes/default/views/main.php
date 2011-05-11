@@ -326,9 +326,8 @@
 								{
 									$incident_id = $comment_incident->id;
 									$incident_title = text::limit_chars(html::specialchars($comment_incident->incident_title), 40, '...', True);
-									$incident_date = $comment_incident->incident_date;
 									$incident_date = date('Y/m/d', strtotime($comment_incident->comment_date));
-									$incident_location = html::specialchars($comment_incident->location->location_name);
+									$incident_location = html::specialchars($comment_incident->location_name);
 								?>
 								<tr>
 									<td><a href="<?php echo url::site() . 'reports/view/' . $incident_id; ?>"> <?php echo $incident_title ?></a></td>
