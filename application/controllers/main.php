@@ -284,10 +284,9 @@ class Main_Controller extends Template_Controller {
 		$this->template->content->feeds = $feeds;
 		// コメントつきインシデント取得
 		$db = new Database;
-		$query = 'SELECT ic.incident_id,ic.id as comment_id,ic.comment_date FROM '.$this->table_prefix.'comment AS ic WHERE ic.comment_active = 1 GROUP BY incident_id ORDER BY MAX(comment_date) DESC LIMIT 0,20;';
+		$query = 'SELECT ic.incident_id FROM '.$this->table_prefix.'comment AS ic WHERE ic.comment_active = 1 GROUP BY incident_id ORDER BY MAX(comment_date) DESC LIMIT 0,20;';
 		$query = $db->query($query);
 		$incident_ids = array();
-		$temp_incidents_comment = array();
 		foreach($query as $items){
 			$incident_ids[$items->incident_id] =$items->incident_id;
 		}
