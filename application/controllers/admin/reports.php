@@ -672,6 +672,12 @@ class Reports_Controller extends Admin_Controller
                     {
                         $post->add_error('incident_video','url');
                     }
+                    //Check video URL
+                    $check = str_replace(VideoEmbed::$video_hosts, "", $url);
+                    if (!empty($check) AND (bool) filter_var($check, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
+                    {
+                        $post->add_error('incident_video', 'url');
+                    }
                 }
             }
 

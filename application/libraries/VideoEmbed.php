@@ -1,6 +1,9 @@
 <?php
 class VideoEmbed{
 	
+   public static $video_hosts = array("http://www.youtube.com/watch?v=", "http://video.google.com/videoplay?docid=-",
+   "http://one.revver.com/watch/", "http://www.metacafe.com/watch/", "http://www.liveleak.com/view?i=","http://dotsub.com/media/","http://vimeo.com/");
+
    function embed($raw, $auto)
    {
 	  $host = "";
@@ -10,8 +13,9 @@ class VideoEmbed{
       //check auto play
       
       //get the code
-      $hosts = array("http://www.youtube.com/watch?v=", "http://video.google.com/videoplay?docid=-",
-      "http://one.revver.com/watch/", "http://www.metacafe.com/watch/", "http://www.liveleak.com/view?i=","http://dotsub.com/media/","http://vimeo.com/");
+      //$hosts = array("http://www.youtube.com/watch?v=", "http://video.google.com/videoplay?docid=-",
+      //"http://one.revver.com/watch/", "http://www.metacafe.com/watch/", "http://www.liveleak.com/view?i=","http://dotsub.com/media/","http://vimeo.com/");
+      $hosts = self::$video_hosts;
       $code = str_replace($hosts, "", $raw);
       
    
