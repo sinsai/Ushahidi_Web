@@ -284,7 +284,7 @@ class Main_Controller extends Template_Controller {
 		$this->template->content->feeds = $feeds;
 		// コメントつきインシデント取得
 		$db = new Database;
-		$query = 'SELECT ic.incident_id FROM '.$this->table_prefix.'comment AS ic WHERE ic.comment_active = 1 GROUP BY incident_id ORDER BY MAX(comment_date) DESC LIMIT 0,20;';
+		$query = 'SELECT ic.incident_id FROM '.$this->table_prefix.'comment AS ic WHERE ic.comment_active = 1 GROUP BY incident_id ORDER BY MAX(comment_date) DESC LIMIT 0,10;';
 		$query = $db->query($query);
 		$incident_ids = array();
 		foreach($query as $items){
@@ -295,7 +295,7 @@ class Main_Controller extends Template_Controller {
 		{
 			$incident_ids_in = 'i.id IN ('.implode(',',$incident_ids).')';
 		}
-		$query = 'SELECT i.id,MAX(i.incident_title) as incident_title,MAX(ic.comment_date) as comment_date,MAX(l.location_name) as location_name FROM '.$this->table_prefix.'incident as i,'.$this->table_prefix.'comment as ic,'.$this->table_prefix.'location as l WHERE i.id = ic.incident_id AND i.location_id = l.id AND ic.comment_active = 1 AND i.incident_active = 1 AND '.$incident_ids_in.' GROUP BY i.id ORDER BY MAX(comment_date) DESC LIMIT 0,20;';
+		$query = 'SELECT i.id,MAX(i.incident_title) as incident_title,MAX(ic.comment_date) as comment_date,MAX(l.location_name) as location_name FROM '.$this->table_prefix.'incident as i,'.$this->table_prefix.'comment as ic,'.$this->table_prefix.'location as l WHERE i.id = ic.incident_id AND i.location_id = l.id AND ic.comment_active = 1 AND i.incident_active = 1 AND '.$incident_ids_in.' GROUP BY i.id ORDER BY MAX(comment_date) DESC LIMIT 0,10;';
 		$this->template->content->comment_incidents = $db->query($query);
 
         // Get The START, END and most ACTIVE Incident Dates
