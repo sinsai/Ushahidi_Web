@@ -39,7 +39,7 @@
 							</div>
 						<?php
 						}
-                                                else
+						else
 						if ($form_saved) {
 						?>
 							<!-- green-box -->
