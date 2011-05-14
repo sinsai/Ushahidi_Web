@@ -23,7 +23,7 @@ class VideoEmbed{
           $headers = @get_headers($code, 1);
           if (isset($headers['Location']))
           {
-              $raw = $headers['Location'];
+              $raw = htmlspecialchars($headers['Location'], ENT_QUOTES);
               $code = str_replace($hosts, "", $raw);
           }
       }
