@@ -74,7 +74,7 @@ if (isset($_GET['l']) && !empty($_GET['l']))
 }
 
 // Home
-$menu .= "<li><a href=\"".url::site()."main".$lang."\" ";
+$menu .= "<li><a href=\"http://www.sinsai.info/\" ";
 $menu .= ($this_page == 'home') ? " class=\"active\"" : "";
 $menu .= ">".Kohana::lang('ui_main.home')."</a></li>";
 

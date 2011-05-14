@@ -22,7 +22,7 @@
 			<!-- footer menu -->
 			<div class="footermenu">
 				<ul class="clearingfix">
-					<li><a class="item1" href="<?php echo url::site(); ?>"><?php echo Kohana::lang('ui_main.home'); ?></a></li>
+					<li><a class="item1" href="http://www.sinsai.info"><?php echo Kohana::lang('ui_main.home'); ?></a></li>
 					<?php /*<li><a href="<?php echo url::site()."reports/submit"; ?>">レポートを投稿</a></li>*/?>
 					<?php /*<li><a href="<?php echo url::site()."alerts"; ?>"><?php echo Kohana::lang('ui_main.alerts'); ?></a></li>*/?>
 					<li><a href="<?php echo url::site()."page/index/9"; ?>"><?php echo Kohana::lang('ui_main.about_us'); ?><!--<?php echo Kohana::lang('ui_main.help'); ?>--></a></li>
