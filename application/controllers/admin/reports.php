@@ -657,6 +657,8 @@ class Reports_Controller extends Admin_Controller
             if (!empty($_POST['incident_news']))
             {
                 foreach ($_POST['incident_news'] as $key => $url) {
+                    $url = trim($url);
+                    $_POST['incident_news'][$key] = $url;
                     if (!empty($url) AND !(bool) filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
                     {
                         $post->add_error('incident_news','url');
@@ -668,6 +670,8 @@ class Reports_Controller extends Admin_Controller
             if (!empty($_POST['incident_video']))
             {
                 foreach ($_POST['incident_video'] as $key => $url) {
+                    $url = trim($url);
+                    $_POST['incident_video'][$key] = $url;
                     if (!empty($url) AND !(bool) filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
                     {
                         $post->add_error('incident_video','url');
