@@ -664,13 +664,32 @@ class Reports_Controller extends Admin_Controller
                 }
             }
 
-            // Validate only the fields that are filled in
+            // Validate only the fields that are filled in -> Check video URLs
             if (!empty($_POST['incident_video']))
             {
                 foreach ($_POST['incident_video'] as $key => $url) {
                     if (!empty($url) AND !(bool) filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
                     {
                         $post->add_error('incident_video','url');
+                        continue;
+                    }
+                    // Check video URL
+                    $check = str_replace(VideoEmbed::$video_hosts, "", $url);
+                    if (!empty($check) AND (bool) filter_var($check, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
+                    {
+                        // Check shorten URL
+                        $header = @get_headers($url,1);
+                        if (!isset($header['Location']))
+                        {
+                            $post->add_error('incident_video', 'url');
+                            continue;
+                        }
+                        $check = str_replace(VideoEmbed::$video_hosts, "", $header['Location']);
+                        if (!empty($check) AND (bool) filter_var($check, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
+                        {
+                            $post->add_error('incident_video', 'url');
+                            continue;
+                        }
                     }
                 }
             }
