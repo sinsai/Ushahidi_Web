@@ -885,6 +885,10 @@ div.report-description-text h5 {
 	text-transform: capitalize;
 }
 
+div.report-description-text .content div pre {
+    white-space: pre-wrap;
+}
+
 div.credibility {
 	margin-top:10px;
 	padding:3px;
