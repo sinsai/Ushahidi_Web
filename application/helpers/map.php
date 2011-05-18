@@ -214,62 +214,6 @@ class map_Core {
 
 		$layer = new stdClass();
 		$layer->active = FALSE;
-		$layer->name = 'google_satellite';
-		$layer->openlayers = "Google";
-		$layer->title =  Kohana::lang('ui_main.google_satellite');
-		$layer->description = 'Google Maps Satellite Imagery.';
-		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
-		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';
-		$layer->data = array(
-			'baselayer' => TRUE,
-			'type' => 'G_SATELLITE_MAP',
-		);
-		$layers[$layer->name] = $layer;
-
-		$layer = new stdClass();
-		$layer->active = TRUE;
-		$layer->name = 'google_hybrid';
-		$layer->openlayers = "Google";
-		$layer->title = Kohana::lang('ui_main.google_hybrid');
-		$layer->description = 'Google Maps with roads and terrain.';
-		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
-		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';
-		$layer->data = array(
-			'baselayer' => TRUE,
-			'type' => 'G_HYBRID_MAP',
-		);
-		$layers[$layer->name] = $layer;
-
-		$layer = new stdClass();
-		$layer->active = FALSE;
-		$layer->name = 'google_normal';
-		$layer->openlayers = "Google";
-		$layer->title = Kohana::lang('ui_main.google_normal');
-		$layer->description = 'Standard Google Maps Roads';
-		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
-		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';
-		$layer->data = array(
-			'baselayer' => TRUE,
-			'type' => 'G_NORMAL_MAP',
-		);
-		$layers[$layer->name] = $layer;
-
-		$layer = new stdClass();
-		$layer->active = FALSE;
-		$layer->name = 'google_physical';
-		$layer->openlayers = "Google";
-		$layer->title = 'Google Maps Physical';
-		$layer->description = 'Google Maps Hillshades';
-		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
-		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';
-		$layer->data = array(
-			'baselayer' => TRUE,
-			'type' => 'G_PHYSICAL_MAP',
-		);
-		$layers[$layer->name] = $layer;
-
-		$layer = new stdClass();
-		$layer->active = FALSE;
 		$layer->name = 'yahoo_satellite';
 		$layer->openlayers = "Yahoo";
 		$layer->title = 'Yahoo Maps Satellite';
@@ -424,6 +368,63 @@ class map_Core {
 			'type' => ''
 		);
 		$layers[$layer->name] = $layer;
+
+		$layer = new stdClass();
+		$layer->active = FALSE;
+		$layer->name = 'google_satellite';
+		$layer->openlayers = "Google";
+		$layer->title =  Kohana::lang('ui_main.google_satellite');
+		$layer->description = 'Google Maps Satellite Imagery.';
+		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
+		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';
+		$layer->data = array(
+			'baselayer' => TRUE,
+			'type' => 'G_SATELLITE_MAP',
+		);
+		$layers[$layer->name] = $layer;
+
+		$layer = new stdClass();
+		$layer->active = TRUE;
+		$layer->name = 'google_hybrid';
+		$layer->openlayers = "Google";
+		$layer->title = Kohana::lang('ui_main.google_hybrid');
+		$layer->description = 'Google Maps with roads and terrain.';
+		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
+		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';
+		$layer->data = array(
+			'baselayer' => TRUE,
+			'type' => 'G_HYBRID_MAP',
+		);
+		$layers[$layer->name] = $layer;
+
+		$layer = new stdClass();
+		$layer->active = FALSE;
+		$layer->name = 'google_normal';
+		$layer->openlayers = "Google";
+		$layer->title = Kohana::lang('ui_main.google_normal');
+		$layer->description = 'Standard Google Maps Roads';
+		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
+		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';
+		$layer->data = array(
+			'baselayer' => TRUE,
+			'type' => 'G_NORMAL_MAP',
+		);
+		$layers[$layer->name] = $layer;
+
+		$layer = new stdClass();
+		$layer->active = FALSE;
+		$layer->name = 'google_physical';
+		$layer->openlayers = "Google";
+		$layer->title = 'Google Maps Physical';
+		$layer->description = 'Google Maps Hillshades';
+		$layer->api_url = 'http://maps.google.com/maps?file=api&amp;v=2&amp;key='.Kohana::config('settings.api_google');
+		$layer->api_signup = 'http://code.google.com/apis/maps/signup.html';
+		$layer->data = array(
+			'baselayer' => TRUE,
+			'type' => 'G_PHYSICAL_MAP',
+		);
+		$layers[$layer->name] = $layer;
+
 		
 		// Add Custom Layers
 		// Filter::map_base_layers
