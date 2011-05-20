@@ -401,7 +401,7 @@ class valid_Core {
 		}
 		switch ($type){
 			case "text":
-				if(isset($get) && !empty($get) && trim($get) !== "")$val = security::xss_clean($get);
+				if(isset($get) && !empty($get) && trim($get) !== "")$val = htmlspecialchars(security::xss_clean($get),ENT_QUOTES);
 				break;
 			case "number":
 				if(isset($get) && !empty($get) && $get !== "" && is_numeric($get)) $val = $get;
