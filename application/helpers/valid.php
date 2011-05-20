@@ -401,10 +401,10 @@ class valid_Core {
 		}
 		switch ($type){
 			case "text":
-				if(isset($get) && !empty($get) && $get !== "") $val = $get;
+				if(isset($get) && !empty($get) && trim($get) !== "")$val = security::xss_clean($get);
 				break;
 			case "number":
-				if(isset($get) && !empty($get) && $get !== "" && is_numeric($get) && $get > 0) $val = $get;
+				if(isset($get) && !empty($get) && $get !== "" && is_numeric($get)) $val = $get;
 				break;
 			case "natural_numbewr":
 				if(isset($get) && !empty($get) && $get !== "" && is_numeric($get) && $get > 0) $val = $get;

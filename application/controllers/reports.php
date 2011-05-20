@@ -52,15 +52,16 @@ class Reports_Controller extends Main_Controller {
 		}
 
 		// 引き回すGETパラメータのテンプレートへの引き渡し
-		$this->template->content->keyword = htmlspecialchars(valid::initGetVal('keyword',"text"));
+		$this->template->content->keyword = valid::initGetVal('keyword',"text");
 		$this->template->content->address = valid::initGetVal('address',"text");
-		$this->template->content->distance = valid::initGetVal('distance',"number");
+		$this->template->content->distance = valid::initGetVal('distance',"natural_numbewr");
 		$this->template->content->c = valid::initGetVal('c',"number");
 		$this->template->content->sw = valid::initGetVal('sw',"text");
 		$this->template->content->ne = valid::initGetVal('ne',"text");
-		$this->template->content->l = valid::initGetVal('l',"natural_numbewr");
+		$this->template->content->l = valid::initGetVal('l',"text  ");
 		$this->template->content->mode = valid::initGetVal('mode',"text");
 		$this->template->content->order = valid::initGetVal('order',"text");
+		$this->template->content->comments = valid::initGetVal('comments',"text");
 
 		$db = new Database;
 
@@ -86,7 +87,6 @@ class Reports_Controller extends Main_Controller {
 		{
 			$southwest = explode(",",$_GET['sw']);
 		}
-
 		$northeast = array();
 		if (isset($_GET['ne']))
 		{
@@ -96,7 +96,7 @@ class Reports_Controller extends Main_Controller {
 		$dbget_flg = true;
 		$this->template->content->choices_flg = false;
 		//指定地区の指定半径内インシデント取得処理
-		if(isset($_GET["address"]) && trim($_GET["address"]) !== "" && isset($_GET["distance"]) && is_numeric($_GET["distance"]) && $_GET["distance"] > 0){
+		if(!is_null($this->template->content->address) && !is_null($this->template->content->distance)){
 			$address = urlencode($_GET["address"]);
 			// http://www.geocoding.jp/を利用して指定地区名の緯度経度を取得
 			$geocoding_url = 'http://www.geocoding.jp/api/?q='.$address;
@@ -130,11 +130,11 @@ class Reports_Controller extends Main_Controller {
 					$area_name = $geo_geocoding->address;
 					$_GET["address"] = $this->template->content->area_name = trim($area_name);
 					if($_GET["distance"] >= 1){
-						$this->template->content->disp_distance = $_GET["distance"]."km";
+						$this->template->content->disp_distance = $this->template->content->distance."km";
 					}else{
-						$this->template->content->disp_distance = ($_GET["distance"]*1000)."m";
+						$this->template->content->disp_distance = ($this->template->content->distance*1000)."m";
 					}
-					$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE (round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) <= '.$_GET["distance"];
+					$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE (round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1)) <= '.$this->template->content->distance;
 					$query = $db->query($query);
 					foreach ( $query as $items )
 					{
@@ -192,8 +192,8 @@ class Reports_Controller extends Main_Controller {
 			{
 				$location_ids[] =  $items->id;
 			}
-		}elseif (isset($_GET['l']) AND !empty($_GET['l']) AND $_GET['l']!=0){
-			$location_ids[] = (int) $_GET['l'];
+		}elseif ($this->template->content->l && is_numeric($this->template->content->l) && $this->template->content->l > 0){
+			$location_ids[] = (int) $this->template->content->l;
 		}
 		// Get the count
 		$incident_id_in = '1=1';
@@ -208,9 +208,9 @@ class Reports_Controller extends Main_Controller {
 			$location_id_in = 'location_id IN ('.implode(',',$location_ids).')';
 		}
 		// 検索キーワード取得
-		if(isset($_GET["keyword"]) && trim($_GET["keyword"]) !==""){
+		if($this->template->content->keyword){
 			$keywords = array();
-			$keyword = str_replace("　"," ",$_GET["keyword"]);
+			$keyword = str_replace("　"," ",$this->template->content->keyword);
 			$keywords = explode(" ",$keyword);
 		}
 		// キーワード検索の初期化（キーワードがない場合のエラー対応）
@@ -222,9 +222,24 @@ class Reports_Controller extends Main_Controller {
 			}
 			$keyword_like = implode(' AND ',$keyword_like);
 		}
+		//TOPコメントからのもっと見るリンクだった場合
+		$incident_comments_ids_in = '1=1';
+		if($this->template->content->comments==='on'){
+			$query = 'SELECT ic.incident_id FROM '.$this->table_prefix.'comment AS ic WHERE ic.comment_active = 1 GROUP BY incident_id ORDER BY MAX(comment_date)';
+			$query = $db->query($query);
+			$incident_comments_ids = array();
+			foreach($query as $items){
+				$incident_comments_ids[$items->incident_id] =$items->incident_id;
+			}
+			if (count($incident_comments_ids) > 0)
+			{
+				$incident_comments_ids_in = 'incident.id IN ('.implode(',',$incident_comments_ids).')';
+			}
+		}
+		//レポート一覧の取得処理
 		if($dbget_flg){
 			// formからの送信の場合
-			if(isset($_GET["mode"])){
+			if($this->template->content->mode){
 				// 共通処理としてのページネーション
 				// Pagination
 				$pagination = new Pagination(array(
@@ -235,6 +250,7 @@ class Reports_Controller extends Main_Controller {
 							->where("incident_active", 1)
 							->where($location_id_in)
 							->where($incident_id_in)
+							->where($incident_comments_ids_in)
 							->where($keyword_like)
 							->count_all()
 						));
@@ -242,13 +258,13 @@ class Reports_Controller extends Main_Controller {
 					// 中心座標が取得できていれば
 					if(isset($lat_center)){
 						// ソート順を定義
-						if(isset($_GET["order"]) && $_GET["order"]=="new"){
+						if($this->template->content->order == "new"){
 							// 新着順
 							$order = array(
 								"incident_date"=>"desc",
 								'(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))'=>"asc"
 							);
-						}elseif(isset($_GET["order"]) && $_GET["order"]=="dist"){
+						}elseif($this->template->content->order=="dist"){
 							// 近隣順
 							$order = array(
 								'(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))'=>"asc",
@@ -265,18 +281,19 @@ class Reports_Controller extends Main_Controller {
 						// SELECT句はincidentsの全レコード
 						$select = $this->table_prefix.'incident.*';
 					}
-					if($_GET["mode"]=="areaorder"){
+					if($this->template->content->mode=="areaorder"){
 						$incidents = ORM::factory("incident")
 							->select($select,false)
 							->join($this->table_prefix.'location',$this->table_prefix.'location.id',$this->table_prefix.'incident.location_id',"LEFT OUTER")
 							->where("incident_active", 1)
 							->where($location_id_in)
 							->where($incident_id_in)
+							->where($incident_comments_ids_in)
 							->where($keyword_like)
 							->orderby('(round(sqrt(pow(('.$this->table_prefix.'location.latitude - '.$lat_center.')/0.0111, 2) + pow(('.$this->table_prefix.'location.longitude - '.$lon_center.')/0.0091, 2)), 1))', "asc",false)
 							->find_all((int) Kohana::config('settings.items_per_page'), $pagination->sql_offset);
-					}elseif($_GET["mode"]=="areasearch"){
-						if(isset($_GET["order"]) && isset($_GET["order"])){
+					}elseif($this->template->content->mode=="areasearch"){
+						if($this->template->content->order){
 							$escape = false;
 						}else{
 							$escape = true;
@@ -288,6 +305,7 @@ class Reports_Controller extends Main_Controller {
 							->where("incident_active", 1)
 							->where($location_id_in)
 							->where($incident_id_in)
+							->where($incident_comments_ids_in)
 							->where($keyword_like)
 							->orderby($order,NULL,$escape)
 							->find_all((int) Kohana::config('settings.items_per_page'), $pagination->sql_offset);
@@ -301,6 +319,7 @@ class Reports_Controller extends Main_Controller {
 							->where("incident_active", 1)
 							->where($location_id_in)
 							->where($incident_id_in)
+							->where($incident_comments_ids_in)
 							->where($keyword_like)
 							->count_all()
 						));
@@ -309,6 +328,7 @@ class Reports_Controller extends Main_Controller {
 					->where("incident_active", 1)
 					->where($location_id_in)
 					->where($incident_id_in)
+					->where($incident_comments_ids_in)
 					->where($keyword_like)
 					->orderby("incident_date", "desc")
 					->find_all((int) Kohana::config('settings.items_per_page'), $pagination->sql_offset);

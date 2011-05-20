@@ -19,6 +19,7 @@
 				if($distance)$get_val .= '&distance='.$distance;
 				if($mode)$get_val .= '&mode='.$mode;
 				if($order)$get_val .= '&order='.$order;
+				if($comments)$get_val .= '&comments='.$comments;
 				$get_val = "?".ltrim($get_val,'&');
 				echo $get_val;
 			}else{
@@ -27,20 +28,24 @@
 				if($distance)$get_val .= '&distance='.$distance;
 				if($mode)$get_val .= '&mode='.$mode;
 				if($order)$get_val .= '&order='.$order;
+				if($comments)$get_val .= '&comments='.$comments;
 				$get_val = "?".ltrim($get_val,'&');
 				echo $get_val;
 			}
 			echo '"><img src="'.url::base().'/media/img/all.png" width="16" height="16"/>';
 			echo '<span>全カテゴリ</span></a>';
 			foreach($category_master as $key => $category){
+				$get_val = "";
 				echo '<a class="category_menu" href="'.url::site().'reports/?c='.$key;
-				if($sw)echo '&sw='.$sw;
-				if($ne)echo '&ne='.$ne;
-				if($keyword)echo '&keyword='.$keyword;
-				if($address)echo '&address='.$address;
-				if($distance)echo '&distance='.$distance;
-				if($mode)echo '&mode='.$mode;
-				if($order)echo '&order='.$order;
+				if($sw)$get_val = '&sw='.$sw;
+				if($ne)$get_val .= '&sw='.$sw;
+				if($keyword)$get_val .= '&keyword='.$keyword;
+				if($address)$get_val .= '&address='.$address;
+				if($distance)$get_val .= '&distance='.$distance;
+				if($mode)$get_val .= '&mode='.$mode;
+				if($order)$get_val .= '&order='.$order;
+				if($comments)$get_val .= '&comments='.$comments;
+				echo $get_val;
 				echo '" >';
 				if(isset($category['category_image_thumb'])){
 				    echo '<img src="/ushahidi/media/uploads/'.$category['category_image_thumb'].'"/>';
@@ -77,8 +82,8 @@
 <?php echo ($l) ? '<input type="hidden" name="l" value="'.$l.'">' : ""?>
 <?php echo ($sw) ? '<input type="hidden" name="sw" value="'.$sw.'">' : ""?>
 <?php echo ($ne) ? '<input type="hidden" name="ne" value="'.$ne.'">' : ""?>
-検索キーワード：<input type="text" name="keyword" value="<?php if(isset($_GET["keyword"])){echo htmlspecialchars($_GET["keyword"]);}?>" />
-検索地区：<input type="text" name="address" value="<?php if(isset($_GET["address"])){echo htmlspecialchars($_GET["address"]);}?>" />
+検索キーワード：<input type="text" name="keyword" value="<?php if($keyword){echo $keyword;}?>" />
+検索地区：<input type="text" name="address" value="<?php if(isset($address){echo $address;}?>" />
 <select name="distance">
 	<option value="0.5" <?php if(isset($_GET["distance"]) && $_GET["distance"] == 0.5)echo "selected" ?>>500m</option>
 	<option value="1" <?php if(isset($_GET["distance"]) && $_GET["distance"] == 1)echo "selected" ?>>1km</option>
