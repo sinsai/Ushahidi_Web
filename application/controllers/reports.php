@@ -52,7 +52,7 @@ class Reports_Controller extends Main_Controller {
 		}
 
 		// 引き回すGETパラメータのテンプレートへの引き渡し
-		$this->template->content->keyword = valid::initGetVal('keyword',"text");
+		$this->template->content->keyword = htmlspecialchars(valid::initGetVal('keyword',"text"));
 		$this->template->content->address = valid::initGetVal('address',"text");
 		$this->template->content->distance = valid::initGetVal('distance',"number");
 		$this->template->content->c = valid::initGetVal('c',"number");
