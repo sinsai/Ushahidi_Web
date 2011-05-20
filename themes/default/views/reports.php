@@ -83,7 +83,7 @@
 <?php echo ($sw) ? '<input type="hidden" name="sw" value="'.$sw.'">' : ""?>
 <?php echo ($ne) ? '<input type="hidden" name="ne" value="'.$ne.'">' : ""?>
 検索キーワード：<input type="text" name="keyword" value="<?php if($keyword){echo $keyword;}?>" />
-検索地区：<input type="text" name="address" value="<?php if(isset($address){echo $address;}?>" />
+検索地区：<input type="text" name="address" value="<?php if($address){echo $address;}?>" />
 <select name="distance">
 	<option value="0.5" <?php if(isset($_GET["distance"]) && $_GET["distance"] == 0.5)echo "selected" ?>>500m</option>
 	<option value="1" <?php if(isset($_GET["distance"]) && $_GET["distance"] == 1)echo "selected" ?>>1km</option>
