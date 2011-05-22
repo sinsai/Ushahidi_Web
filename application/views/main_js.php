@@ -40,6 +40,7 @@
 		var defaultZoom = <?php echo $default_zoom; ?>;
 		var markerRadius = <?php echo $marker_radius; ?>;
 		var markerOpacity = "<?php echo $marker_opacity; ?>";
+        var selectedFeature;
 
 		var gMarkerOptions = {baseUrl: baseUrl, longitude: longitude,
 		                     latitude: latitude, defaultZoom: defaultZoom,
@@ -98,13 +99,10 @@
 		/*
 		Close Popup
 		*/
-		function onPopupClose(evt)
+		function onPopupClose(event)
 		{
-            // selectControl.unselect(selectedFeature);
-			for (var i=0; i<map.popups.length; ++i)
-			{
-				map.removePopup(map.popups[i]);
-			}
+            selectControl.unselect(selectedFeature);
+            selectedFeature = null;
         }
 
 		/*
@@ -112,7 +110,7 @@
 		*/
         function onFeatureSelect(event)
 		{
-            selectedFeature = event;
+            selectedFeature = event.feature;
             // Since KML is user-generated, do naive protection against
             // Javascript.
 
@@ -414,7 +412,9 @@
 				//markers.setUrl("<?php echo url::site(); ?>" json_url + '/?c=' + catID);
 				
 				// Destroy any open popups
-				onPopupClose();
+                if (selectedFeature) {
+                    onPopupClose();
+                }
 				
 				// Get Current Zoom
 				currZoom = map.getZoom();
