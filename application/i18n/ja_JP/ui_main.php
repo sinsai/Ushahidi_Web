@@ -55,6 +55,8 @@
 	'at' => 'に',
 	'author' => '著者',
 	'avg_reports_per_day' => '一日のレポート平均数',
+	'not_approval' => '承認不要',
+	'pending_approval' => '承認保留',
 	'awaiting_approval' => '承認待ち',
 	'awaiting_verification' => '認証待ち',
 	'blog' => 'ブログ',
