@@ -263,20 +263,20 @@ class Messages_Controller extends Admin_Controller
             
         // Get Message Count
         // ALL
-	$reporter_ids = array();
-	foreach($messages as $message){
-		$reporter_ids[] = $message->reporter_id;
-	}
+        $reporter_ids = array();
+        foreach($messages as $message){
+            $reporter_ids[] = $message->reporter_id;
+        }
 
         $reporters = array();
-	if(count($reporter_ids)){
-	        $temp_reporters = ORM::factory('reporter')
-					->in('id',implode(',',$reporter_ids))
-	                                ->find_all();
-		foreach($temp_reporters as $reporter){
-			$reporters[$reporter->id] = $reporter->service_account;
-	        }
-	}
+        if(count($reporter_ids)){
+            $temp_reporters = ORM::factory('reporter')
+                        ->in('id',implode(',',$reporter_ids))
+                        ->find_all();
+            foreach($temp_reporters as $reporter){
+                $reporters[$reporter->id] = $reporter->service_account;
+                }
+        }
 
         $this->template->content->count_all = ORM::factory('message')
                                                         ->join('reporter','message.reporter_id','reporter.id')
@@ -301,10 +301,31 @@ class Messages_Controller extends Admin_Controller
                                                         ->where("message.message_level = '99'")
                                                         ->count_all();
 
+        $this->template->content->safelist = array();
+        $diffdate = (mktime(0,0,0,date("m",strtotime($r_to)),date("d",strtotime($r_to)),date("Y",strtotime($r_to))) / 86400) - (mktime(0,0,0,date("m",strtotime($r_from)),date("d",strtotime($r_from)),date("Y",strtotime($r_from))) / 86400);
 
-		$this->template->content->from = $r_from;
-		$this->template->content->to = $r_to;
-		$this->template->content->filter = $r_filter;
+        if( !empty($_GET['from']) && !empty($_GET['to']) && $diffdate < 1 )
+        {
+            $db = new Database;
+            $safelist = array();
+            $dupcnt = array();
+            $dupmsg = array();
+            $query = "select id, message, count(*) as count from message where ".$filter_range." group by message order by id asc;";
+            $result = $db->query($query);
+            foreach ( $result as $item )
+            {
+                $safelist[] = $item->id;
+                $dupcnt[$item->id] = $item->count;
+//                $dupmsg[$item->id] = $item->message;
+            }
+            $this->template->content->safelist = $safelist;
+            $this->template->content->dupcnt = $dupcnt;
+
+        }
+
+        $this->template->content->from = $r_from;
+        $this->template->content->to = $r_to;
+        $this->template->content->filter = $r_filter;
         $this->template->content->messages = $messages;
         $this->template->content->reporters = $reporters;
         $this->template->content->service_id = $service_id;
