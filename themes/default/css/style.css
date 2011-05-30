@@ -1534,6 +1534,17 @@ label.error {
 	float:left;
 	margin-right:10px;
 }
+.report_row p {
+    margin-top:10px;
+	font-size:110%;
+}
+
+#divtos {
+    margin-top:40px;
+    padding:10px;
+	background-color:#eee;
+}
+
 .report_category {
 	clear:both;
 	overflow:hidden;

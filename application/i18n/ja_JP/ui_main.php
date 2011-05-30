@@ -348,11 +348,12 @@
 	'reports_title_view' => 'レポート > ',
 	'reports_title_thanks' => 'レポート',
 	'reports_btn_browse' => '表示する',
-	'reports_btn_submit' => '送信',
+	'reports_btn_submit' => '利用規約に同意して送信',
 	'reports_categories' => 'カテゴリー',
 	'reports_date' => '日時',
 	'reports_description' => '説明',
 	'reports_download_csv' => 'レポーターはCSVフォーマットでダウンロードされます',
+// sinsai.info 利用規約
 	'reports_email' => 'メール',
 	'reports_features' => '機能',
 	'reports_find_location' => '近くのロケーションを探す',
@@ -546,5 +547,10 @@
 	'google_satellite' => '衛星写真 (by Google Map)',
 	'google_hybrid' => '地図&衛星写真  (by Google Map)',
 	'google_normal' => '地図 (by Google Map)',
+    'terms' => 'sinsai.info 利用規約',
+    'terms_title_index' => 'sinsai.info 利用規約',
+    'terms_confirm_text' => '投稿前に必ずお読みください',
+    'privacypolicy' => '個人情報保護方針',
+    'privacypolicy_title_index' => '個人情報保護方針',
 	);
 ?>
