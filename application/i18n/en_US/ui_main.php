@@ -537,6 +537,10 @@
 	'google_satellite' => 'Satellite (by Google Map)',
 	'google_hybrid' => 'Map & Satellite  (by Google Map)',
 	'google_normal' => 'Map (by Google Map)',
-	
+    'terms' => 'Terms Of Service',
+    'terms_title_index' => 'Terms Of Service',
+    'terms_confirm_text' => 'Please read before submitted',
+    'privacypolicy' => 'Privacy Policy',
+    'privacypolicy_title_index' => 'Privacy Policy',
 	);
 ?>

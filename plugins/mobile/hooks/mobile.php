@@ -46,11 +46,6 @@ class mobile {
 			if(isset($_SERVER['HTTP_USER_AGENT']) AND !$this->_is_keitai() AND $this->_is_mobile()
 				AND strrpos(url::current(), "mobile") === FALSE
 
-				//// It's a temporary code for #315 in Redmine, should be deleted later!////
-				AND strrpos(url::current(), "page/index/9") === FALSE
-				AND strrpos(url::current(), "contact") === FALSE
-				////////////////////////////////////////////////////////////////////////////
-
 				//// It's a temporary code for #409 in Redmine, should be deleted later!////
 				AND strrpos(url::current(), "alerts/verify") === FALSE
 				////////////////////////////////////////////////////////////////////////////
