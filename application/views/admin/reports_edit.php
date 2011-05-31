@@ -66,6 +66,23 @@
 						</div>
 						<!-- f-col -->
 						<div class="f-col">
+<?php
+if ( $form['incident_active'] > 1 ) {
+?>
+        <div style="float:left;" class="active-box"><h4>【
+<?php
+    if ( $form['incident_active'] == 2 ) {
+        echo Kohana::lang('ui_main.not_approval');
+    } elseif ( $form['incident_active'] == 3 ) {
+        echo  Kohana::lang('ui_main.pending_approval');
+    } elseif ( $form['incident_active'] == 4 ) {
+        echo  Kohana::lang('ui_main.escalation_approval');
+    }
+?>
+        】</h4></div>
+<?php
+}
+?>
 							<?php
 							// Action::report_pre_form_admin - Runs right before report form is rendered
 							Event::run('ushahidi_action.report_pre_form_admin', $id);
@@ -425,56 +442,69 @@
 								print "<input type=\"hidden\" name=\"$this_startid\" value=\"$i\" id=\"$this_startid\">";
 								?>
 							</div>
+                            <div id="divpersonal">
+								<div class="row">
+									<h4><?php echo Kohana::lang('ui_main.personal_information');?></span></h4>
+								</div>
+								<div class="row">
+									<label for='person_last'><?php echo Kohana::lang('ui_main.last_name');?></label>
+										<?php print form::input('person_last', $form['person_last'], ' class="text"'); ?>
+								</div>
+								<div class="row">
+									<label for='person_first'><?php echo Kohana::lang('ui_main.first_name');?></label>
+										<?php print form::input('person_first', $form['person_first'], ' class="text"'); ?>
+								</div>
+								<div class="row">
+									<label for='person_email'><?php echo Kohana::lang('ui_main.email_address');?></label>
+										<?php print form::input('person_email', $form['person_email'], ' class="email"'); ?>
+								</div>
+                            </div>
 						</div>
 						<!-- f-col-bottom -->
 						<div class="f-col-bottom-container">
-							<div class="f-col-bottom">
-								<div class="row">
-									<h4><?php echo Kohana::lang('ui_main.personal_information');?></span></h4>
-									<label>
-										<span><?php echo Kohana::lang('ui_main.first_name');?></span>
-										<?php print form::input('person_first', $form['person_first'], ' class="text"'); ?>
-									</label>
-									<label>
-										<span><?php echo Kohana::lang('ui_main.last_name');?></span>
-										<?php print form::input('person_last', $form['person_last'], ' class="text"'); ?>
-									</label>
-								</div>
-								<div class="row">
-									<label>
-										<span><?php echo Kohana::lang('ui_main.email_address');?></span>
-										<?php print form::input('person_email', $form['person_email'], ' class="text"'); ?>
-									</label>
-								</div>
-							</div>
 							<!-- f-col-bottom-1 -->
 							<div class="f-col-bottom-1">
 								<h4><?php echo Kohana::lang('ui_main.information_evaluation');?></h4>
 								<div class="row">
 									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.approve_this_report');?>?</div>
-									<input type="radio" name="incident_active" value="1"
-									<?php if ($form['incident_active'] == 1)
-									{
-										echo " checked=\"checked\" ";
-									}?>> <?php echo Kohana::lang('ui_main.yes');?>
-									<input type="radio" name="incident_active" value="0"
+									<input type="radio" id="incident_active_0" name="incident_active" value="0"
 									<?php if ($form['incident_active'] == 0)
 									{
 										echo " checked=\"checked\" ";
-									}?>> <?php echo Kohana::lang('ui_main.no');?>
+									}?>><label for="incident_active_0"><?php echo Kohana::lang('ui_main.not_approved');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_active_1" name="incident_active" value="1"
+									<?php if ($form['incident_active'] == 1)
+									{
+										echo " checked=\"checked\" ";
+									}?>><label for="incident_active_1"><?php echo Kohana::lang('ui_main.approve');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_active_2" name="incident_active" value="2"
+									<?php if ($form['incident_active'] == 2)
+									{
+										echo " checked=\"checked\" ";
+									}?>><label for="incident_active_2"><?php echo Kohana::lang('ui_main.not_approval');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_active_3" name="incident_active" value="3"
+									<?php if ($form['incident_active'] == 3)
+									{
+										echo " checked=\"checked\" ";
+									}?>><label for="incident_active_3"><?php echo Kohana::lang('ui_main.pending_approval');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_active_4" name="incident_active" value="4"
+									<?php if ($form['incident_active'] == 4)
+									{
+										echo " checked=\"checked\" ";
+									}?>><label for="incident_active_4"><?php echo Kohana::lang('ui_main.escalation_approval');?></label>
 								</div>
 								<div class="row">
 									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.verify_this_report');?>?</div>
-									<input type="radio" name="incident_verified" value="1"
-									<?php if ($form['incident_verified'] == 1)
-									{
-										echo " checked=\"checked\" ";
-									}?>> <?php echo Kohana::lang('ui_main.yes');?>
-									<input type="radio" name="incident_verified" value="0"
+									<input type="radio" id="incident_verified_0" name="incident_verified" value="0"
 									<?php if ($form['incident_verified'] == 0)
 									{
 										echo " checked=\"checked\" ";
-									}?>> <?php echo Kohana::lang('ui_main.no');?>									
+									}?>><label for="incident_verified_0"><?php echo Kohana::lang('ui_main.unverified');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_verified_1" name="incident_verified" value="1"
+									<?php if ($form['incident_verified'] == 1)
+									{
+										echo " checked=\"checked\" ";
+									}?>><label for="incident_verified_1"><?php echo Kohana::lang('ui_main.verified');?></label>
 								</div>
 								<div class="row">
 									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.report_edit_dropdown_1_title');?>:</div>

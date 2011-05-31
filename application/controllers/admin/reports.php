@@ -73,9 +73,21 @@ class Reports_Controller extends Admin_Controller
             {
                 $filter_status = 'incident_active = 0';
             }
+            elseif ($status == 'n')
+            {
+                $filter_status = 'incident_active = 2';
+            }
+            elseif ($status == 'p')
+            {
+                $filter_status = 'incident_active = 3';
+            }
+            elseif ($status == 'e')
+            {
+                $filter_status = 'incident_active = 4';
+            }
             elseif ($status == 'v')
             {
-                $filter_status = 'incident_verified = 0';
+                $filter_status = 'incident_verified = 0 and incident_active = 1';
             }
 			else
 			{
@@ -370,6 +382,12 @@ class Reports_Controller extends Admin_Controller
             }
             $countries[$country->id] = $this_country;
         }
+
+        $this->template->content->count_unapproved = ORM::factory('incident')->where('incident_active', '0')->count_all();
+        $this->template->content->count_notapproved = ORM::factory('incident')->where('incident_active', '2')->count_all();
+        $this->template->content->count_pendingapproved = ORM::factory('incident')->where('incident_active', '3')->count_all();
+        $this->template->content->count_escapproved = ORM::factory('incident')->where('incident_active', '4')->count_all();
+        $this->template->content->count_verificated = ORM::factory('incident')->where('incident_active', '1')->where('incident_verified','0')->count_all();
 
 		$this->template->content->from = $r_from;
 		$this->template->content->to = $r_to;
@@ -724,7 +742,7 @@ class Reports_Controller extends Admin_Controller
                 $post->add_error('custom_field', 'values');
             }
 
-            $post->add_rules('incident_active','required', 'between[0,1]');
+            $post->add_rules('incident_active','required', 'between[0,4]');
             $post->add_rules('incident_verified','required', 'length[0,1]');
             $post->add_rules('incident_source','numeric', 'length[1,1]');
             $post->add_rules('incident_information','numeric', 'length[1,1]');

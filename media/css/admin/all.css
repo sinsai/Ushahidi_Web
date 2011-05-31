@@ -9,11 +9,15 @@ form{
 	margin:0;
 	padding:0;
 }
+label:hover {
+    background-color:#cccccc;
+    text-decoration: underline;
+}
 .holder{
 	width:960px;
 	margin:0 auto;
 }
-h1, h2 ,h3, h4{margin:0;}
+h1, h2 ,h3, h4, h5{margin:0;}
 h1{
 	padding:58px 0 0 2px;
 	color:#000;
@@ -675,6 +679,23 @@ ul.tabset li a:hover {
 .btns ul li a:hover{ text-decoration:underline;}
 /*-- btns --*/
 
+.active-box {
+	margin:15px 21px 0 22px;
+	background:#d8d8f1;
+	border:2px solid #a7a7d1;
+    height:40px;
+	width:293px;
+	clear:both;
+	overflow:hidden;
+    text-align:center;
+    vertical-align: middle;
+}
+.blue-box h4 {
+    margin:0;
+    padding:0;
+    font-weight:bold;
+}
+
 .green-box {
 	margin:15px 21px 0 22px;
 	padding:9px 0 8px;
@@ -931,7 +952,7 @@ ul.pager li a.active {background:#999; color:#fff}
 {
 	background: #EDF9EE;
 }
-.report-form input.text, .report-form input.file, .tab_form_item input.text{
+.report-form input.text, .report-form input.email, .report-form input.file, .tab_form_item input.text{
 	display:inline;
 	margin:0;
 	padding:2px 5px;
@@ -1215,40 +1236,41 @@ input.long2 {
 }
 .second { margin:13px 0 0 !important;}
 .link-row h4{ padding-top:11px;}
+/*-- divpersonal --*/
+#divpersonal {
+	clear:both;
+    margin-top:22px;
+	padding:0 20px 6px 0px;
+	width:423px;
+	float:left;
+    background: #eee;
+}
+#divpersonal .row {
+    margin:6px 6px;
+}
+#divpersonal h4{
+	padding-top:9px;
+}
+#divpersonal label {
+	padding:20px 27px
+	float:left;
+	display:block;
+	font-size:12px;
+	font-weight:bold;
+	color:#636363;
+}
+#divpersonal input.text { width:167px;}
+#divpersonal input.email { width:362px;}
 /*-- f-col-bottom --*/
 .f-col-bottom-container {
 	clear:both;
 	border-top:2px solid #dcdcdc;
 	border-bottom:2px solid #dcdcdc;
 }
-.f-col-bottom {
-	overflow:hidden;
-	clear:both;
-	padding:0 10px 6px 20px;
-	width:423px;
-	float:left;
-}
-.f-col-bottom h4, .f-col-bottom-1 h4{
-	padding-top:9px;
-}
-.f-col-bottom  label{
-	padding:2px 17px 5px 0;
-	float:left;
-}
-.f-col-bottom  label span, .f-col-bottom-1 label span{
-	display:block;
-	font-size:12px;
-	font-weight:bold;
-	color:#636363;
-}
-.f-col-bottom  label input.text,
-.f-col-bottom-1 label input.text{ width:167px;}
-.f-col-bottom label input.email,
-.f-col-bottom-1 label input.email{ width:362px;}
 /*-- f-col-bottom-1 --*/
 .f-col-bottom-1 {
 	padding:0 14px 14px 20px;
-	width:451px;
+	width:651px;
 	float:left;
 	background-color:#eee;
 	border-left:2px dotted #dcdcdc;
@@ -1262,6 +1284,15 @@ input.long2 {
 	color:#636363;
 	float:left;
 	width:180px;
+}
+.f-col-bottom-1 h4{ padding-top:9px; }
+.f-col-bottom-1 label input.text{ width:167px;}
+.f-col-bottom-1 label input.email{ width:362px;}
+.f-col-bottom-1 label span{
+	display:block;
+	font-size:12px;
+	font-weight:bold;
+	color:#636363;
 }
 
 .report-form .save-rep-btn,

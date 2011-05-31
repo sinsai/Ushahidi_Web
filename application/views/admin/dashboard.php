@@ -127,7 +127,10 @@
 								<a href="<?php echo url::site() . 'admin/reports' ?>" class="reports"><?php echo Kohana::lang('ui_main.reports');?></a>
 								<strong><?php echo number_format($reports_total); ?></strong>
 								<ul>
-									<li><a href="<?php echo url::site() . 'admin/reports?status=a' ?>"><?php echo Kohana::lang('ui_main.not_approved');?></a><strong>(<?php echo $reports_unapproved; ?>)</strong></li>
+									<li><a href="<?php echo url::site() . 'admin/reports?status=a' ?>"><?php echo Kohana::lang('ui_main.awaiting_approval');?></a><strong>(<?php echo $reports_unapproved; ?>)</strong></li>
+									<li><a href="<?php echo url::site() . 'admin/reports?status=n' ?>"><?php echo Kohana::lang('ui_main.not_approval');?></a><strong>(<?php echo $reports_notapproved; ?>)</strong></li>
+									<li><a href="<?php echo url::site() . 'admin/reports?status=p' ?>"><?php echo Kohana::lang('ui_main.pending_approval');?></a><strong>(<?php echo $reports_pendingapproved; ?>)</strong></li>
+									<li><a href="<?php echo url::site() . 'admin/reports?status=e' ?>"><?php echo Kohana::lang('ui_main.escalation_approval');?></a><strong>(<?php echo $reports_escapproved; ?>)</strong></li>
 									
 								</ul>
 							</li>
