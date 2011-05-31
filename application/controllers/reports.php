@@ -844,7 +844,7 @@ class Reports_Controller extends Main_Controller {
 				$post->add_rules('comment_author', 'required', 'length[3,100]');
 				$post->add_rules('comment_description', 'required');
 				$post->add_rules('comment_email', 'required','email', 'length[4,100]');
-				// $post->add_rules('captcha', 'required', 'Captcha::valid');
+				$post->add_rules('captcha', 'required', 'Captcha::valid');
 
 				// Test to see if things passed the rule checks
 
