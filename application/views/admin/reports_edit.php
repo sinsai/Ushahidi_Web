@@ -472,11 +472,6 @@ if ( $form['incident_active'] > 1 ) {
 									{
 										echo " checked=\"checked\" ";
 									}?>><label for="incident_active_0"><?php echo Kohana::lang('ui_main.not_approved');?></label>&nbsp;&nbsp;
-									<input type="radio" id="incident_active_1" name="incident_active" value="1"
-									<?php if ($form['incident_active'] == 1)
-									{
-										echo " checked=\"checked\" ";
-									}?>><label for="incident_active_1"><?php echo Kohana::lang('ui_main.approve');?></label>&nbsp;&nbsp;
 									<input type="radio" id="incident_active_2" name="incident_active" value="2"
 									<?php if ($form['incident_active'] == 2)
 									{
@@ -491,7 +486,12 @@ if ( $form['incident_active'] > 1 ) {
 									<?php if ($form['incident_active'] == 4)
 									{
 										echo " checked=\"checked\" ";
-									}?>><label for="incident_active_4"><?php echo Kohana::lang('ui_main.escalation_approval');?></label>
+									}?>><label for="incident_active_4"><?php echo Kohana::lang('ui_main.escalation_approval');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_active_1" name="incident_active" value="1"
+									<?php if ($form['incident_active'] == 1)
+									{
+										echo " checked=\"checked\" ";
+									}?>><label for="incident_active_1"><?php echo Kohana::lang('ui_main.approve');?></label>&nbsp;&nbsp;
 								</div>
 								<div class="row">
 									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.verify_this_report');?>?</div>
