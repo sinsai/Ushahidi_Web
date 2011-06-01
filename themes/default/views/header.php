@@ -11,8 +11,8 @@
 Event::run('ushahidi_action.header_scripts');
 echo map::layers_scripts(TRUE);
 ?>
-<link rel="shortcut icon" href="/ushahidi/media/img/favicon.ico" type="image/x-icon" />
-<link rel="search" type="application/opensearchdescription+xml" title="Sinsai.info" href="/ushahidi/media/sinsaiinfo.searchbar.xml">
+<link rel="shortcut icon" href="<?php echo url::base(); ?>media/img/favicon.ico" type="image/x-icon" />
+<link rel="search" type="application/opensearchdescription+xml" title="Sinsai.info" href="<?php echo url::base(); ?>media/sinsaiinfo.searchbar.xml">
 </head>
 
 <body id="page">
@@ -25,7 +25,7 @@ echo map::layers_scripts(TRUE);
 <!-- logo -->
 <div id="logo">
 
-<h1><a href="/"><img src="/ushahidi/media/img/logo.gif" alt="東北沖地震 震災情報サイト sinsai.info: 3/11 東北地方太平洋沖地震,Earthquake Tohoku area in Japan 3/11" /></a></h1>
+<h1><a href="/"><img src="<?php echo url::base(); ?>media/img/logo.gif" alt="東北沖地震 震災情報サイト sinsai.info: 3/11 東北地方太平洋沖地震,Earthquake Tohoku area in Japan 3/11" /></a></h1>
 <span class="dnone"><?php echo $site_tagline; ?></span>
 
 </div>
@@ -38,7 +38,7 @@ echo map::layers_scripts(TRUE);
 <?php
 $nations = array("ja_JP","en_US","ko_KR","zh_CN","de_DE","fr_FR","it_IT");
 foreach ($nations as $nation){
-    echo "<a href='?l=".$nation."'><img src='".url::base()."/media/img/flags/".$nation.".png' ></a>";
+    echo "<a href='?l=".$nation."'><img src='".url::base()."media/img/flags/".$nation.".png' ></a>";
 }
 ?>
 </p></div>
@@ -74,7 +74,7 @@ if (isset($_GET['l']) && !empty($_GET['l']))
 }
 
 // Home
-$menu .= "<li><a href=\"http://www.sinsai.info/\" ";
+$menu .= "<li><a href=\"/\" ";
 $menu .= ($this_page == 'home') ? " class=\"active\"" : "";
 $menu .= ">".Kohana::lang('ui_main.home')."</a></li>";
 

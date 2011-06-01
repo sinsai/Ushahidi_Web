@@ -9,7 +9,7 @@
 		</div>
 		<div class="help-box">
 		<p>このサイトは震災情報をみんなで集め公開しているサイトです。<br>
-		被災地復興を願うボランティアスタッフが運用しています。<a href="http://www.sinsai.info/ushahidi/page/index/4">ご利用方法はこちら</a></p>
+		被災地復興を願うボランティアスタッフが運用しています。<a href="<?php echo url::base(); ?>page/index/4">ご利用方法はこちら</a></p>
 		</div>
 		<div class="mobile-box">
 		    <div class="mobile-box-qr">
@@ -34,7 +34,7 @@
 		
 			<ul id="category_switch" class="category-filters">
             <!--<li>カテゴリーを選択してください</li>-->
-				<li><a class="active" id="cat_0" href="#"><img src="<?php echo url::base() ?>/media/img/all.png" width='16' height='16'/><span class="category-title"><?php echo Kohana::lang('ui_main.all_categories');?></span></a></li><?php
+				<li><a class="active" id="cat_0" href="#"><img src="<?php echo url::base() ?>media/img/all.png" width='16' height='16'/><span class="category-title"><?php echo Kohana::lang('ui_main.all_categories');?></span></a></li><?php
 					foreach ($categories as $category => $category_info)
 					{
 						$category_title = $category_info[0];
@@ -200,11 +200,11 @@
             <div id="related-link" class="section">
                 <h5>関連リンク</h5>
                 <dl>
-                    <dt><a href="http://www.sinsai.info/ushahidi/page/index/1">安否確認・伝言板</a></dt>
+                    <dt><a href="<?php echo url::base(); ?>page/index/1">安否確認・伝言板</a></dt>
                     <dd>Googleパーソンファインダーや、各ケータイキャリアの災害掲示板などのリンク集。</dd>
                 </dl>
                 <dl>
-                    <dt><a href="http://www.sinsai.info/ushahidi/page/index/2">被災地画像/映像</a></dt>
+                    <dt><a href="<?php echo url::base(); ?>page/index/2">被災地画像/映像</a></dt>
 <dd>空撮/衛星画像や、各国TV番組の映像や政府のメッセージやなどのリンク集。</dd>
                 </dl>
                 <dl>
@@ -215,7 +215,7 @@
                 </div><!-- #related-link -->
                 <!--banner area-->
                 <div class="banner">
-                    <a href="http://tasukeaijapan.jp/" target="_blank"><img src="/ushahidi/themes/default/images/banner_tasukeai.jpg" alt="助け合いジャパン"/ style="width:285;height:45"></a>
+                    <a href="http://tasukeaijapan.jp/" target="_blank"><img src="<?php echo url::base(); ?>themes/default/images/banner_tasukeai.jpg" alt="助け合いジャパン"/ style="width:285;height:45"></a>
                     <a href="http://www.hack4.jp/" target="_blank" rel="nofollow"><img src="http://sites.google.com/site/hackforjapan/RelatedInfo/unity/234x60.png" style="width:234px;height:60px;" alt="Hack For Japan 「コードでつなぐ。想いと想い」"></a>
                 </div>
                 <!--banner area-->
