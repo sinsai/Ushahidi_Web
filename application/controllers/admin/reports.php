@@ -71,7 +71,8 @@ class Reports_Controller extends Admin_Controller
 			$status = strtolower($_GET['status']);
             if ($status == 'a')
             {
-                $filter_status = 'incident_active = 0';
+//                $filter_status = 'incident_active = 0';
+                $filter_status = 'incident_verified = 0 and incident_active = 0';
             }
             elseif ($status == 'n')
             {
@@ -383,7 +384,7 @@ class Reports_Controller extends Admin_Controller
             $countries[$country->id] = $this_country;
         }
 
-        $this->template->content->count_unapproved = ORM::factory('incident')->where('incident_active', '0')->count_all();
+        $this->template->content->count_unapproved = ORM::factory('incident')->where('incident_active', '0')->where('incident_verified','0')->count_all();
         $this->template->content->count_notapproved = ORM::factory('incident')->where('incident_active', '2')->count_all();
         $this->template->content->count_pendingapproved = ORM::factory('incident')->where('incident_active', '3')->count_all();
         $this->template->content->count_escapproved = ORM::factory('incident')->where('incident_active', '4')->count_all();
