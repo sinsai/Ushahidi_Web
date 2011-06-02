@@ -7,7 +7,7 @@ if (isset($_GET['l']) && !empty($_GET['l']))
 	if (array_key_exists($_GET['l'],$locales)) {
 		$lc = $_GET['l'];
 	}
-	if($_GET['l'] != $lc)
+	if($_GET['l'] != 'ja_JP')
 	{
 		$lang = "?l=".$_GET['l'];
 	}
