@@ -1,5 +1,21 @@
+<?php
+$lang = "";
+$lc = Kohana::config('locale.language.0');
+if (isset($_GET['l']) && !empty($_GET['l']))
+{
+	$locales = locale::get_i18n();
+	if (array_key_exists($_GET['l'],$locales)) {
+		$lc = $_GET['l'];
+	}
+	if($_GET['l'] != $lc)
+	{
+		$lang = "?l=".$_GET['l'];
+	}
+}
+$cn = substr($lc,0,2);
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $cn; ?>" xml:lang="<?php echo $cn; ?>">
 <head>
 <title><?php echo (isset($action_name))? (html::specialchars($action_name)."：".$site_name) : $site_name; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -64,14 +80,6 @@ foreach ($nations as $nation){
 <ul>
 <?php
 $menu = "";
-$lang = "";
-if (isset($_GET['l']) && !empty($_GET['l']))
-{
-	if($_GET['l'] != 'ja_JP')
-	{
-	$lang = "?l=".$_GET['l'];
-	}
-}
 
 // Home
 $menu .= "<li><a href=\"/\" ";
