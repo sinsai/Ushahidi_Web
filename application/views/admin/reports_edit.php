@@ -532,6 +532,10 @@ if ( $form['incident_active'] > 1 ) {
 									)
 									, $form['incident_information']) ?>									
 								</div>								
+                                <div class="row">
+									<div class="f-col-bottom-1-col"><?php echo "comments";?>:</div>
+                                    <?php print form::input('verified_comment', $form['verified_comment'], ' class="text long"'); ?>
+                                </div>
 							</div>
 							<div style="clear:both;"></div>
 						</div>

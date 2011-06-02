@@ -60,6 +60,7 @@
 	'escalation_approval' => 'エスカレ',
 	'awaiting_approval' => '承認待ち',
 	'awaiting_verification' => '検証待ち',
+    'verificated_nonactive' => '未承認＋検証済',
 	'blog' => 'ブログ',
 	'cancel' => 'キャンセル',
 	'categories' => 'カテゴリー',

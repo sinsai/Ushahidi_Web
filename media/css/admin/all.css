@@ -521,8 +521,9 @@ ul.tabset li{
 }
 ul.tabset li a{
 	text-decoration:none;
-	height:25px;
+	height:42px;
 	font-weight:bold;
+    text-align: center;
 	padding:5px 15px 0;
 	line-height:20px;
 	float:left;

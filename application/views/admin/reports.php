@@ -21,12 +21,13 @@
 				<div class="tabs">
 					<!-- tabset -->
 					<ul class="tabset">
-						<li><a href="?status=0" <?php if ($status != 'a' && $status !='v' && $status != 'n' && $status != 'p' && $status != 'e') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.show_all');?></a></li>
-						<li><a href="?status=a" <?php if ($status == 'a') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.awaiting_approval')." (".$count_unapproved.")";?></a></li>
-						<li><a href="?status=n" <?php if ($status == 'n') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.not_approval')." (".$count_notapproved.")";?></a></li>
-						<li><a href="?status=p" <?php if ($status == 'p') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.pending_approval')." (".$count_pendingapproved.")";?></a></li>
-						<li><a href="?status=e" <?php if ($status == 'e') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.escalation_approval')." (".$count_escapproved.")"; ?></a></li>
-						<li><a href="?status=v" <?php if ($status == 'v') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.awaiting_verification')." (".$count_verificated.")";?></a></li>
+						<li><a href="?status=0" <?php if ($status != 'a' && $status !='v' && $status != 'n' && $status != 'p' && $status != 'e' && $status != 'i') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.show_all');?></a></li>
+						<li><a href="?status=a" <?php if ($status == 'a') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.awaiting_approval')."<br />(".$count_unapproved.")";?></a></li>
+						<li><a href="?status=n" <?php if ($status == 'n') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.not_approval')."<br />(".$count_notapproved.")";?></a></li>
+						<li><a href="?status=p" <?php if ($status == 'p') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.pending_approval')."<br />(".$count_pendingapproved.")";?></a></li>
+						<li><a href="?status=e" <?php if ($status == 'e') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.escalation_approval')."<br />(".$count_escapproved.")"; ?></a></li>
+						<li><a href="?status=v" <?php if ($status == 'v') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.awaiting_verification')."<br />(".$count_verificated.")";?></a></li>
+						<li><a href="?status=i" <?php if ($status == 'i') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.verificated_nonactive')."<br />(".$count_verificated_nonactive.")";?></a></li>
 					</ul>
 					<script type="text/javascript"> 
 					$(function() {

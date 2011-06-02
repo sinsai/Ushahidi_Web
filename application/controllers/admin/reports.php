@@ -90,6 +90,10 @@ class Reports_Controller extends Admin_Controller
             {
                 $filter_status = 'incident_verified = 0 and incident_active = 1';
             }
+            elseif ($status == 'i')
+            {
+                $filter_status = 'incident_verified = 1 and incident_active = 0';
+            }
 			else
 			{
 				$status = "0";
@@ -389,6 +393,7 @@ class Reports_Controller extends Admin_Controller
         $this->template->content->count_pendingapproved = ORM::factory('incident')->where('incident_active', '3')->count_all();
         $this->template->content->count_escapproved = ORM::factory('incident')->where('incident_active', '4')->count_all();
         $this->template->content->count_verificated = ORM::factory('incident')->where('incident_active', '1')->where('incident_verified','0')->count_all();
+        $this->template->content->count_verificated_nonactive = ORM::factory('incident')->where('incident_active', '0')->where('incident_verified','1')->count_all();
 
 		$this->template->content->from = $r_from;
 		$this->template->content->to = $r_to;
@@ -466,7 +471,8 @@ class Reports_Controller extends Admin_Controller
             'incident_active' => '',
             'incident_verified' => '',
             'incident_source' => '',
-            'incident_information' => ''
+            'incident_information' => '',
+            'verified_comment' => ''
         );
 
         //  copy the form as errors, so the errors will be stored with keys corresponding to the form field names
@@ -839,9 +845,14 @@ class Reports_Controller extends Admin_Controller
                 $verify = new Verify_Model();
                 $verify->incident_id = $incident->id;
                 $verify->user_id = $_SESSION['auth_user']->id;          // Record 'Verified By' Action
+                $verify->verified_comment = $post->verified_comment;
                 $verify->verified_date = date("Y-m-d H:i:s",time());
                 
-                if ($post->incident_active == 1)
+                if ($post->incident_active == 1 && $post->incident_verified == 1)
+                {
+                    $verify->verified_status = '3';
+                }
+                elseif ($post->incident_active == 1)
                 {
                     $verify->verified_status = '1';
                 }
@@ -849,16 +860,23 @@ class Reports_Controller extends Admin_Controller
                 {
                     $verify->verified_status = '2';
                 }
-                elseif ($post->incident_active == 1 && $post->incident_verified == 1)
+                elseif ($post->incident_active == 2)
                 {
-                    $verify->verified_status = '3';
+                    $verify->verified_status = '4';
+                }
+                elseif ($post->incident_active == 3)
+                {
+                    $verify->verified_status = '5';
+                }
+                elseif ($post->incident_active == 4)
+                {
+                    $verify->verified_status = '6';
                 }
                 else
                 {
                     $verify->verified_status = '0';
                 }
                 $verify->save();
-
 
                 // STEP 3: SAVE CATEGORIES
                 ORM::factory('Incident_Category')->where('incident_id',$incident->id)->delete_all();        // Delete Previous Entries
@@ -1128,6 +1146,9 @@ class Reports_Controller extends Admin_Controller
         $this->template->content->errors = $errors;
         $this->template->content->form_error = $form_error;
         $this->template->content->form_saved = $form_saved;
+
+        $this->template->content->verified_log = array();
+        
 
         // Retrieve Custom Form Fields Structure
         $disp_custom_fields = $this->_get_custom_form_fields($id,$form['form_id'],false);
