@@ -11,7 +11,11 @@ $config['site_domain'] = '/ushahidi';
  * specified, then the current protocol is used, or when possible, only an
  * absolute path (with no protocol/domain) is used.
  */
-$config['site_protocol'] = 'http';
+if ( (isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) &&  $_SERVER["HTTP_X_FORWARDED_PROTO"]== 'https') || $_SERVER["SERVER_PORT"] == 443 ) {
+    $config['site_protocol'] = 'https';
+} else {
+    $config['site_protocol'] = 'http';
+}
 
 /**
  * Name of the front controller for this application. Default: index.php
