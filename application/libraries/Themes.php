@@ -26,6 +26,7 @@ class Themes_Core {
 	public $videoslider_enabled = false;
 	public $site_style = false;
 	public $js = null;
+	public $social_button = false;
 	
 	public $css_url = null;
 	public $js_url = null;
@@ -152,6 +153,11 @@ class Themes_Core {
 		if($this->videoslider_enabled )
 		{
 			$core_js .= html::script($this->js_url."media/js/coda-slider.pack");
+		}
+		
+		if($this->social_button)
+		{
+			$core_js .= html::script($this->js_url."media/js/jquery.socialbutton-1.7.3");
 		}
 		
 		// Javascript files from plugins

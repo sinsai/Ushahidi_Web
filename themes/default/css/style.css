@@ -896,6 +896,7 @@ div.credibility {
 	margin-top:10px;
 	padding:3px;
 	border-top:1px dotted #C0C2B8;
+	clear: both;
 }
 
 div.report-title {
@@ -2500,4 +2501,14 @@ div.banner img{
 	text-transform: uppercase;
 }
 
+/* Social Button */
+div.social_button div {
+	margin: 10px 0 0 0;
+	width: 90px;
+	float: left;
+}
+
+div#twitter {
+	margin-right: 10px;
+}
 

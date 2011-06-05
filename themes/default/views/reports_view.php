@@ -83,6 +83,12 @@
                         
                     } ?>
 			<?php } ?>
+			<div class="social_button">
+				<div id="twitter"></div>
+				<div id="facebook"></div>
+				<div id="gree"></div>
+				<div id="hatena"></div>
+			</div>
                         
 			<div class="credibility">
 				<table class="rating-table" cellspacing="0" cellpadding="0" border="0">

@@ -1061,6 +1061,7 @@ class Reports_Controller extends Main_Controller {
 		$this->themes->map_enabled = TRUE;
 		$this->themes->photoslider_enabled = TRUE;
 		$this->themes->videoslider_enabled = TRUE;
+		$this->themes->social_button = TRUE;
 		$this->themes->js = new View('reports_view_js');
 		$this->themes->js->incident_id = $incident->id;
 		$this->themes->js->default_map = Kohana::config('settings.default_map');
