@@ -211,5 +211,21 @@
 	'sort_desc' => '降順',
 	'down_range' => '絞込み',
 	'submitting' => '実行',
+	'not_approval' => '承認不要',
+	'pending_approval' => '一時保留',
+	'escalation_approval' => 'エスカレ',
+    'admin_comments' => "管理コメント",
+    'admin_nocomments' => "コメント無し",
+    'active_status_arry' => array(
+                            0 => "N/A",
+                            1 => "承認",
+                            2 => "承認＆検証済",
+                            3 => "承認不要",
+                            4 => "承認不要＆検証済",
+                            5 => "一時保留",
+                            6 => "一時保留＆検証済",
+                            7 => "エスカレ",
+                            8 => "エスカレ＆検証済"
+                        ),
 	);
 ?>

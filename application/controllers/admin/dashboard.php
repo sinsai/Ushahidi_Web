@@ -36,7 +36,7 @@ class Dashboard_Controller extends Admin_Controller
         $this->template->content->reports_total = ORM::factory('incident')->count_all();
 
         // Total Unapproved Reports
-        $this->template->content->reports_unapproved = ORM::factory('incident')->where('incident_active', '0')->count_all();
+        $this->template->content->reports_unapproved = ORM::factory('incident')->where('incident_active', '0')->where('incident_verified','0')->count_all();
         $this->template->content->reports_notapproved = ORM::factory('incident')->where('incident_active', '2')->count_all();
         $this->template->content->reports_pendingapproved = ORM::factory('incident')->where('incident_active', '3')->count_all();
         $this->template->content->reports_escapproved = ORM::factory('incident')->where('incident_active', '4')->count_all();

@@ -5,6 +5,7 @@
 	'access_limits' => 'アクセス制限',
 	'account_name' => 'アカウント名',
 	'actions' => 'アクション',
+	'statuses' => 'ステータス',
 	'action_confirm' => 'このアクションは停止する事が出来ません。本当に実行しますか？',
 	'activate' => 'アクティブ',
 	'active' => 'アクティブ',
@@ -322,7 +323,7 @@
 	'preview' => 'レビュー',
 	'preview_item' => 'レビューアイテム',
 	'preview_message' => 'レビューメッセージ',
-	'previous' => '前の',
+	'previous' => '前',
 	'profile_saved' => 'プロファイルは保存されました。',
 	'quick_stats' => 'クイック統計',
 	'rating' => '評価',
@@ -534,6 +535,8 @@
 	'yesterday' => '昨日',
 	'zoom_in' => 'ズームイン',
 	'zoom_out' => 'ズームアウト',
+
+    'admin_logview' => '承認/検証ログ',
 
 	'about_us' => 'サイト運営団体',
 	'about_us_title_index' => 'サイト運営団体',
