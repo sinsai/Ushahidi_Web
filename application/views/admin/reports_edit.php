@@ -550,7 +550,7 @@ if ( $form['incident_active'] > 1 ) {
                                     <ul><?php
                                 $active_status_arry = Kohana::lang('ui_admin.active_status_arry');
                                 $viewlog = '';
-                                if( is_object($form['incident_editlog']) ) {
+                                if( $superadmin_flag && is_object($form['incident_editlog']) ) {
                                     foreach ($form['incident_editlog'] as $editlog)
                                     {
                                         $viewlog .= "<li><strong>".$editlog->user->name;
