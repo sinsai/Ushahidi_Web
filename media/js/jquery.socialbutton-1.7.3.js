@@ -144,7 +144,21 @@
  *     padding: 10,
  *     height: 15
  * });
- * 
+ *
+ *
+ * Tumblr
+ * http://www.tumblr.com/goodies
+ *
+ * $('#tumblr').socialbutton('tumblr');
+ *
+ * $('#tumblr').socialbutton('tumblr', {
+ *     button: '/path/to/your-icon.png',
+ *     linkText: 'share on Tumblr',
+ *     url: 'http://nojima.me/',
+ *     title: 'share title',
+ *     selection: 'quote text'
+ * });
+ *
  */
 (function($) {
 
@@ -251,7 +265,13 @@ $.fn.socialbutton = function(service, options) {
 			url: document.URL,
 			height: 13,
 			padding: 7
-		}
+		},
+        tumblr: {
+            button: 'http://platform.tumblr.com/v1/share_1.png',
+            url: document.URL,
+            title: document.title,
+            linkText: ''
+        }
 	};
 
 	var max_index = this.size() - 1;
@@ -295,6 +315,8 @@ $.fn.socialbutton = function(service, options) {
 				socialbutton_hatena_oldstyle(this, options, defaults.hatena_oldstyle, index, max_index);
 				break;
 
+            case 'tumblr':
+                socialbutton_tumblr(this, options, defaults.tumblr, index, max_index);
 			default:
 				break;
 		}
@@ -649,6 +671,47 @@ function socialbutton_hatena_oldstyle(target, options, defaults, index, max_inde
 			+ '</span>';
 
 	$(target).html(tag);
+}
+
+function socialbutton_tumblr(target, options, defaults, index, max_index)
+{
+    var button = options.button != undefined ? options.button : defaults.button;
+    var linkText = options.linkText || defaults.linkText;
+    var url = options.url || defaults.url;
+    var title = options.title || defaults.title;
+    var selection = options.selection != undefined ? options.selection :  '';
+    var tumblrURL = 'http://www.tumblr.com/share?v=3';
+
+    if (button.length > 0) {
+        linkText = '<img src="' + button + '" alt="share on Tumblr" style="border: none;vertical-align: middle;" />' + linkText;
+    }
+
+    var anchor = $('<a>').attr('href', '#').html(linkText).click(function(){
+        selection = selection || (window.getSelection?window.getSelection():(document.getSelection)?document.getSelection():(document.selection?document.selection.createRange().text:0));
+        tumblrURL += '&u=' + encodeURIComponent(url) + '%20'
+            + '&t=' + encodeURIComponent(title) + '%20'
+            + '&s=' + encodeURIComponent(selection)
+        try{
+            if(!/^(.*\.)?tumblr[^.]*$/.test(document.location.host)) {
+                throw(0);
+            }
+            tstbklt();
+        } catch(z){
+            var a = function(){
+                if(!window.open(tumblrURL, encodeURIComponent(title),'toolbar=0,resizable=0,status=1,width=450,height=430')) {
+                    document.location.href=tumblrURL;
+                }
+            };
+            if(/Firefox/.test(navigator.userAgent)) {
+                setTimeout(a,0);
+            } else {
+                a();
+            }
+        }
+        return false;
+    });
+
+    $(target).html(anchor);
 }
 
 function merge_attributes(attr)

@@ -86,6 +86,7 @@
 			<div class="social_button">
 				<div id="twitter"></div>
 				<div id="facebook"></div>
+				<div id="tumblr"></div>
 				<div id="gree"></div>
 				<div id="hatena"></div>
 			</div>

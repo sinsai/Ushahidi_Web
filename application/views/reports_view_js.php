@@ -278,6 +278,9 @@
 				width: 90,
 				show_faces: false
 			});
+			$('#tumblr').socialbutton('tumblr', {
+				linkText: ''
+			});
 			$('#gree').socialbutton('gree_sf', {
 			});
 			$('#hatena').socialbutton('hatena', {
