@@ -358,7 +358,6 @@
 	'reports_date' => '日時',
 	'reports_description' => '説明',
 	'reports_download_csv' => 'レポーターはCSVフォーマットでダウンロードされます',
-// sinsai.info 利用規約
 	'reports_email' => 'メール',
 	'reports_features' => '機能',
 	'reports_find_location' => '近くのロケーションを探す',
