@@ -28,18 +28,31 @@ class Feeds_Controller extends Main_Controller {
     {
         $this->template->header->this_page = Kohana::lang('ui_admin.feeds');
         $this->template->content = new View('feeds');
-        
+
+		$feed_arrays = ORM::factory('feed')
+			->where('feed_active',1)
+			->orderby('feed_update', 'asc')
+			->find_all();
+
+		$feeds = array();
+		foreach($feed_arrays as $val){
+			$feeds[] = $val->id;
+		}
+        $feeds_str = join(",",$feeds);
+
         // Pagination
         $pagination = new Pagination(array(
                       'query_string' => 'page',
                       'items_per_page' => (int) Kohana::config('settings.items_per_page'),
                       'total_items' => ORM::factory('feed_item')
+                                       ->where("feed_id in (".$feeds_str.")")
                                        ->count_all()
                       ));
 
         $feeds = ORM::factory('feed_item')
+                     ->where("feed_id in (".$feeds_str.")")
                      ->orderby('item_date', 'desc')
-                     ->find_all( (int) Kohana::config('settings.items_per_page'), 
+                     ->find_all((int)Kohana::config('settings.items_per_page'), 
                                  $pagination->sql_offset);
         
         $this->template->content->feeds = $feeds;

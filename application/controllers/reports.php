@@ -1044,6 +1044,19 @@ class Reports_Controller extends Main_Controller {
 		$this->template->content->incident_neighbors = $this->_get_neighbors($incident->location->latitude,
 																									 $incident->location->longitude);
 
+		//BlackbirdPie
+		$twitters = array();
+        require_once ('/mnt/home/ggslyman/htdocs/ushahidi/application/libraries/blackbird-pie.php' );
+        $objbbp = new BlackbirdPie();
+        $twitter_htmls = array();
+		foreach($incident_news as $news){
+			if(preg_match('/^(http|https):\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(es)?\/(\d+)$/',$news,$matches)){
+		        $tweet_details = $objbbp->getTweetData($news);
+		        $twitter_htmls[] = $objbbp->create_tweet_html($tweet_details);
+		    }
+		}
+		$this->template->content->twitter_htmls = $twitter_htmls;
+
         // News link
 		$this->template->content->incident_news = $incident_news;
 

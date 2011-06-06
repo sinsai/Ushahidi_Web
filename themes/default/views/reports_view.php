@@ -90,7 +90,11 @@
 				<div id="gree"></div>
 				<div id="hatena"></div>
 			</div>
-                        
+		<?php
+			foreach($twitter_htmls as $twitter_html){
+				echo $twitter_html;
+			}
+		?>
 			<div class="credibility">
 				<table class="rating-table" cellspacing="0" cellpadding="0" border="0">
           <tr>
