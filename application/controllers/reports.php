@@ -1046,7 +1046,7 @@ class Reports_Controller extends Main_Controller {
 
 		//BlackbirdPie
 		$twitters = array();
-        require_once ('/mnt/home/ggslyman/htdocs/ushahidi/application/libraries/blackbird-pie.php' );
+        require_once (APPPATH.'/libraries/blackbird-pie.php' );
         $objbbp = new BlackbirdPie();
         $twitter_htmls = array();
 		foreach($incident_news as $news){
@@ -1522,4 +1522,3 @@ class Reports_Controller extends Main_Controller {
 	}*/
 
 } // End Reports
-
