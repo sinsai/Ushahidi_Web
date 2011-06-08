@@ -140,25 +140,25 @@ sub diffDays{
 }
 
 sub detectDuplicate{
-	
+	#TODO:
 }
 
 package InputDatabase;
 
 sub new{
-	
+	#TODO:
 }
 
 sub open{
-	
+	#TODO:
 }
 
 sub getNextMessage{
-	
+	#TODO:
 }
 
 sub close{
-	
+	#TODO:
 }
 
 package InputStdin;
@@ -207,40 +207,41 @@ sub getNextMessage{
 
 sub close{
 	#Nothing todo;
+	return;
 }
 
 package OutputDatabase;
 
 sub new{
-	
+	#TODO:
 }
 
 sub open{
-	
+	#TODO:
 }
 
 sub outputMessage{
-	
+	#TODO:
 }
 
 sub close{
-	
+	#TODO:
 }
 
 package OutputStdout;
 
 sub new{
-	
+	#TODO:
 }
 
 sub open{
-	
+	#TODO:
 }
 
 sub outputMessage{
-	
+	#TODO:
 }
 
 sub close{
-	
+	#TODO:
 }
