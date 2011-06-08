@@ -46,10 +46,8 @@ class fullscreenmap {
 		
 		// Get all active top level categories
 		$parent_categories = array();
-		foreach (ORM::factory('category')
-				->where('category_visible', '1')
-				->where('parent_id', '0')
-				->find_all() as $category)
+		$parentCategoryId = 0;
+		foreach ( Category_Model::getCategories($parentCategoryId) as $category )
 		{
             // Get The Children
 			$children = array();

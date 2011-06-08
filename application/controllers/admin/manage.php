@@ -275,7 +275,7 @@ class Manage_Controller extends Admin_Controller
 		$categories = ORM::factory('category')
 									->with('category_lang')
 									->where('parent_id','0')
-									->orderby('category_title', 'asc')
+									->orderby('category_type', 'desc')
 									->find_all((int) Kohana::config('settings.items_per_page_admin'),
 												$pagination->sql_offset);
 

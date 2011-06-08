@@ -1247,7 +1247,7 @@ class Reports_Controller extends Main_Controller {
 			->where('category_visible', '1')
 			->where('parent_id', '0')
 			->where('category_trusted != 1')
-			->orderby('category_title', 'ASC')
+			->orderby('category_type', 'DESC')
 			->find_all();
 
 		return $categories;
