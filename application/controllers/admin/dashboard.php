@@ -108,10 +108,10 @@ class Dashboard_Controller extends Admin_Controller
         // Build dashboard chart
         // Set the date range (how many days in the past from today?)
         // Default to one year if invalid or not set
-        $range = (isset($_GET['range']) AND intval(preg_match('/^\d+$/', $_GET['range'])) > 0)? intval($_GET['range']) : 365;
-
         // Phase 3 - Invoke Kohana's XSS cleaning mechanism just incase an outlier wasn't caught
-        $range = $this->input->xss_clean($range);
+        $range = $this->input->xss_clean($_GET['range']);
+        $range = (isset($range) AND intval(preg_match('/^\d+$/', $range)) > 0)
+                    ? intval($range) : (int)365;
         $this->template->content->range = $range;
 
         $incident_data = Incident_Model::get_number_reports_by_date($range);
