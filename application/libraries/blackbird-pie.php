@@ -276,6 +276,7 @@ class BlackbirdPie {
 		$params = explode('/',$url);
 		$xml = json_decode(file_get_contents('http://api.twitter.com/1/statuses/show/'.$params[5].'.json'),true);
 		$tweet_details = array();
+		$tweet_details['id'] = $params[5];
 		$tweet_details['screen_name'] = $xml['user']['screen_name'];
 		$tweet_details['real_name'] = $xml['user']['name'];
 		$tweet_details['profile_pic'] = $xml['user']['profile_image_url'];
@@ -284,8 +285,7 @@ class BlackbirdPie {
 		$tweet_details['profile_text_color'] = $xml['user']['profile_text_color'];
 		$tweet_details['profile_bg_color'] = $xml['user']['screen_name'];
 		$tweet_details['profile_bg_image'] = $xml['user']['profile_background_image_url'];
-		$tweet_details['id'] = $xml['user']['id'];
-		$tweet_details['time_stamp'] = $xml['created_at'];
+		$tweet_details['time_stamp'] = strtotime($xml['created_at']);
 		$tweet_details['source'] = $xml['source'];
 		$tweet_details['tweet_text'] = $xml['text'];
 		return $tweet_details;
@@ -306,7 +306,7 @@ class BlackbirdPie {
         $profile_url = "http://twitter.com/intent/user?screen_name={$name}"; //the URL to the twitter profile
         /* GENERAL INFO */
         $id = $tweet_details['id'];                                     //id of the actual tweet
-        $url = "http://twitter.com/#!/{$name}/status/{$id}"; //the URL to the tweet on twitter.com
+        $url = "http://twitter.com/#!/{$name}/statuses/{$id}"; //the URL to the tweet on twitter.com
 
         /* TIME INFO */
         $time = $tweet_details['time_stamp'];                       //the time of the tweet
@@ -337,10 +337,10 @@ class BlackbirdPie {
         </style>
         <div id='bbpBox_$id' class='bbpBox' style='padding:20px; margin:5px 0; background-color:#{$profile_bg_color}; background-image:url({$profile_bg_image});{$profile_bg_tile_HTML};background-repeat:repeat'>
             <div style='background:#fff; padding:10px; margin:0; min-height:48px; color:#{$profile_text_color}; -moz-border-radius:5px; -webkit-border-radius:5px;'>
-                <span style='width:100%; font-size:18px; line-height:22px;'>
+                <span style='width:100%; font-size:!important; line-height:22px;'>
                     {$tweet}
                 </span>
-                <div class='bbp-actions' style='font-size:12px; width:100%; padding:5px 0; margin:0 0 10px 0; border-bottom:1px solid #e6e6e6;'>
+                <div class='bbp-actions' style='font-size:!important; width:100%; padding:5px 0; margin:0 0 10px 0; border-bottom:1px solid #e6e6e6;'>
                     <img align='middle' src='".url::base()."media/img/bird.png' />
                     <a title='tweeted on {$date}' href='{$url}' target='_blank'>{$time_ago}</a> via {$source}
                     <a href='{$reply_url}' class='bbp-action bbp-reply-action' title='Reply'>
