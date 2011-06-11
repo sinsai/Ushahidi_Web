@@ -273,8 +273,16 @@ class BlackbirdPie {
         return 'There was a problem with the blakbirdpie shortcode';
     }
 	function getTweetData($url){
+        $url = str_replace("/#!", "", $url);
 		$params = explode('/',$url);
 		$xml = json_decode(file_get_contents('http://api.twitter.com/1/statuses/show/'.$params[5].'.json'),true);
+        if( $xml == NULL ) {
+            return NULL;
+        }
+        if( $params[3] != $xml['user']['screen_name'] ) {
+            return NULL;
+        }
+
 		$tweet_details = array();
 		$tweet_details['id'] = $params[5];
 		$tweet_details['screen_name'] = $xml['user']['screen_name'];
@@ -297,6 +305,7 @@ class BlackbirdPie {
         $name = $tweet_details['screen_name'];                      //the twitter username
         $real_name = $tweet_details['real_name'];                   //the user''s real name
         $profile_pic = $tweet_details['profile_pic'];      //url to the profile image
+        $profile_bg_tile_HTML = "";
         if ( !$tweet_details['profile_bg_tile'] ) 
             $profile_bg_tile_HTML = " background-repeat:no-repeat"; //profile background tile
         $profile_link_color = $tweet_details['profile_link_color']; //link color

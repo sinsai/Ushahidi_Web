@@ -1051,8 +1051,12 @@ class Reports_Controller extends Main_Controller {
         $twitter_htmls = array();
 		foreach($incident_news as $news){
 			if(preg_match('/^(http|https):\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(es)?\/(\d+)$/',$news,$matches)){
+error_log($news."\n",3,"/tmp/d6rkaiz.log");
 		        $tweet_details = $objbbp->getTweetData($news);
-		        $twitter_htmls[] = $objbbp->create_tweet_html($tweet_details);
+error_log("Err:".print_r($tweet_details,true)."\n",3,"/tmp/d6rkaiz.log");
+                if( is_array($tweet_details) ) {
+                    $twitter_htmls[] = $objbbp->create_tweet_html($tweet_details);
+                }
 		    }
 		}
 		$this->template->content->twitter_htmls = $twitter_htmls;
