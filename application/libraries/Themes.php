@@ -93,6 +93,7 @@ class Themes_Core {
 		{
 			$core_css .= html::stylesheet($this->css_url."themes/".$site_style."/style.css");
 		}
+		$core_css .= html::stylesheet($this->css_url."media/css/blackbirdpie.css", "", true);
 		
 		// Render CSS
 		$plugin_css = plugin::render('stylesheet');
@@ -116,7 +117,7 @@ class Themes_Core {
 		$core_js .= html::script($this->js_url."media/js/jquery.ui.min", true);
 		$core_js .= html::script($this->js_url."media/js/jquery.pngFix", true);
 		$core_js .= html::script($this->js_url."media/js/jquery.query-1.2.3", true);
-		
+		$core_js .= html::script($this->js_url."media/js/blackbirdpie.js", true);
 		
 		if ($this->map_enabled)
 		{
