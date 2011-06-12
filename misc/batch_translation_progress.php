@@ -9,7 +9,7 @@ header("Content-type: text/plain; charset=UTF-8;");
 $main_loc = "ja_JP";
 $pwd = $_SERVER["DOCUMENT_ROOT"] . '/ushahidi/application/i18n/';
 
-/* loation をディレクトリ名から拾う */
+/* location をディレクトリ名から拾う */
 $locations = array();
 $dp = opendir($pwd);
 while ( $file = readdir($dp) )
@@ -38,7 +38,7 @@ for ($i=0;$i<count($files);$i++)
 {
   /* 母国語のファイルを読み込み */
   include($pwd . $main_loc . "/" . $files[$i]);
-  arrset(null, $lang, $main_loc);
+  arrset($files[$i], $lang, $main_loc);
   unset($lang);
   
   /* 他の言語ファイルを読み込み */
@@ -48,7 +48,7 @@ for ($i=0;$i<count($files);$i++)
     if (! file_exists($targetfile) )
       continue;
     include($targetfile);
-    arrset(null, $lang, $locations[$j]);
+    arrset($files[$i], $lang, $locations[$j]);
     unset($lang);
   }
 }
