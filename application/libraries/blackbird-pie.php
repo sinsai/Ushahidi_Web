@@ -275,7 +275,11 @@ class BlackbirdPie {
 	function getTweetData($url){
         $url = str_replace("/#!", "", $url);
 		$params = explode('/',$url);
-		$xml = json_decode(file_get_contents('http://api.twitter.com/1/statuses/show/'.$params[5].'.json'),true);
+        $context = stream_context_create(array(
+              'http' => array('ignore_errors' => true)
+         ));
+		$content = @file_get_contents('http://api.twitter.com/1/statuses/show/'.$params[5].'.json',false,$context);
+		$xml = json_decode($content,true);
         if( $xml == NULL ) {
             return NULL;
         }
