@@ -273,7 +273,7 @@
 	'not_specified' => '選択されていない',
 	'no_reports' => 'レポートはありません。',
 	'no_results' => '結果はありません。',
-	'official_news' => 'オフィシャルニュース',
+	'official_news' => '復興関連ニュース',
 	'option' => '選択肢',
 	'optional' => '選択可能な',
 	'options' => '選択肢',
