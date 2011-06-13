@@ -279,8 +279,14 @@ class BlackbirdPie {
               'http' => array('ignore_errors' => true)
          ));
 		$content = @file_get_contents('http://api.twitter.com/1/statuses/show/'.$params[5].'.json',false,$context);
-		$xml = json_decode($content,true);
-        if( json_last_error() != JSON_ERROR_NONE ) {
+        if( $content == false ) {
+            return NULL;
+        }
+        $xml = json_decode($content,true);
+        if( $xml == NULL || json_last_error() != JSON_ERROR_NONE ) {
+            return NULL;
+        }
+        if( !isset($xml['user']) ) {
             return NULL;
         }
         if( isset($xml['user']) && $params[3] != $xml['user']['screen_name'] ) {
