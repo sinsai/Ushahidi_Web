@@ -203,6 +203,17 @@ class Incidents_Api_Object extends Api_Object_Core {
                 }
             break;
             
+            // Get incidents based on a box using two lat,lon coords
+            case "bounds":
+                if(!isset($this->request['keyword'])){
+                    $this->request['keyword'] = "";
+                }
+                $this->response_data = $this->_get_incidents_by_bounds($this->request['sw'],$this->request['ne'],$this->request['c'],$this->request['keyword']);
+            break;
+            
+            case "keyword":
+                    $this->response_data = $this->_get_incidents_by_keyword($this->request['c'],$this->request['keyword'],$this->request['distance']);
+            break;
             // Error therefore set error message 
             default:
                 $this->set_error_message(array(
@@ -233,6 +244,10 @@ class Incidents_Api_Object extends Api_Object_Core {
             $this->set_list_limit($this->request['limit']);
         }               
         
+        if ($this->api_service->verify_array_index($this->request, 'offset'))
+        {
+            $this->set_list_offset($this->request['offset']);
+        } 
         // Check if the orderfield parameter has been specified
         if ($this->api_service->verify_array_index($this->request, 'orderfield'))
         {
@@ -296,11 +311,56 @@ class Incidents_Api_Object extends Api_Object_Core {
                 ."FROM ".$this->table_prefix."incident AS i "
                 ."INNER JOIN ".$this->table_prefix.
                 "location as l on l.id = i.location_id "."$where $limit";
-
         $items = $this->db->query($this->query);
         // Set the no. of records returned
         $this->record_count = $items->count();
-        
+
+        $incidentids = array();
+        foreach($items as $item){
+			$incidentids[] = $item->incidentid;
+        }
+
+        // Fetch categories
+        $this->query = " SELECT c.category_title AS categorytitle, 
+            c.id as cid ,ic.incident_id as incidentid " . "FROM ".$this->table_prefix.
+            "category AS c INNER JOIN ".
+            $this->table_prefix."incident_category AS ic ON " .
+            "ic.category_id = c.id WHERE ic.incident_id IN(".implode(',',$incidentids).")";
+
+        $category_items_temp = $this->db->query( $this->query );
+        $category_items = array();
+        $temp_index = 1;
+        foreach($category_items_temp as $category_item){
+            $category_items[$category_item->incidentid][$temp_index]['categorytitle'] = $category_item->categorytitle;
+            $category_items[$category_item->incidentid][$temp_index]['cid'] = $category_item->cid;
+            $temp_index++;
+        }
+        unset($category_items_temp);
+        //fetch media associated with an incident
+        $this->query = "SELECT i.id as incidentid , m.id as mediaid, m.media_title AS 
+            mediatitle, " .
+            "m.media_type AS mediatype, m.media_link AS medialink, " .
+            "m.media_thumb AS mediathumb FROM ".$this->table_prefix.
+            "media AS m " . "INNER JOIN ".$this->table_prefix.
+            "incident AS i ON i.id = m.incident_id " .
+            "WHERE i.id IN(".implode(',',$incidentids).")";
+
+        $media_items = $this->db->query($this->query);
+        $media_items_temp = $this->db->query( $this->query );
+        $media_items = array();
+        $temp_index = 1;
+        foreach($media_items_temp as $media_item){
+            $media_items[$media_item->incidentid][$temp_index]['mediaid'] = $media_item->mediaid;
+            $media_items[$media_item->incidentid][$temp_index]['mediatitle'] = $media_item->mediatitle;
+            $media_items[$media_item->incidentid][$temp_index]['mediatype'] = $media_item->mediatype;
+            $media_items[$media_item->incidentid][$temp_index]['medialink'] = $media_item->medialink;
+            $media_items[$media_item->incidentid][$temp_index]['mediathumb'] = $media_item->mediathumb;
+            $temp_index++;
+        }
+        unset($media_items_temp);
+        unset($temp_index);
+
+
         $i = 0;
         
         //No record found.
@@ -328,33 +388,23 @@ class Incidents_Api_Object extends Api_Object_Core {
             $xml->writeElement('longitude',$item->locationlongitude);
             $xml->endElement();
             $xml->startElement('categories');
-
-            // Fetch categories
-            $this->query = " SELECT c.category_title AS categorytitle, 
-                c.id AS cid " . "FROM ".$this->table_prefix.
-                "category AS c INNER JOIN ".
-                $this->table_prefix."incident_category AS ic ON " .
-                "ic.category_id = c.id WHERE ic.incident_id =".
-                $item->incidentid;
-
-            $category_items = $this->db->query( $this->query );
             $json_report_categories[$item->incidentid] = array();           
-            foreach ($category_items as $category_item)
+            foreach ($category_items[$item->incidentid] as $category_item)
             {
                 if ($this->response_type == 'json')
                 {
                     $json_report_categories[$item->incidentid][] = array(
                             "category"=> array(
-                                "id" => $category_item->cid,
-                                "title" => $category_item->categorytitle
+                                "id" => $category_item['cid'],
+                                "title" => $category_item['categorytitle']
                             )
                         );
                 } 
                 else 
                 {
                     $xml->startElement('category');
-                    $xml->writeElement('id',$category_item->cid);
-                    $xml->writeElement('title', $category_item->categorytitle );
+                    $xml->writeElement('id',$category_item['cid']);
+                    $xml->writeElement('title', $category_item['categorytitle'] );
                     $xml->endElement();
                 }
                 
@@ -362,25 +412,15 @@ class Incidents_Api_Object extends Api_Object_Core {
 
             $xml->endElement();//end categories
 
-            //fetch media associated with an incident
-            $this->query = "SELECT m.id as mediaid, m.media_title AS 
-                mediatitle, " .
-                "m.media_type AS mediatype, m.media_link AS medialink, " .
-                "m.media_thumb AS mediathumb FROM ".$this->table_prefix.
-                "media AS m " . "INNER JOIN ".$this->table_prefix.
-                "incident AS i ON i.id = m.incident_id " .
-                "WHERE i.id =". $item->incidentid;
-
-            $media_items = $this->db->query($this->query);
             $json_report_media[$item->incidentid] = array();
 
-            if (count($media_items) > 0)
+            if (isset($media_items[$item->incidentid]) && count($media_items[$item->incidentid]) > 0)
             {
                 $xml->startElement('mediaItems');
                 
-                foreach ($media_items as $media_item)
+                foreach ($media_items[$item->incidentid] as $media_item)
                 {
-	                if ($media_item->mediatype != 1)
+	                if ($media_item['mediatype'] != 1)
 					{
                         $upload_path = "";
                     }
@@ -388,43 +428,43 @@ class Incidents_Api_Object extends Api_Object_Core {
                     if($this->response_type == 'json')
                     {	
                         $json_report_media[$item->incidentid] = array(
-                            "id" => $media_item->mediaid,
-                            "type" => $media_item->mediatype,
-                            "link" => $upload_path.$media_item->medialink,
-                            "thumb" => $upload_path.$media_item->mediathumb,
+                            "id" => $media_item['mediaid'],
+                            "type" => $media_item['mediatype'],
+                            "link" => $upload_path.$media_item['medialink'],
+                            "thumb" => $upload_path.$media_item['mediathumb'],
                         );
                     } 
                     else 
                     {
                         $xml->startElement('media');
                         
-                        if( $media_item->mediaid != "" )
+                        if( $media_item['mediaid'] != "" )
                         {
-                            $xml->writeElement('id',$media_item->mediaid);
+                            $xml->writeElement('id',$media_item['mediaid']);
                         }
 
-                        if( $media_item->mediatitle != "" )
+                        if( $media_item['mediatitle'] != "" )
                         {
                             $xml->writeElement('title',
-                                $media_item->mediatitle);
+                                $media_item['mediatitle']);
                         }
 
-                        if( $media_item->mediatype != "" )
+                        if( $media_item['mediatype'] != "" )
                         {
                             $xml->writeElement('type',
-                                $media_item->mediatype);
+                                $media_item['mediatype']);
                         }
 
-                        if( $media_item->medialink != "" ) 
+                        if( $media_item['medialink'] != "" ) 
                         {
                             $xml->writeElement('link',
-                                $upload_path.$media_item->medialink);
+                                $upload_path.$media_item['medialink']);
                         }
 
-                        if( $media_item->mediathumb != "" ) 
+                        if( $media_item['mediathumb'] != "" ) 
                         {
                             $xml->writeElement('thumb',
-                                $upload_path.$media_item->mediathumb);
+                                $upload_path.$media_item['mediathumb']);
                         }
 
                         $xml->endElement();
@@ -489,7 +529,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nGROUP BY i.id ORDER BY $this->order_field $this->sort";
         
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
 
         /* Not elegant but works */
         return $this->_get_incidents($where.$sortby, $limit);
@@ -507,7 +547,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nORDER BY $this->order_field $this->sort ";
         
-        $limit = "\n LIMIT 0, $this->list_limit";
+        $limit = "\n LIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -528,10 +568,53 @@ class Incidents_Api_Object extends Api_Object_Core {
             $sortby = "\nORDER BY $this->order_field $this->sort ";
         }
         
-        $limit = "\n LIMIT 0, $this->list_limit";
+        $limit = "\n LIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
+    
+    private function _get_incidents_by_keyword($catid,$keyword,$distance)
+    /**
+     * Get the incidents by keyword
+     * 
+     */
+    {
+        $param = explode(',',$distance);
+        $join = "\nINNER JOIN ".$this->table_prefix."incident_category AS 
+            ic ON ic.incident_id = i.id";
+        
+        $join .= "\nINNER JOIN ".$this->table_prefix."category AS c ON 
+            c.id = ic.category_id ";
+      
+        if( intval($catid) != 0){
+            $where = $join."\nWHERE c.id = $catid AND";
+        }else{
+            $where = "\nWHERE ";
+        }
+        
+        $keyword_raw = (isset($keyword))? mysql_real_escape_string($keyword) : "";          
+        $keyword_raw = strip_tags($keyword_raw);
+        $keyword_raw =  Input::instance()->xss_clean($keyword_raw);
+        $keywords = explode(' ', $keyword_raw);
+        
+        if (is_array($keywords) && !empty($keywords) && $keyword_raw != "") 
+        {
+            $match = " MATCH(i.incident_title,i.incident_description) AGAINST(\"*D+1:2,2:1 $keyword_raw\" IN BOOLEAN MODE) AND";
+            $where .= $match;
+        }
+        $where .=  "\nround(sqrt(pow((l.latitude - $param[1])/0.0111, 2) + pow((l.longitude - $param[0])/0.0091, 2)), 1) <= $param[2] AND i.incident_active = 1 ";
+        if(!isset($this->request['orderfield']) && !isset($this->request['sort'])){
+            $sortby = "\nORDER BY round(sqrt(pow((l.latitude - $param[1])/0.0111, 2) + pow((l.longitude - $param[0])/0.0091, 2)), 1) ASC ";
+        }elseif(!isset($this->order_field) && isset($this->request['sort'])){
+            $sortby = "\nORDER BY round(sqrt(pow((l.latitude - $param[1])/0.0111, 2) + pow((l.longitude - $param[0])/0.0091, 2)), 1) $this->sort ";
+		}else{
+            $sortby = "\nORDER BY $this->order_field $this->sort ";
+        }
+        $limit = "\n LIMIT $this->list_offset, $this->list_limit";
+        
+        return $this->_get_incidents($where.$sortby, $limit);
+    }
+    
 
     /**
      * Get the incidents by location id
@@ -542,7 +625,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nGROUP BY i.id ORDER BY $this->order_field $this->sort";
         
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -557,7 +640,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nGROUP BY i.id ORDER BY $this->order_field $this->sort";
         
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -578,7 +661,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nORDER BY $this->order_field $this->sort";
         
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -600,7 +683,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         $sortby = "\nORDER BY $this->order_field $this->sort";
         
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -634,7 +717,7 @@ class Incidents_Api_Object extends Api_Object_Core {
                 i.incident_active = 1";
                 
         $sortby = "\nGROUP BY i.id ORDER BY $this->order_field $this->sort";
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
     }
@@ -657,11 +740,93 @@ class Incidents_Api_Object extends Api_Object_Core {
                 i.incident_active = 1";
                 
         $sortby = "\nGROUP BY i.id ORDER BY $this->order_field $this->sort";
-        $limit = "\nLIMIT 0, $this->list_limit";
+        $limit = "\nLIMIT $this->list_offset, $this->list_limit";
         
         return $this->_get_incidents($where.$sortby, $limit);
         
     }
+
+    /**
+     * Get incidents within a certain lat,lon bounding box
+     *
+     * @param sw is the southwest lat,lon of the box
+     * @param ne is the northeast lat,lon of the box
+     * @param c is the categoryid
+     */
+    private function _get_incidents_by_bounds($sw, $ne, $c = 0,$keyword = "")
+    {
+		// Get location_ids if we are to filter by location
+		$location_ids = array();
+
+		// Break apart location variables, if necessary
+		$southwest = array();
+		if (isset($sw))
+		{
+			$southwest = explode(",",$sw);
+		}
+
+		$northeast = array();
+		if (isset($ne))
+		{
+			$northeast = explode(",",$ne);
+		}
+
+		if ( count($southwest) == 2 AND count($northeast) == 2 )
+		{
+			$lon_min = (float) $southwest[0];
+			$lon_max = (float) $northeast[0];
+			$lat_min = (float) $southwest[1];
+			$lat_max = (float) $northeast[1];
+
+			$query = 'SELECT id FROM '.$this->table_prefix.'location WHERE latitude >='.$lat_min.' AND latitude <='.$lat_max.' AND longitude >='.$lon_min.' AND longitude <='.$lon_max;
+
+			$items = $this->db->query($query);
+
+			foreach ( $items as $item )
+			{
+				$location_ids[] =  $item->id;
+			}
+		}
+		
+		$location_id_in = '1=1';
+		
+		if (count($location_ids) > 0)
+		{
+			$location_id_in = 'l.id IN ('.implode(',',$location_ids).')';
+		}
+
+        $keyword_raw = (isset($keyword))? mysql_real_escape_string($keyword) : "";          
+        $keyword_raw = strip_tags($keyword_raw);
+        $keyword_raw =  Input::instance()->xss_clean($keyword_raw);
+        $keywords = explode(' ', $keyword_raw);
+        $match = "";
+        if (is_array($keywords) && !empty($keywords) && $keyword_raw != "") 
+        {
+            $match = " MATCH(i.incident_title,i.incident_description) AGAINST(\"*D+1:2,2:1 $keyword_raw\" IN BOOLEAN MODE) AND";
+        }
+
+		$where = ' WHERE '.$match.' i.incident_active = 1 AND '.$location_id_in.' ';
+
+		// Fix for pulling categories using the bounding box
+		// Credits to Antonoio Lettieri http://github.com/alettieri
+		// Check if the specified category id is valid
+		if (Category_Model::is_valid_category($c))
+		{
+			// Filter incidents by the specified category
+			$join = "\nINNER JOIN ".$this->table_prefix."incident_category AS ic ON ic.incident_id = i.id ";
+			$join .= "\nINNER JOIN ".$this->table_prefix."category AS c ON c.id=ic.category_id ";
+
+			// Overwrite the current where clause in $where
+			$where = $join."\nWHERE $match c.id = $c AND i.incident_active = 1 AND $location_id_in";
+		}
+		
+		$sortby = " GROUP BY i.id ORDER BY $this->order_field $this->sort";
+		$limit = " LIMIT $this->list_offset, $this->list_limit";
+		
+		return $this->_get_incidents($where.$sortby, $limit);
+        
+    }
+
 
     /**
      * Gets the number of approved reports

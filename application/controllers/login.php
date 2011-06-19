@@ -131,7 +131,7 @@ class Login_Controller extends Template_Controller {
 		$this->template->title = Kohana::lang('ui_admin.password_reset');
 		$form = array
 	    (
-			'resetemail' 	=> '',
+			'email' 	=> '',
 	    );
 		
 		//  copy the form as errors, so the errors will be stored with keys corresponding to the form field names
@@ -149,13 +149,13 @@ class Login_Controller extends Template_Controller {
 	        $post->pre_filter('trim', TRUE);
 
 	        // Add some rules, the input field, followed by a list of checks, carried out in order
-			$post->add_rules('resetemail','required','email','length[4,64]');
-			
-			$post->add_callbacks('resetemail', array($this,'email_exists_chk'));
+			$post->add_rules('email','required','email','length[4,64]');
+
+			$post->add_callbacks('email', array($this,'email_exists_chk'));
 
 			if ($post->validate())
 	    	{
-				$user = ORM::factory('user',$post->resetemail);
+				$user = ORM::factory('user',$post->email);
 				
 				// Existing User??
 				if ($user->loaded==true)
@@ -166,13 +166,13 @@ class Login_Controller extends Template_Controller {
 					$secret = $auth->hash_password($user->email.$user->last_login);
 					$secret_link = url::site('login/newpassword/'.$user->id.'/'.$secret);
 					
-					$details_sent = $this->_email_resetlink($post->resetemail,$user->name,$secret_link);
+					$details_sent = $this->_email_resetlink($post->email,$user->name,$secret_link);
 					if( $details_sent )
 					{
 						$password_reset = TRUE;
 					}		
 				}
-					
+
 			}
             else
             {
@@ -328,13 +328,13 @@ class Login_Controller extends Template_Controller {
 	public function email_exists_chk( Validation $post )
 	{
 		$users = ORM::factory('user');
-		if( array_key_exists('resetemail',$post->errors()))
+		if( array_key_exists('email',$post->errors()))
 			return;
 
 		if( !$users->email_exists( $post->email ) )
 			$post->add_error('resetemail','invalid');
 	}
-	
+
 	/**
 	 * Generate random password for the user.
 	 *

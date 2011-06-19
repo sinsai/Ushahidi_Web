@@ -15,7 +15,7 @@
 	foreach ($items as $item)
 	{?>
 		<entry>
-			<title><?php echo $item['title']; ?></title>
+			<title><?php echo html::specialchars($item['title']); ?></title>
 			<link rel="alternate" type="text/html" href="<?php echo $item['link']; ?>"/>
 			<updated><?php echo gmdate("c", strtotime($item['date'])); ?></updated>
 			<published><?php echo gmdate("c", strtotime($item['date'])); ?></published>

@@ -9,10 +9,17 @@
     		}
     		else
     		{
+    		    ?>
+    		    <div style="color:red;">※本件、未確認情報です。かならず情報提供元のページで最新の情報を確認してください。</div>
+    		    <?php
     			echo '<p class="r_unverified">'.Kohana::lang('ui_main.unverified').'</p>';
     		}
   	  ?>	
-
+  	  
+  	    <?php
+  	     if((time() - strtotime($incident_date))/(3600*24)  > 6) { ?>
+        <div style="color:red;">※情報提供から1週間以上経過しています。かならず情報提供元のページで最新の情報を確認してください。</div>
+        <?php }?>
 		<h1 class="report-title"><?php
 			echo html::specialchars($incident_title);
 			
@@ -76,7 +83,18 @@
                         
                     } ?>
 			<?php } ?>
-                        
+		<?php
+			foreach($twitter_htmls as $twitter_html){
+				echo $twitter_html;
+			}
+		?>
+			<div class="social_button">
+				<div id="twitter"></div>
+				<div id="facebook"></div>
+				<div id="tumblr"></div>
+				<div id="gree"></div>
+				<div id="hatena"></div>
+			</div>
 			<div class="credibility">
 				<table class="rating-table" cellspacing="0" cellpadding="0" border="0">
           <tr>

@@ -1,6 +1,9 @@
 <?php
 class VideoEmbed{
 	
+   public static $video_hosts = array("http://www.youtube.com/watch?v=", "http://video.google.com/videoplay?docid=-",
+   "http://one.revver.com/watch/", "http://www.metacafe.com/watch/", "http://www.liveleak.com/view?i=","http://dotsub.com/media/","http://vimeo.com/");
+
    function embed($raw, $auto)
    {
 	  $host = "";
@@ -10,10 +13,20 @@ class VideoEmbed{
       //check auto play
       
       //get the code
-      $hosts = array("http://www.youtube.com/watch?v=", "http://video.google.com/videoplay?docid=-",
-      "http://one.revver.com/watch/", "http://www.metacafe.com/watch/", "http://www.liveleak.com/view?i=","http://dotsub.com/media/","http://vimeo.com/");
+      //$hosts = array("http://www.youtube.com/watch?v=", "http://video.google.com/videoplay?docid=-",
+      //"http://one.revver.com/watch/", "http://www.metacafe.com/watch/", "http://www.liveleak.com/view?i=","http://dotsub.com/media/","http://vimeo.com/");
+      $hosts = self::$video_hosts;
       $code = str_replace($hosts, "", $raw);
-      
+      if ((bool) filter_var($code, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
+      {
+          // Check shorten URL
+          $headers = @get_headers($code, 1);
+          if (isset($headers['Location']))
+          {
+              $raw = htmlspecialchars($headers['Location'], ENT_QUOTES);
+              $code = str_replace($hosts, "", $raw);
+          }
+      }
    
       //find host
       $host1 = strpos($raw, "youtube.com", 1);

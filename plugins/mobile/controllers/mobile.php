@@ -44,7 +44,9 @@ class Mobile_Controller extends Template_Controller {
 
 		plugin::add_javascript('mobile/views/js/jquery');
 		plugin::add_javascript('mobile/views/js/jquery.treeview');
+		plugin::add_javascript('mobile/views/js/jquery.cookie');
 		plugin::add_javascript('mobile/views/js/expand');
+		plugin::add_javascript('mobile/views/js/location');
 		plugin::add_stylesheet('mobile/views/css/styles');
 		plugin::add_stylesheet('mobile/views/css/jquery.treeview');
 		
@@ -71,11 +73,8 @@ class Mobile_Controller extends Template_Controller {
 		
 		// Get all active top level categories
         $parent_categories = array();
-        foreach (ORM::factory('category')
-				->where('category_visible', '1')
-				->where('parent_id', '0')
-				->orderby('category_title')
-				->find_all() as $category)
+		$parentCategoryId = 0;
+		foreach ( Category_Model::getCategories($parentCategoryId) as $category )
         {
             // Get The Children
 			$children = array();
@@ -116,6 +115,27 @@ class Mobile_Controller extends Template_Controller {
 			->limit('10')
             ->orderby('item_date', 'desc')
             ->find_all();
+	}
+	
+	//no action is here.
+	//locatation to other controll.
+	public function __call($method, $arg)
+	{
+		$urlParameter = "/".$method;
+		if ( is_array($arg) && count($arg)>0 )
+		{
+			$urlParameter .= "/".implode("/", $arg);
+		} else {
+		}
+		$urlParameter .= "?".$_SERVER['QUERY_STRING'];
+		
+		if ( !in_array(substr($urlParameter, -1), array("?","&")) )
+		{
+			$urlParameter.="&";
+		}
+		$urlParameter .= "full=1";
+		
+		url::redirect($urlParameter);
 	}
 	
 	private function _category_count($category_id = false)

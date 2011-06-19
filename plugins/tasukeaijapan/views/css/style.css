@@ -512,19 +512,29 @@ ul.category-filters li a{
     padding: 8px 10px 8px 5px;
 /*    padding: 8px 10px 8px 35px; maxf change */
     font-size: 15px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-weight: bold;
     text-decoration: none;
     color: #3F3F3F;
     border: #E7E3DA 1px solid;
-    position: relative;
+    /*position: relative;*/
     line-height: 17px;
-    overflow: hidden;
+    /*overflow: hidden;*/
+}
+
+ul.category-filters li span {
+	vertical-align: middle;
+	padding-right: 5px;
+}
+
+ul.category-filters li img {
+	vertical-align: middle;
 }
 
 ul.category-filters li a:hover, ul.category-filters li a.active {
     color: #FFFFFF;
     background-color: #3484AC;
+    text-decoration: none;
     border: #3484AC 1px solid;
 }
 
@@ -815,10 +825,12 @@ div.incident-notation ul li{
     text-decoration: underline;
 }
 
-.swatch {
-    float:left;
+ul.category-filters li span.swatch {
+    /*float:left;*/
+	display: inline-block;
     height:16px;
     margin-right: 8px;
+    padding: 0;
     width:16px;
     border:1px solid white;
 }

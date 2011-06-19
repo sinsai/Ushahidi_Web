@@ -71,11 +71,27 @@ class Reports_Controller extends Admin_Controller
 			$status = strtolower($_GET['status']);
             if ($status == 'a')
             {
-                $filter_status = 'incident_active = 0';
+                $filter_status = 'incident_verified = 0 and incident_active = 0';
+            }
+            elseif ($status == 'n')
+            {
+                $filter_status = 'incident_active = 2';
+            }
+            elseif ($status == 'p')
+            {
+                $filter_status = 'incident_active = 3';
+            }
+            elseif ($status == 'e')
+            {
+                $filter_status = 'incident_active = 4';
             }
             elseif ($status == 'v')
             {
-                $filter_status = 'incident_verified = 0';
+                $filter_status = 'incident_verified = 0 and incident_active = 1';
+            }
+            elseif ($status == 'i')
+            {
+                $filter_status = 'incident_verified = 1 and incident_active = 0';
             }
 			else
 			{
@@ -147,14 +163,17 @@ class Reports_Controller extends Admin_Controller
                     foreach($post->incident_id as $item)
                     {
                         $update = new Incident_Model($item);
+                        $verify = new Verify_Model();
                         if ($update->loaded == true) 
                         {
-                            if( $update->incident_active == 0 ) 
+                            if( $update->incident_active != 1 ) 
                             {
                                 $update->incident_active = '1';
+                                $verify->verified_status = '1';
                             } 
                             else {
                                 $update->incident_active = '0';
+                                $verify->verified_status = '0';
                             }
 
                             // Tag this as a report that needs to be sent out as an alert
@@ -165,9 +184,7 @@ class Reports_Controller extends Admin_Controller
 
                             $update->save();
 
-                            $verify = new Verify_Model();
                             $verify->incident_id = $item;
-                            $verify->verified_status = '1';
                             $verify->user_id = $_SESSION['auth_user']->id;          // Record 'Verified By' Action
                             $verify->verified_date = date("Y-m-d H:i:s",time());
                             $verify->save();
@@ -280,6 +297,93 @@ class Reports_Controller extends Admin_Controller
                     }
                     $form_action = strtoupper(Kohana::lang('ui_admin.deleted'));
                 }
+                elseif ($post->action == 'n')   // not approved Action
+                {
+                    foreach($post->incident_id as $item)
+                    {
+                        $update = new Incident_Model($item);
+                        if ($update->loaded == true) {
+                            $update->incident_active = '2';
+
+                            // If Alert hasn't been sent yet, disable it
+                            if ($update->incident_alert_status == '1')
+                            {
+                                $update->incident_alert_status = '0';
+                            }
+
+                            $update->save();
+
+                            $verify = new Verify_Model();
+                            $verify->incident_id = $item;
+                            $verify->verified_status = '4';
+                            $verify->user_id = $_SESSION['auth_user']->id;          // Record 'Verified By' Action
+                            $verify->verified_date = date("Y-m-d H:i:s",time());
+                            $verify->save();
+
+                            // Action::report_unapprove - Unapprove a Report
+  //                          Event::run('ushahidi_action.report_unapprove', $update);
+                        }
+                    }
+                    $form_action = strtoupper(Kohana::lang('ui_admin.not_approval'));
+                }
+                elseif ($post->action == 'p')   // pending Action
+                {
+                    foreach($post->incident_id as $item)
+                    {
+                        $update = new Incident_Model($item);
+                        if ($update->loaded == true) {
+                            $update->incident_active = '3';
+
+                            // If Alert hasn't been sent yet, disable it
+                            if ($update->incident_alert_status == '1')
+                            {
+                                $update->incident_alert_status = '0';
+                            }
+
+                            $update->save();
+
+                            $verify = new Verify_Model();
+                            $verify->incident_id = $item;
+                            $verify->verified_status = '5';
+                            $verify->user_id = $_SESSION['auth_user']->id;          // Record 'Verified By' Action
+                            $verify->verified_date = date("Y-m-d H:i:s",time());
+                            $verify->save();
+
+                            // Action::report_unapprove - Unapprove a Report
+ //                           Event::run('ushahidi_action.report_unapprove', $update);
+                        }
+                    }
+                    $form_action = strtoupper(Kohana::lang('ui_admin.pending_approval'));
+                }
+                elseif ($post->action == 'e')   // escalation Action
+                {
+                    foreach($post->incident_id as $item)
+                    {
+                        $update = new Incident_Model($item);
+                        if ($update->loaded == true) {
+                            $update->incident_active = '4';
+
+                            // If Alert hasn't been sent yet, disable it
+                            if ($update->incident_alert_status == '1')
+                            {
+                                $update->incident_alert_status = '0';
+                            }
+
+                            $update->save();
+
+                            $verify = new Verify_Model();
+                            $verify->incident_id = $item;
+                            $verify->verified_status = '6';
+                            $verify->user_id = $_SESSION['auth_user']->id;          // Record 'Verified By' Action
+                            $verify->verified_date = date("Y-m-d H:i:s",time());
+                            $verify->save();
+
+                            // Action::report_unapprove - Unapprove a Report
+//                            Event::run('ushahidi_action.report_unapprove', $update);
+                        }
+                    }
+                    $form_action = strtoupper(Kohana::lang('ui_admin.escalation_approval'));
+                }
                 $form_saved = TRUE;
             }
             else
@@ -314,20 +418,13 @@ class Reports_Controller extends Admin_Controller
 				->where($filter)
 				->count_all()
             ));
-
-		$incidents = ORM::factory('incident')
-				->join('location', 'incident.location_id', 'location.id','INNER')
-				->join('media', 'incident.id', 'media.incident_id','LEFT')
-				->where($filter)
-				->orderby('incident_date', $order_string)
-				->find_all((int) Kohana::config('settings.items_per_page_admin'), $pagination->sql_offset);
+		$incidents = Incident_Model::get_incident_reports($filter,$order_string,$pagination->sql_offset);
 
         $location_ids = array();
         foreach ($incidents as $incident)
         {
             $location_ids[] = $incident->location_id;
         }
-        
         //check if location_ids is not empty
         if( count($location_ids ) > 0 ) 
         {
@@ -342,8 +439,28 @@ class Reports_Controller extends Admin_Controller
         {
             $locations = array();
         }
-
         $this->template->content->locations = $locations;
+
+        $incident_ids = array();
+        foreach ($incidents as $incident)
+        {
+            $incident_ids[] = $incident->id;
+        }
+        if ( count($incident_ids) > 0 )
+        {
+            //add_param_get
+            $filter = " incident_id IN (".implode(',',$incident_ids).")";
+            $incident_persons = Incident_Model::get_incident_persons($filter);
+            $incident_messages = Incident_Model::get_incident_messages($filter);
+            $incident_incident_langs = Incident_Model::get_incident_incident_langs($filter);
+            $incident_incident_categories = Incident_Model::get_incident_incident_categories($filter);
+        }
+        else {
+            $incident_persons = '';
+            $incident_messages = '';
+            $incident_incident_langs = '';
+            $incident_incident_categories = '';
+        }
 
         //GET countries
         $countries = array();
@@ -358,6 +475,13 @@ class Reports_Controller extends Admin_Controller
             $countries[$country->id] = $this_country;
         }
 
+        $this->template->content->count_unapproved = ORM::factory('incident')->where('incident_active', '0')->where('incident_verified','0')->count_all();
+        $this->template->content->count_notapproved = ORM::factory('incident')->where('incident_active', '2')->count_all();
+        $this->template->content->count_pendingapproved = ORM::factory('incident')->where('incident_active', '3')->count_all();
+        $this->template->content->count_escapproved = ORM::factory('incident')->where('incident_active', '4')->count_all();
+        $this->template->content->count_verificated = ORM::factory('incident')->where('incident_active', '1')->where('incident_verified','0')->count_all();
+        $this->template->content->count_verificated_nonactive = ORM::factory('incident')->where('incident_active', '0')->where('incident_verified','1')->count_all();
+
 		$this->template->content->from = $r_from;
 		$this->template->content->to = $r_to;
 		$this->template->content->order = $order;
@@ -368,7 +492,11 @@ class Reports_Controller extends Admin_Controller
         $this->template->content->form_error = $form_error;
         $this->template->content->form_saved = $form_saved;
         $this->template->content->form_action = $form_action;
-
+		// ORM分離
+        $this->template->content->incident_persons = $incident_persons;
+        $this->template->content->incident_messages = $incident_messages;
+        $this->template->content->incident_incident_langs = $incident_incident_langs;
+        $this->template->content->incident_incident_categories = $incident_incident_categories;
         // Total Reports
         $this->template->content->total_items = $pagination->total_items;
 
@@ -430,7 +558,9 @@ class Reports_Controller extends Admin_Controller
             'incident_active' => '',
             'incident_verified' => '',
             'incident_source' => '',
-            'incident_information' => ''
+            'incident_information' => '',
+            'verified_comment' => '',
+            'incident_editlog' => ''
         );
 
         //  copy the form as errors, so the errors will be stored with keys corresponding to the form field names
@@ -640,6 +770,8 @@ class Reports_Controller extends Admin_Controller
             if (!empty($_POST['incident_news']))
             {
                 foreach ($_POST['incident_news'] as $key => $url) {
+                    $url = trim($url);
+                    $_POST['incident_news'][$key] = $url;
                     if (!empty($url) AND !(bool) filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
                     {
                         $post->add_error('incident_news','url');
@@ -647,13 +779,34 @@ class Reports_Controller extends Admin_Controller
                 }
             }
 
-            // Validate only the fields that are filled in
+            // Validate only the fields that are filled in -> Check video URLs
             if (!empty($_POST['incident_video']))
             {
                 foreach ($_POST['incident_video'] as $key => $url) {
+                    $url = trim($url);
+                    $_POST['incident_video'][$key] = $url;
                     if (!empty($url) AND !(bool) filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
                     {
                         $post->add_error('incident_video','url');
+                        continue;
+                    }
+                    // Check video URL
+                    $check = str_replace(VideoEmbed::$video_hosts, "", $url);
+                    if (!empty($check) AND (bool) filter_var($check, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
+                    {
+                        // Check shorten URL
+                        $header = @get_headers($url,1);
+                        if (!isset($header['Location']))
+                        {
+                            $post->add_error('incident_video', 'url');
+                            continue;
+                        }
+                        $check = str_replace(VideoEmbed::$video_hosts, "", $header['Location']);
+                        if (!empty($check) AND (bool) filter_var($check, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
+                        {
+                            $post->add_error('incident_video', 'url');
+                            continue;
+                        }
                     }
                 }
             }
@@ -684,7 +837,7 @@ class Reports_Controller extends Admin_Controller
                 $post->add_error('custom_field', 'values');
             }
 
-            $post->add_rules('incident_active','required', 'between[0,1]');
+            $post->add_rules('incident_active','required', 'between[0,4]');
             $post->add_rules('incident_verified','required', 'length[0,1]');
             $post->add_rules('incident_source','numeric', 'length[1,1]');
             $post->add_rules('incident_information','numeric', 'length[1,1]');
@@ -755,51 +908,56 @@ class Reports_Controller extends Admin_Controller
                         $incident->incident_mode = 5;
                     }
                 }
+                $vflag = 0;
+                if( $post->incident_verified == 1 && $incident->incident_verified != $post->incident_verified ) {
+                    $vflag = 1;
+                }
+
+                $aflag = 0;
+                if ($post->incident_active == 1 )
+                {
+                    $aflag = 1;
+                }
+                elseif ($post->incident_active == 2 )
+                {
+                    $aflag = 3;
+                }
+                elseif ($post->incident_active == 3 )
+                {
+                    $aflag = 5;
+                }
+                elseif ($post->incident_active == 4 )
+                {
+                    $aflag = 7;
+                }
                 // Incident Evaluation Info
                 $incident->incident_active = $post->incident_active;
                 $incident->incident_verified = $post->incident_verified;
                 $incident->incident_source = $post->incident_source;
                 $incident->incident_information = $post->incident_information;
-                //Save
-                $incident->save();
-
                 // Tag this as a report that needs to be sent out as an alert
                 if ($incident->incident_active == '1' AND $incident->incident_alert_status != '2')
                 { // 2 = report that has had an alert sent
                     $incident->incident_alert_status = '1';
-                    $incident->save();
                 }
                 // Remove alert if report is unactivated and alert hasn't yet been sent
                 if ($incident->incident_active == '0' AND $incident->incident_alert_status == '1')
                 {
                     $incident->incident_alert_status = '0';
-                    $incident->save();
                 }
+                //Save
+                $incident->save();
+
 
                 // Record Approval/Verification Action
                 $verify = new Verify_Model();
                 $verify->incident_id = $incident->id;
                 $verify->user_id = $_SESSION['auth_user']->id;          // Record 'Verified By' Action
+                $verify->verified_comment = $post->verified_comment;
                 $verify->verified_date = date("Y-m-d H:i:s",time());
                 
-                if ($post->incident_active == 1)
-                {
-                    $verify->verified_status = '1';
-                }
-                elseif ($post->incident_verified == 1)
-                {
-                    $verify->verified_status = '2';
-                }
-                elseif ($post->incident_active == 1 && $post->incident_verified == 1)
-                {
-                    $verify->verified_status = '3';
-                }
-                else
-                {
-                    $verify->verified_status = '0';
-                }
+                $verify->verified_status = intval($aflag) + intval($vflag);
                 $verify->save();
-
 
                 // STEP 3: SAVE CATEGORIES
                 ORM::factory('Incident_Category')->where('incident_id',$incident->id)->delete_all();        // Delete Previous Entries
@@ -845,7 +1003,10 @@ class Reports_Controller extends Admin_Controller
                 }
 
                 // c. Photos
-                $filenames = upload::save('incident_photo');
+                if ( count($post->incident_photo) > 0 )
+                {
+                    $filenames = upload::save('incident_photo');
+                }
                 $i = 1;
                 foreach ($filenames as $filename) {
                     $new_filename = $incident->id . "_" . $i . "_" . time();
@@ -1046,7 +1207,8 @@ class Reports_Controller extends Admin_Controller
                         'incident_active' => $incident->incident_active,
                         'incident_verified' => $incident->incident_verified,
                         'incident_source' => $incident->incident_source,
-                        'incident_information' => $incident->incident_information
+                        'incident_information' => $incident->incident_information,
+                        'incident_editlog' => $incident->verify
                     );
 
                     // Merge To Form Array For Display
@@ -1633,7 +1795,7 @@ class Reports_Controller extends Admin_Controller
         $categories = ORM::factory('category')
             ->where('category_visible', '1')
             ->where('parent_id', '0')
-            ->orderby('category_title', 'ASC')
+            ->orderby('category_type', 'DESC')
             ->find_all();
 
         return $categories;

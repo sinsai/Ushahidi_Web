@@ -266,3 +266,23 @@
 					$('#' + loader).html('');
 			  	}, "json");
 		}
+
+		// enable social button.
+		$(function() {
+			$('#twitter').socialbutton('twitter', {
+				button: 'none'
+			});
+			$('#facebook').socialbutton('facebook_like', {
+				button: 'button_count',
+				action: 'like',
+				width: 90,
+				show_faces: false
+			});
+			$('#tumblr').socialbutton('tumblr', {
+				linkText: ''
+			});
+			$('#gree').socialbutton('gree_sf', {
+			});
+			$('#hatena').socialbutton('hatena', {
+			});
+		});

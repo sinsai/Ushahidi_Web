@@ -74,6 +74,42 @@ h6{
 }
 
 /* -----------------------------------------------------------
+	For IE
+------------------------------------------------------------*/
+
+/* clearing & floating */
+* html .clearingfix{display:inline-block;}
+*:first-child+html .clearingfix{display:inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearingfix{height:1%;}
+.clearingfix{display:block;}
+/* End hide from IE-mac */
+
+* html .floatbox{width:100%;}
+
+/* Escaping Floats Bug */
+/* Hides from IE-mac \*/
+.floatholder{height:1%;}
+/* End hide from IE-mac */
+
+/* Doubled Float Margins */
+* html #left{display:inline;}
+* html #right{display:inline;}
+* html .float-left{display:inline;}
+* html .float-right{display:inline;}
+/* IE and italics Problem */
+* html #left_container{overflow:visible;}
+* html #right_container{overflow:visible;}
+* html #main_container{overflow:visible;}
+* html i, * html em{overflow:visible;display:inline-block;}
+/* Expanding Box Problem */
+* html #left_container{word-wrap:break-word;}
+* html #right_container{word-wrap:break-word;}
+* html #main_container{word-wrap:break-word;}
+
+
+/* -----------------------------------------------------------
 	02-1. layout
 ------------------------------------------------------------*/
 /* page setup */
@@ -93,23 +129,23 @@ div.rapidxwpr{
     width: 960px;
 }
 
+
 /* -----------------------------------------------------------
 	02-2. header
 ------------------------------------------------------------*/
 /* header */
 div#header{
     position: relative;
-    height: 130px;
-    margin: 0px 0px 0px 0px;
-}
+    width: 960px;
+    height: 108px;
+	}
 
 /* logo */
 div#logo{
-    border: 0;
-    padding: 18px 5px 0 3px;
-    float: left;
-    margin:  0 0 0;
-}
+	position: absolute;
+	top: 19px;
+	left: 0;
+	}
 div#logo h1{
 	margin:0;
 	padding:0;
@@ -263,18 +299,11 @@ div#underfooter{
 
 /* searchbox */
 div#searchbox{
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    border-top: 0;
-    padding:0;
+	padding: 14px 0 0;
 }
 
 div#nations{
-    float:right;
-    position: absolute;
-    top:45px;
-    right:0px;
+	text-align: right;
 }
 
 div#nations a{
@@ -288,6 +317,10 @@ div.language-box{
     float: left;
 }
 
+* html div.language-box{
+    margin: 11px 0px 13px 15px;
+}
+
 div.language-box select{
 	width:160px;
 	margin:0;
@@ -298,73 +331,62 @@ div.language-box select{
 
 /* searchform */
 div.search-form{
+	float: right;
     padding: 0px;
-    margin: 10px 0px 0px 5px;
-    height:15px;
-    float: right;
-}
-
-div.search-form ul{
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-div.search-form ul li{
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    float: left;
-}
+    margin: 28px 0px 0px 0;
+	}
 
 div.search-form input.text{
-    padding: 2px 0px 2px 0px;
-    border: #333333 1px solid;
     margin: 0;
+   	padding: 8px 6px 8px 7px;
     color:#000000;
-    background: #FFFFFF;
+    background: #ffffff;
+    border: 1px solid #333333;
     width: 200px;
-    height:23px;
-    font-size: 13px;
+    font-size: 14px;
+    line-height: 1.2;
+    height: 17px;
 }
 
 div.search-form input.searchbtn{
-    border: #333333 1px solid;
-    background: #67AE28 url(../images/search-button.png) 4px 4px no-repeat;
-    width: 30px;
-    margin: 0 0 0 0px;
-    text-indent: -10000px;
+    margin: 0 0 0 1px;
+   	padding: 9px 5px 10px 5px;
+    color: #ffffff;
+    background: #368C00;
+    border: none;
     cursor: pointer;
-   padding:6px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.2;
+    width: 114px;
+    height: 35px;
+	}
+
+div.search-form input.searchbtn:hover{
+    background: #67ae28;
 }
 
 /* submit incident */
 div.submit-incident{
-    margin: 80px 0 0 0;
-    float: right;
-    width: 300px;
+	float: right;
+	display: inline-block;
+    margin: 28px 16px 0 0;
 }
 
 div.submit-incident a{
-    padding: 8px 10px 8px 35px;
-    background: #368C00 url(../images/submit-incident.jpg) 10px 8px no-repeat;
-    color: #FFF;
-    text-transform: uppercase;
+	display: inline-block;
+    padding: 10px 10px 9px 35px;
+    background: #368C00 url(../images/submit-incident.jpg) 10px 50% no-repeat;
+    color: #ffffff;
     font-weight: bold;
     font-size: 14px;
+    line-height: 1.2;
     text-decoration: none;
-    float: right;
 }
 
 div.submit-incident a:hover{
-    padding: 8px 10px 8px 35px;
-    background: #67ae28 url(../images/submit-incident.jpg) 10px 8px no-repeat;
-    color: #FFF;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 14px;
-    text-decoration: none;
-    float: right;
+	color: #ffffff;
+    background: #67ae28 url(../images/submit-incident.jpg) 10px 50% no-repeat;
 }
 
 
@@ -498,6 +520,9 @@ div.map {
 	font-size: 10px;
 	width: 625px;
 }
+* html #mapStatus {
+	width: 620px;
+}
 #mapScale
 {
         min-width: 90px;
@@ -614,19 +639,21 @@ ul.category-filters li{
 	list-style-type:none;
 }
 
-ul.category-filters li a{
-    display: block;
+ul.category-filters li a {
+    display: inline-block;
     padding: 8px 10px 8px 10px;
 /*    padding: 8px 10px 8px 35px; maxf change */
     font-size: 14px;
-    text-transform: uppercase;
     font-weight: bold;
     text-decoration: none;
     color: #3F3F3F;
-    border: #E7E3DA 0px solid;
-    position: relative;
-    line-height: 17px;
-    overflow: hidden;
+    line-height: 1.2;
+    width: 261px;
+}
+
+ul.category-filters li a img {
+	padding-right: 0.5em;
+	vertical-align: middle;
 }
 
 ul.category-filters li a:hover, ul.category-filters li a.active {
@@ -645,7 +672,7 @@ ul.category-filters li.child{
 /* additional content */
 div.additional-content{
     padding: 15px;
-    margin-bottom:15px;
+    margin: 15px 0;
     background: #F0F0F0;
 }
 
@@ -683,9 +710,13 @@ div.content-block-right{
     float: right;
 }
 
+#right .section {
+    margin-top: 15px;
+	border: 15px solid #e2e2e2;
+}
+
 div.officialnews-container{
-	background: none repeat scroll 0 0 #FFFFFF;
-	padding:5px;
+	padding: 5px 5px 10px;
 }
 div.official-detail{
 	padding-top:5px;
@@ -698,6 +729,23 @@ div.newcomments-container{
 	margin-top:20px;
 	padding:10px;
 	background: none repeat scroll 0 0 #FFFFFF;
+}
+
+#related-link {
+	padding: 15px 15px 5px;
+}
+
+#related-link dl {
+	padding: 0 0 5px;
+}
+
+#related-link dt {
+	line-height: 1.7;
+	font-size: 114%;
+}
+
+#related-link dd {
+	line-height: 1.6;
 }
 
 /* -----------------------------------------------------------
@@ -770,7 +818,7 @@ div.footer-credits-links ul li{
 	display: inline-block;
 	float: none;
 }
-*html div.footer-credits-links ul li { /* for ie6　*/
+* html div.footer-credits-links ul li { /* for ie6　*/
 	vertical-align:middle;
 	display: inline !important;
 	float: none;
@@ -805,8 +853,8 @@ div.report-details{
 .report_detail .r_verified { background:#368C00; }
 .report_detail .r_unverified { background:#A60003; }
 
-.report_detail .r_location { background:transparent url(../images/icon_sprite.png) -5px -163px no-repeat; }
-.report_detail .r_date { background:transparent url(../images/icon_sprite.png) -4px -133px no-repeat; }
+.report_detail .r_location { background:transparent url(../images/icon_sprite-white.gif) -5px -163px no-repeat; }
+.report_detail .r_date { background:transparent url(../images/icon_sprite-white.gif) -4px -133px no-repeat; }
 
 .report-when-where { color:#908B88; margin-bottom:10px; }
 .report-when-where span { padding:3px 5px 3px 18px;  } 
@@ -837,10 +885,18 @@ div.report-description-text h5 {
 	text-transform: capitalize;
 }
 
+div.report-description-text .content div pre {
+    white-space: pre-wrap;
+    font-size: 107%;
+    letter-spacing: 0.1em;
+    font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
 div.credibility {
 	margin-top:10px;
 	padding:3px;
 	border-top:1px dotted #C0C2B8;
+	clear: both;
 }
 
 div.report-title {
@@ -930,16 +986,18 @@ ul.map-toggles li { display:none; float:right; list-style-type: none; }
 ul.map-toggles li a, 
 ul.map-toggles li a:active { display:inline-block; padding:3px 5px 3px 17px; outline:none; }
 
-	a.wider-map		{ background:transparent url(../images/icon_sprite.png) -4px -202px no-repeat;  }
-	a.taller-map	{ background:transparent url(../images/icon_sprite.png) -4px -221px no-repeat;  }
-	a.shorter-map	{ background:transparent url(../images/icon_sprite.png) -4px -241px no-repeat;  }
-	a.smaller-map	{ background:transparent url(../images/icon_sprite.png) -4px -182px no-repeat;  }
+	a.wider-map		{ background:transparent url(../images/icon_sprite-white.gif) -4px -202px no-repeat;  }
+	a.taller-map	{ background:transparent url(../images/icon_sprite-white.gif) -4px -221px no-repeat;  }
+	a.shorter-map	{ background:transparent url(../images/icon_sprite-white.gif) -4px -241px no-repeat;  }
+	a.smaller-map	{ background:transparent url(../images/icon_sprite-white.gif) -4px -182px no-repeat;  }
 	
 div.report-additional-reports {
 	padding-top: 5px;
 	border-bottom:1px dotted #C0C2B8;
 }
-div.report-additional-reports .rb_report {  }
+div.report-additional-reports .rb_report {
+    width: 350px;
+}
 div.report-additional-reports h4 {
 	padding:0px 0px 5px 0px;
 	margin:0px;
@@ -948,7 +1006,7 @@ div.report-additional-reports h4 {
 }
 
 div.report-additional-reports h5 { font-size:12px; margin:4px 120px 2px 0; }
-div.report-additional-reports .r_date { font-size:10px; background:#f2f2f2 url(../images/icon_sprite.png) 0px -133px no-repeat; }
+div.report-additional-reports .r_date { font-size:10px; background:#f2f2f2 url(../images/icon_sprite-grey.gif) 0px -133px no-repeat; }
 div.report-additional-reports .r_location { font-size:10px; padding:3px 0 3px 18px; color:#828784; }
 
 div.report-details ul.details{
@@ -1082,6 +1140,7 @@ table.table-list tbody tr td{
     font-size: 11px;
     border-bottom: #EEEEEE 1px solid;
     vertical-align: top;
+    word-break: break-all;
 }
 
 table.table-list tbody tr td a{
@@ -1476,6 +1535,17 @@ label.error {
 	float:left;
 	margin-right:10px;
 }
+.report_row p {
+    margin-top:10px;
+	font-size:110%;
+}
+
+#divtos {
+    margin-top:40px;
+    padding:10px;
+	background-color:#eee;
+}
+
 .report_category {
 	clear:both;
 	overflow:hidden;
@@ -1625,7 +1695,8 @@ a.show-more {
 }
 /* Min-Height for IE */
 * html .big-block {
-	height:400px
+	display: inline-block;
+	height: 1%;
 }
 
 /*page title*/
@@ -1772,12 +1843,12 @@ a.show-more {
 /* Reports View */
 .reports-box {}
 	
-	.rb_report { position:relative; border-top:1px solid #c0c2b8; overflow:auto; padding-bottom:10px; }
+	.rb_report { position:relative; border-top:1px solid #c0c2b8; overflow:auto; padding-bottom:10px; width: 914px;}
 		.reports-box .hover { background:#fffded; }
 		.r_media { float:left; width:100px; margin:15px 15px 15px 0; }
 		.r_photo a { display:inline-block; padding: 2px; border:1px solid #c0c2b8;}
 		.r_video { }
-		.r_video a { display:inline-block; font-size:11px; background:transparent url(../images/icon_sprite.png) -3px -100px no-repeat; padding:4px 0 3px 23px; }
+		.r_video a { display:inline-block; font-size:11px; background:transparent url(../images/icon_sprite-white.gif) -3px -100px no-repeat; padding:4px 0 3px 23px; }
 		
 		.r_categories { position:relative; margin-top:10px; }
 		.r_categories h4 { font-size:10px; padding:0; margin:0 0 4px 0; border-bottom:1px solid #c0c2b8; text-transform: uppercase; }
@@ -1793,7 +1864,7 @@ a.show-more {
 			.r_details h3 { margin-bottom:0px; width:670px; }
 			.r_details h3 a.r_title { font-size:14px; color:#353535; }
 			.hover .r_details h3 a.r_title { color:#3764AA; } 
-			.r_details h3 a.r_comments { color:#fff; font-size:11px; display:inline-block; text-align:center; height:19px; width:24px; padding:4px 0 3px; background:transparent url(../images/icon_sprite.png) 0 0 no-repeat; }
+			.r_details h3 a.r_comments { color:#fff; font-size:11px; display:inline-block; text-align:center; height:19px; width:24px; padding:4px 0 3px; background:transparent url(../images/icon_sprite-grey.gif) 0 0 no-repeat; }
 			.r_details h3 a.r_comments:hover {  }
 			/*verified/unverified*/
 			.r_details h3 span { display:inline-block; color:#FFFFFF; font-size:9px; font-weight:normal; margin:0 0 0 7px; padding:1px 3px; text-align:center; text-transform:uppercase;
@@ -1801,11 +1872,11 @@ a.show-more {
 			.r_details h3 span.r_verified { background:#368C00; }
 			.r_details h3 span.r_unverified { background:#A60003; }
 			
-			p.r_date { position:absolute; top:0px; right:0px; padding:3px 5px 4px 23px; background:#e3e3e3 url(../images/icon_sprite.png) 0px -133px no-repeat; color:#908b88; }
+			p.r_date { position:absolute; top:0px; right:0px; padding:3px 5px 4px 23px; background: #e3e3e3 url(../images/icon_sprite-grey.gif) 0 -133px no-repeat; color:#908b88; }
 			
 			div.r_description { margin-bottom:5px; }
 			
-			p.r_location a { color:#828784; font-size:11px; line-height:11px; padding:4px 0 6px 18px; background:transparent url(../images/icon_sprite.png) -6px -163px no-repeat; }
+			p.r_location a { color:#828784; font-size:11px; line-height:11px; padding:4px 0 6px 18px; background:transparent url(../images/icon_sprite-white.gif) -6px -163px no-repeat; }
 
 	
 /*---alerts-block---*/
@@ -2200,8 +2271,47 @@ div.green-box {
 
 
 div.news-box{
-    font-size:12px;line-height:1.2;
+	position: relative;
+    margin: 8px 15px 15px;
+    font-size:12px;
+    line-height:1.6;
+    width: 894px;
 }
+
+div.news-box h2 {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0 1em 0 0;
+	padding-bottom: 0;
+	font-size: 12px;
+	color: #128a2b;
+	border-bottom: none;
+	width: 3.5em;
+}
+
+div.news-box dl {
+	margin: 0 0 0 4.5em;
+}
+
+div.news-box dl .date {
+	float: left;
+	clear: left;
+	width: 5em;
+	margin-right: 1em;
+}
+
+div.news-box dd {
+	margin-left: 6em;
+	}
+
+* html div.news-box dd {
+	display: inline-block;
+	}
+
+*:first-child+html div.news-box dd {
+	display: inline-block;
+	}
 
 div.help-box {
 	margin:5px;
@@ -2214,7 +2324,10 @@ div.help-box {
 	width:598px;
 	height:85px;
 	font-size:15px;
-	
+}
+
+* html div.help-box {
+	display: inline;
 }
 
 div.help-box p{
@@ -2375,5 +2488,31 @@ div#left_search_box{
 div#right_search_box{
 	float:left;
 	width:200px;
+}
+
+/* banners */
+div.banner img{
+    margin-top:14px;
+}
+
+/* Font Style */
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+/* Social Button */
+div.social_button div {
+	margin: 10px 0 0 0;
+	width: 90px;
+	float: left;
+}
+
+div#twitter {
+	margin-right: 10px;
+}
+
+div#tumblr {
+	margin-right: 10px;
 }
 

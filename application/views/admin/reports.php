@@ -21,9 +21,13 @@
 				<div class="tabs">
 					<!-- tabset -->
 					<ul class="tabset">
-						<li><a href="?status=0" <?php if ($status != 'a' && $status !='v') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.show_all');?></a></li>
-						<li><a href="?status=a" <?php if ($status == 'a') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.awaiting_approval');?></a></li>
-						<li><a href="?status=v" <?php if ($status == 'v') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.awaiting_verification');?></a></li>
+						<li><a href="?status=0" <?php if ($status != 'a' && $status !='v' && $status != 'n' && $status != 'p' && $status != 'e' && $status != 'i') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.show_all');?></a></li>
+						<li><a href="?status=a" <?php if ($status == 'a') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.awaiting_approval')."<br />(".$count_unapproved.")";?></a></li>
+						<li><a href="?status=n" <?php if ($status == 'n') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.not_approval')."<br />(".$count_notapproved.")";?></a></li>
+						<li><a href="?status=p" <?php if ($status == 'p') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.pending_approval')."<br />(".$count_pendingapproved.")";?></a></li>
+						<li><a href="?status=e" <?php if ($status == 'e') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.escalation_approval')."<br />(".$count_escapproved.")"; ?></a></li>
+						<li><a href="?status=v" <?php if ($status == 'v') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.awaiting_verification')."<br />(".$count_verificated.")";?></a></li>
+						<li><a href="?status=i" <?php if ($status == 'i') echo "class=\"active\""; ?>><?php echo Kohana::lang('ui_main.verificated_nonactive')."<br />(".$count_verificated_nonactive.")";?></a></li>
 					</ul>
 					<script type="text/javascript"> 
 					$(function() {
@@ -125,10 +129,13 @@
 						<td colspan="4">
 							<div class="tab">
 								<ul>
-									<li><a href="#" onclick="reportAction('a','APPROVE', '');"><?php echo Kohana::lang('ui_main.approve');?></a></li>
-									<li><a href="#" onclick="reportAction('u','UNAPPROVE', '');"><?php echo Kohana::lang('ui_main.disapprove');?></a></li>
-									<li><a href="#" onclick="reportAction('v','VERIFY', '');"><?php echo Kohana::lang('ui_main.verify');?></a></li>
-									<li><a href="#" onclick="reportAction('d','DELETE', '');"><?php echo Kohana::lang('ui_main.delete');?></a></li>
+									<li><a href="#" onclick="reportAction('u','<?php echo Kohana::lang('ui_main.disapprove');?>', '');"><?php echo Kohana::lang('ui_main.disapprove');?></a></li>
+									<li><a href="#" onclick="reportAction('n','<?php echo Kohana::lang('ui_main.not_approval');?>', '');"><?php echo Kohana::lang('ui_main.not_approval');?></a></li>
+									<li><a href="#" onclick="reportAction('p','<?php echo Kohana::lang('ui_main.pending_approval');?>', '');"><?php echo Kohana::lang('ui_main.pending_approval');?></a></li>
+									<li><a href="#" onclick="reportAction('e','<?php echo Kohana::lang('ui_main.escalation_approval');?>', '');"><?php echo Kohana::lang('ui_main.escalation_approval');?></a></li>
+									<li><a href="#" onclick="reportAction('a','<?php echo Kohana::lang('ui_main.approve');?>', '');"><?php echo Kohana::lang('ui_main.approve');?></a></li>
+									<li><a href="#" onclick="reportAction('v','<?php echo Kohana::lang('ui_main.verify');?>', '');"><?php echo Kohana::lang('ui_main.verify');?></a></li>
+									<li><a href="#" onclick="reportAction('d','<?php echo Kohana::lang('ui_main.delete');?>', '');"><?php echo Kohana::lang('ui_main.delete');?></a></li>
 								</ul>
 							</div>
 						</td>
@@ -136,7 +143,7 @@
 								<tr>
 									<th class="col-1"><?php echo Kohana::lang('ui_main.report_details');?></th>
 									<th class="col-2"><?php echo Kohana::lang('ui_main.date');?></th>
-									<th class="col-3"><?php echo Kohana::lang('ui_main.actions');?></th>
+									<th class="col-3"><?php echo Kohana::lang('ui_main.statuses');?></th>
 									<th class="col-4"><input id="checkallincidents" type="checkbox" class="check-box" onclick="CheckAll( this.id, 'incident_id[]' )" /></th>
 								</tr>
 							</thead>
@@ -145,10 +152,13 @@
 						<td colspan="4">
 							<div class="tab">
 								<ul>
-									<li><a href="#" onclick="reportAction('a','APPROVE', '');"><?php echo Kohana::lang('ui_main.approve');?></a></li>
-									<li><a href="#" onclick="reportAction('u','UNAPPROVE', '');"><?php echo Kohana::lang('ui_main.disapprove');?></a></li>
-									<li><a href="#" onclick="reportAction('v','VERIFY', '');"><?php echo Kohana::lang('ui_main.verify');?></a></li>
-									<li><a href="#" onclick="reportAction('d','DELETE', '');"><?php echo Kohana::lang('ui_main.delete');?></a></li>
+									<li><a href="#" onclick="reportAction('u','<?php echo Kohana::lang('ui_main.disapprove');?>', '');"><?php echo Kohana::lang('ui_main.disapprove');?></a></li>
+									<li><a href="#" onclick="reportAction('n','<?php echo Kohana::lang('ui_main.not_approval');?>', '');"><?php echo Kohana::lang('ui_main.not_approval');?></a></li>
+									<li><a href="#" onclick="reportAction('p','<?php echo Kohana::lang('ui_main.pending_approval');?>', '');"><?php echo Kohana::lang('ui_main.pending_approval');?></a></li>
+									<li><a href="#" onclick="reportAction('e','<?php echo Kohana::lang('ui_main.escalation_approval');?>', '');"><?php echo Kohana::lang('ui_main.escalation_approval');?></a></li>
+									<li><a href="#" onclick="reportAction('a','<?php echo Kohana::lang('ui_main.approve');?>', '');"><?php echo Kohana::lang('ui_main.approve');?></a></li>
+									<li><a href="#" onclick="reportAction('v','<?php echo Kohana::lang('ui_main.verify');?>', '');"><?php echo Kohana::lang('ui_main.verify');?></a></li>
+									<li><a href="#" onclick="reportAction('d','<?php echo Kohana::lang('ui_main.delete');?>', '');"><?php echo Kohana::lang('ui_main.delete');?></a></li>
 								</ul>
 							</div>
 						</td>
@@ -174,13 +184,14 @@
 								foreach ($incidents as $incident)
 								{
 									$incident_id = $incident->id;
-									$incident_title = html::specialchars($incident->incident_title);
-									$incident_description = text::limit_chars(html::specialchars($incident->incident_description), 150, "...", true);
+									$incident_title = $incident->incident_title;
+									$incident_description = text::limit_chars($incident->incident_description, 150, "...", true);
 									$incident_date = $incident->incident_date;
-									$incident_date = date('Y/m/d', strtotime($incident->incident_date));
+									$incident_date = date('Y/m/d H:i:s', strtotime($incident->incident_date));
 									$incident_mode = $incident->incident_mode;	// Mode of submission... WEB/SMS/EMAIL?
 
 									//XXX incident_Mode will be discontinued in favour of $service_id
+									$submit_by = "";
 									if ($incident_mode == 1)	// Submitted via WEB
 									{
 										$submit_mode = "WEB";
@@ -188,7 +199,7 @@
 										if ($incident->incident_person->id)
 										{
 											// Report was submitted by a visitor
-											$submit_by = $incident->incident_person->person_first . " " . $incident->incident_person->person_last;
+											$submit_by = $incident_persons[$incident->id]['person_first'] . " " . $incident_persons[$incident->id]['person_last'];
 										}
 										else
 										{
@@ -205,22 +216,30 @@
 									elseif ($incident_mode == 2) 	// Submitted via SMS
 									{
 										$submit_mode = "SMS";
-										$submit_by = $incident->message->message_from;
+										if(isset($incident_messages[$incident->id]['message_from'])){
+											$submit_by =$incident_messages[$incident->id]['message_from'];
+										}
 									}
 									elseif ($incident_mode == 3) 	// Submitted via Email
 									{
 										$submit_mode = "EMAIL";
-										$submit_by = $incident->message->message_from;
+										if(isset($incident_messages[$incident->id]['message_from'])){
+											$submit_by =$incident_messages[$incident->id]['message_from'];
+										}
 									}
 									elseif ($incident_mode == 4) 	// Submitted via Twitter
 									{
 										$submit_mode = "TWITTER";
-										$submit_by = $incident->message->message_from;
+										if(isset($incident_messages[$incident->id]['message_from'])){
+											$submit_by =$incident_messages[$incident->id]['message_from'];
+										}
 									}
 									elseif ($incident_mode == 5) 	// Submitted via Laconica
 									{
 										$submit_mode = "LACONICA";
-										$submit_by = $incident->message->message_from;
+										if(isset($incident_messages[$incident->id]['message_from'])){
+											$submit_by =$incident_messages[$incident->id]['message_from'];
+										}
 									}
 									$tasukeai = false;
 									foreach ($incident->media as $media)
@@ -234,15 +253,31 @@
 
 									// Retrieve Incident Categories
 									$incident_category = "";
-									foreach($incident->incident_category as $category)
+									
+									foreach($incident_incident_categories[$incident->id] as $category)
 									{
-										$incident_category .= "<a href=\"#\">" . $category->category->category_title . "</a>&nbsp;&nbsp;";
+										$incident_category .= "<a href=\"#\">" . $category['category_title'] . "</a>&nbsp;&nbsp;";
 									}
 
 									// Incident Status
 									$incident_approved = $incident->incident_active;
 									$incident_verified = $incident->incident_verified;
-									
+                                    if( $incident_approved == 0 ) {
+                                        $status_incident = Kohana::lang('ui_main.disapprove');
+                                    } elseif ( $incident_approved == 1 ) {
+                                        $status_incident = Kohana::lang('ui_main.approved');
+                                    } elseif ( $incident_approved == 2 ) {
+                                        $status_incident = Kohana::lang('ui_main.not_approval');
+                                    } elseif ( $incident_approved == 3 ) {
+                                        $status_incident = Kohana::lang('ui_main.pending_approval');
+                                    } elseif ( $incident_approved == 4 ) {
+                                        $status_incident = Kohana::lang('ui_main.escalation_approval');
+                                    }
+                                    if( $incident_verified == 0 ) {
+                                        $status_verified = Kohana::lang('ui_main.unverified');
+                                    } elseif ( $incident_verified == 1 ) {
+                                        $status_verified = Kohana::lang('ui_main.verified');
+                                    }
 									// Get Edit Log
 									$edit_count = $incident->verify->count();
 									$edit_css = ($edit_count == 0) ? "post-edit-log-red" : "post-edit-log-gray";
@@ -259,15 +294,17 @@
 									$i = 1;
 									$incident_translation  = "<div class=\"post-trans-new\">";
 									$incident_translation .= "<a href=\"" . url::base() . 'admin/reports/translate/?iid=' . $incident_id . "\">".strtoupper(Kohana::lang('ui_main.add_translation')).":</a></div>";
-									foreach ($incident->incident_lang as $translation) {
-										$incident_translation .= "<div class=\"post-trans\">";
-										$incident_translation .= Kohana::lang('ui_main.translation'). $i . ": ";
-										$incident_translation .= "<a href=\"" . url::base() . 'admin/reports/translate/'. $translation->id .'/?iid=' . $incident_id . "\">"
-											. text::limit_chars(html::specialchars($translation->incident_title), 150, "...", true)
-											. "</a>";
-										$incident_translation .= "</div>";
+									if(isset($incident_incident_langs[$incident->id])){
+										foreach ($incident_incident_langs[$incident->id] as $translation) {
+											$incident_translation .= "<div class=\"post-trans\">";
+											$incident_translation .= Kohana::lang('ui_main.translation'). $i . ": ";
+											$incident_translation .= "<a href=\"" . url::base() . 'admin/reports/translate/'. $translation['id'] .'/?iid=' . $incident_id . "\">"
+												. text::limit_chars($translation->incident_title, 150, "...", true)
+												. "</a>";
+											$incident_translation .= "</div>";
+										}
 									}
-									?>
+										?>
 									<tr <?php
 									if($tasukeai){
 									    echo "style='background-color:#cccccc;'";
@@ -276,7 +313,7 @@
 									?>>
 										<td class="col-1">
 											<div class="post">
-												<h4><a href="<?php echo url::site() . 'admin/reports/edit/' . $incident_id; ?>" class="more"><?php echo html::specialchars($incident_title); ?></a></h4>
+												<h4><a href="<?php echo url::site() . 'admin/reports/edit/' . $incident_id; ?>" class="more"><?php echo $incident_title; ?></a></h4>
 												<p><?php echo $incident_description; ?>... <a href="<?php echo url::base() . 'admin/reports/edit/' . $incident_id; ?>" class="more"><?php echo Kohana::lang('ui_main.more');?></a></p>
 											</div>
 											<ul class="info">
@@ -298,12 +335,17 @@
 											Event::run('ushahidi_action.report_extra_admin', $incident);
 											?>
 										</td>
-										<td class="col-2"><?php echo $incident_date; ?></td>
+										<td class="col-2"><?php echo "<p>".$incident_date."</p>";?>
+</td>
 										<td class="col-3">
 											<ul>
-												<li class="none-separator"><a href="#"<?php if ($incident_approved) echo " class=\"status_yes\"" ?> onclick="reportAction('a','APPROVE', '<?php echo $incident_id; ?>');"><?php echo Kohana::lang('ui_main.approve');?></a></li>
-												<li><a href="#"<?php if ($incident_verified) echo " class=\"status_yes\"" ?> onclick="reportAction('v','VERIFY', '<?php echo $incident_id; ?>');"><?php echo Kohana::lang('ui_main.verify');?></a></li>
-												<li><a href="#" class="del" onclick="reportAction('d','DELETE', '<?php echo $incident_id; ?>');"><?php echo Kohana::lang('ui_main.delete');?></a></li>
+<?php
+echo "<li class=\"none-separator";
+if( $incident_approved == 1 ) echo " status_yes";
+elseif( $incident_approved != 0 ) echo " status_no";
+echo "\">".$status_incident."</li><li class=\"none-separator";
+if( $incident_verified == 1 ) echo " status_yes";
+echo "\">".$status_verified."</li></ul>"; ?>
 											</ul>
 										</td>
 										<td class="col-4"><input name="incident_id[]" id="incident" value="<?php echo $incident_id; ?>" type="checkbox" class="check-box"/></td>

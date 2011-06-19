@@ -131,11 +131,8 @@ class Main_Controller extends Template_Controller {
 
         // Get all active top level categories
 		$parent_categories = array();
-		foreach (ORM::factory('category')
-				->where('category_visible', '1')
-				->where('parent_id', '0')
-				->orderby('category_type','desc')
-				->find_all() as $category)
+		$parentCategoryId = 0;
+		foreach ( Category_Model::getCategories($parentCategoryId) as $category )
 		{
 			// Get The Children
 			$children = array();
@@ -287,21 +284,19 @@ class Main_Controller extends Template_Controller {
 		$this->template->content->feeds = $feeds;
 		// コメントつきインシデント取得
 		$db = new Database;
-		$query = 'SELECT incident_id FROM '.$this->table_prefix.'comment AS ic WHERE ic.comment_active = 1 GROUP BY incident_id ORDER BY MAX(comment_date) DESC LIMIT 0,20;';
+		$query = 'SELECT ic.incident_id FROM '.$this->table_prefix.'comment AS ic WHERE ic.comment_active = 1 GROUP BY incident_id ORDER BY MAX(comment_date) DESC LIMIT 0,10;';
 		$query = $db->query($query);
 		$incident_ids = array();
 		foreach($query as $items){
 			$incident_ids[$items->incident_id] =$items->incident_id;
 		}
-		$incident_ids = 'incident.id IN ('.implode(',',$incident_ids).')';
-		$this->template->content->comment_incidents = ORM::factory('incident')
-			->select($this->table_prefix.'incident.*,'.$this->table_prefix.'comment.id as comment_id,'.$this->table_prefix.'comment.comment_date')
-			->join($this->table_prefix.'comment',$this->table_prefix.'comment.incident_id',$this->table_prefix.'incident.id',"LEFT")
-			->where('incident_active', '1')
-			->where($incident_ids)
-			->orderby('comment_date', 'desc')
-			->limit('10')
-			->find_all();
+		$incident_ids_in = '1=1';
+		if (count($incident_ids) > 0)
+		{
+			$incident_ids_in = 'i.id IN ('.implode(',',$incident_ids).')';
+		}
+		$query = 'SELECT i.id,MAX(i.incident_title) as incident_title,MAX(ic.comment_date) as comment_date,MAX(l.location_name) as location_name FROM '.$this->table_prefix.'incident as i,'.$this->table_prefix.'comment as ic,'.$this->table_prefix.'location as l WHERE i.id = ic.incident_id AND i.location_id = l.id AND ic.comment_active = 1 AND i.incident_active = 1 AND '.$incident_ids_in.' GROUP BY i.id ORDER BY MAX(comment_date) DESC LIMIT 0,10;';
+		$this->template->content->comment_incidents = $db->query($query);
 
         // Get The START, END and most ACTIVE Incident Dates
 		$startDate = "";

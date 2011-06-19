@@ -45,6 +45,12 @@ div#header{
 
 div#navigation{
 	padding:3px 3px 3px 5px;
+	background-color:#ccc;
+}
+
+div#location_bar{
+	padding:3px 3px 3px 5px;
+  border-top: 1px solid #adadad; 
 	margin-bottom:5px;
 	background-color:#ccc;
 }

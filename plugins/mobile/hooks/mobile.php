@@ -16,7 +16,7 @@
  */
 require_once('Net/UserAgent/Mobile.php');
 class mobile {
-	
+
 	/**
 	 * Registers the main event add method
 	 */
@@ -25,7 +25,7 @@ class mobile {
 		// Hook into routing
 		Event::add('system.pre_controller', array($this, 'add'));
 	}
-	
+
 	/**
 	 * Adds all the events to the main Ushahidi application
 	 */
@@ -46,10 +46,9 @@ class mobile {
 			if(isset($_SERVER['HTTP_USER_AGENT']) AND !$this->_is_keitai() AND $this->_is_mobile()
 				AND strrpos(url::current(), "mobile") === FALSE
 
-				//// It's a temporary code, should be deleted later!////
-				AND strrpos(url::current(), "page/index/9") === FALSE
-				AND strrpos(url::current(), "contact") === FALSE 
-				////////////////////////////////////////////////////////
+				//// It's a temporary code for #409 in Redmine, should be deleted later!////
+				AND strrpos(url::current(), "alerts/verify") === FALSE
+				////////////////////////////////////////////////////////////////////////////
 
 				AND Router::$controller != 'api')
 			{

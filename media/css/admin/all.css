@@ -9,11 +9,15 @@ form{
 	margin:0;
 	padding:0;
 }
+label:hover {
+    background-color:#cccccc;
+    text-decoration: underline;
+}
 .holder{
 	width:960px;
 	margin:0 auto;
 }
-h1, h2 ,h3, h4{margin:0;}
+h1, h2 ,h3, h4, h5{margin:0;}
 h1{
 	padding:58px 0 0 2px;
 	color:#000;
@@ -517,8 +521,9 @@ ul.tabset li{
 }
 ul.tabset li a{
 	text-decoration:none;
-	height:25px;
+	height:42px;
 	font-weight:bold;
+    text-align: center;
 	padding:5px 15px 0;
 	line-height:20px;
 	float:left;
@@ -675,6 +680,23 @@ ul.tabset li a:hover {
 .btns ul li a:hover{ text-decoration:underline;}
 /*-- btns --*/
 
+.active-box {
+	margin:15px 21px 0 22px;
+	background:#d8d8f1;
+	border:2px solid #a7a7d1;
+    height:40px;
+	width:293px;
+	clear:both;
+	overflow:hidden;
+    text-align:center;
+    vertical-align: middle;
+}
+.blue-box h4 {
+    margin:0;
+    padding:0;
+    font-weight:bold;
+}
+
 .green-box {
 	margin:15px 21px 0 22px;
 	padding:9px 0 8px;
@@ -828,13 +850,32 @@ ul.info li strong {
 	font-weight:normal;
 	color:#9b0000;
 }
-ul.links li a{
+ul.links li a {
 	color:#669eb9;
 	text-decoration:none;
 	padding:0 0 0 3px;
 }
-ul.links li a:hover{
+ul.links li a:hover {
 	text-decoration:underline;
+}
+.table .col-2 ul {
+	display: block;
+	float: right;
+	margin:0;
+	padding:9px 10px 0;
+	clear:both;
+	overflow:hidden;
+}
+.table .col-2 ul li {
+	padding:0 6px;
+	list-style:none;
+}
+.table .col-2 ul li a {
+	padding:0 9px;
+	line-height:24px;
+	font-weight:bold;
+	text-decoration:none;
+	text-align:center;
 }
 .table .col-3 ul{
 	display: block;
@@ -931,7 +972,7 @@ ul.pager li a.active {background:#999; color:#fff}
 {
 	background: #EDF9EE;
 }
-.report-form input.text, .report-form input.file, .tab_form_item input.text{
+.report-form input.text, .report-form input.email, .report-form input.file, .tab_form_item input.text{
 	display:inline;
 	margin:0;
 	padding:2px 5px;
@@ -948,7 +989,6 @@ ul.pager li a.active {background:#999; color:#fff}
 }
 .report-form textarea{
 	width:368px;
-	height:260px;
 	margin:0;
 	padding:4px 0 4px 5px;
 	border:2px solid #d9d9d9;
@@ -1208,50 +1248,53 @@ input.short {
 	width:50px;
 }
 input.long {
-	width:454px;
+	width:400px;
 }
 input.long2 {
 	width:300px;
 }
 .second { margin:13px 0 0 !important;}
 .link-row h4{ padding-top:11px;}
-/*-- f-col-bottom --*/
-.f-col-bottom-container {
+/*-- divpersonal --*/
+#divpersonal {
 	clear:both;
-	border-top:2px solid #dcdcdc;
-	border-bottom:2px solid #dcdcdc;
-}
-.f-col-bottom {
-	overflow:hidden;
-	clear:both;
-	padding:0 10px 6px 20px;
+    margin-top:22px;
+	padding:0 20px 6px 0px;
 	width:423px;
 	float:left;
+    background: #eee;
 }
-.f-col-bottom h4, .f-col-bottom-1 h4{
+#divpersonal .row {
+    margin:6px 6px;
+}
+#divpersonal h4{
 	padding-top:9px;
 }
-.f-col-bottom  label{
-	padding:2px 17px 5px 0;
+#divpersonal label {
+	padding:20px 27px
 	float:left;
-}
-.f-col-bottom  label span, .f-col-bottom-1 label span{
 	display:block;
 	font-size:12px;
 	font-weight:bold;
 	color:#636363;
 }
-.f-col-bottom  label input.text,
-.f-col-bottom-1 label input.text{ width:167px;}
-.f-col-bottom label input.email,
-.f-col-bottom-1 label input.email{ width:362px;}
+#divpersonal input.text { width:167px;}
+#divpersonal input.email { width:362px;}
+/*-- f-col-bottom --*/
+.f-col-bottom-container {
+	clear:both;
+	border-top:2px solid #dcdcdc;
+	border-bottom:2px solid #dcdcdc;
+	border-left:2px dotted #dcdcdc;
+	border-right:2px dotted #dcdcdc;
+	background-color:#eee;
+}
 /*-- f-col-bottom-1 --*/
 .f-col-bottom-1 {
 	padding:0 14px 14px 20px;
-	width:451px;
+	width:440px;
 	float:left;
 	background-color:#eee;
-	border-left:2px dotted #dcdcdc;
 }
 .f-col-bottom-1 .row {
 	margin-top:10px;
@@ -1263,6 +1306,34 @@ input.long2 {
 	float:left;
 	width:180px;
 }
+.f-col-bottom-1 h4{ padding-top:9px; }
+.f-col-bottom-1 label input.text{ width:167px;}
+.f-col-bottom-1 label input.email{ width:362px;}
+.f-col-bottom-1 label span{
+	display:block;
+	font-size:12px;
+	font-weight:bold;
+	color:#636363;
+}
+.f-col-bottom-2 {
+	padding:0 14px 14px 20px;
+	width:425px;
+	float:right;
+	background-color:#eee;
+	border-left:2px dotted #dcdcdc;
+}
+.f-col-bottom-2 .row {
+	margin-top:10px;
+}
+.f-col-bottom-2-col{
+	font-size:12px;
+	font-weight:bold;
+	color:#636363;
+	float:left;
+	width:180px;
+}
+.f-col-bottom-2 h4{ padding-top:9px; }
+.f-col-bottom-2 .viewlog{ overflow: auto; width:400px; height:280px; }
 
 .report-form .save-rep-btn,
 .report-form .save-close-btn,
@@ -1682,7 +1753,6 @@ a.new-form_field{
 }
 .forms_fields_item textarea, #custom_forms textarea{
 	float:none;
-	height:50px;
 }
 .hide{
 	display:none;

@@ -36,7 +36,10 @@ class Dashboard_Controller extends Admin_Controller
         $this->template->content->reports_total = ORM::factory('incident')->count_all();
 
         // Total Unapproved Reports
-        $this->template->content->reports_unapproved = ORM::factory('incident')->where('incident_active', '0')->count_all();
+        $this->template->content->reports_unapproved = ORM::factory('incident')->where('incident_active', '0')->where('incident_verified','0')->count_all();
+        $this->template->content->reports_notapproved = ORM::factory('incident')->where('incident_active', '2')->count_all();
+        $this->template->content->reports_pendingapproved = ORM::factory('incident')->where('incident_active', '3')->count_all();
+        $this->template->content->reports_escapproved = ORM::factory('incident')->where('incident_active', '4')->count_all();
 
         // Total Unverified Reports
         $this->template->content->reports_unverified = ORM::factory('incident')->where('incident_verified', '0')->count_all();
@@ -104,15 +107,14 @@ class Dashboard_Controller extends Admin_Controller
 
         // Build dashboard chart
         // Set the date range (how many days in the past from today?)
-        //    default to one year
-        $range = (isset($_GET['range'])) ? $_GET['range'] : 365;
-        
-        if(isset($_GET['range']) AND $_GET['range'] == 0)
-        {
-            $range = NULL;
+        // Default to one year if invalid or not set
+        if ( isset($_GET['range']) ) {
+            // Phase 3 - Invoke Kohana's XSS cleaning mechanism just incase an outlier wasn't caught
+            $range = $this->input->xss_clean($_GET['range']);
+            $range = (isset($range) AND intval($range) > 0)? intval($range) : 0;
+        } else {
+            $range = 0;
         }
-        
-        $this->template->content->range = $range;
 
         $incident_data = Incident_Model::get_number_reports_by_date($range);
         $data = array('Reports'=>$incident_data);

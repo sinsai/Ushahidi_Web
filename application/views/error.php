@@ -10,6 +10,9 @@
 <div id="error">
 	<h1><?php echo $title ?></h1>
 	<?php echo $content ?>   
+<!--top page link-->
+<p><a href="/" class="toplink">Sinsai.infoトップページへ</a></p>  
+<!--top page link-->
 </div>
 </body>
 </html>

@@ -14,7 +14,7 @@
 		foreach ($items as $item)
 		{?>
 		<item>
-			<title><?php echo $item['title']; ?></title>
+			<title><![CDATA[<?php echo $item['title']; ?>]]></title>
 			<link><?php echo $item['link']; ?></link>
 			<description><![CDATA[<?php echo $item['description']; ?>]]></description>
 			<pubDate><?php echo gmdate("D, d M Y H:i:s T", strtotime($item['date'])); ?></pubDate>

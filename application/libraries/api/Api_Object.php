@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access allowed');
 /**
- * Api_Object
+ * Api_Objectk
  *
  * Base abstract class for all API library implementations.
  * 
@@ -25,6 +25,7 @@ abstract class Api_Object_Core {
     protected $response_type; // Format in which the data is to be returned to the client
     protected $response_data; // Response data to be returned to the client
     protected $list_limit; // Max number of records to be returned
+    protected $list_offset; // Max number of records to be returned
     protected $api_service; // Instance of the API service
     protected $query; // SQL query to be used to fetch the requested data
     protected $replar; // Assists in proper XML generation
@@ -35,15 +36,16 @@ abstract class Api_Object_Core {
     
     public function __construct($api_service)    
     {    
-        $this->db = new Database();
-        
+        $slave_config = Kohana::config('database.slave');
+        $this->db = new Database($slave_config);
+       
         $this->api_settings = new Api_Settings_Model(1);
 
         // Set the list limit
         $this->list_limit = ((int) $this->api_settings->default_record_limit > 0)
             ? $this->api_settings->default_record_limit
             : (int) Kohana::config('settings.items_per_api_request');
-        
+        $this->list_offset = 0;
         $this->domain = url::base();
         $this->record_count = 1;
         $this->table_prefix = Kohana::config('database.default.table_prefix');
@@ -184,6 +186,13 @@ abstract class Api_Object_Core {
         $this->list_limit = (is_numeric($limit) AND intval($limit) > 0) 
             ? $limit 
             : $this->list_limit;
+    }
+    
+    protected function set_list_offset($offset)
+    {
+        $this->list_offset= (is_numeric($offset) AND intval($offset) >= 0) 
+            ? $offset 
+            : $this->list_offset;
     }
     
     /**

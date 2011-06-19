@@ -52,7 +52,7 @@ class Reports_Controller extends Main_Controller {
 		}
 
 		// 引き回すGETパラメータのテンプレートへの引き渡し
-		$this->template->content->keyword = valid::initGetVal('keyword',"text");
+		$this->template->content->keyword = htmlspecialchars(valid::initGetVal('keyword',"text"));
 		$this->template->content->address = valid::initGetVal('address',"text");
 		$this->template->content->distance = valid::initGetVal('distance',"number");
 		$this->template->content->c = valid::initGetVal('c',"number");
@@ -92,7 +92,7 @@ class Reports_Controller extends Main_Controller {
 		{
 			$northeast = explode(",",$_GET['ne']);
 		}
-		//指定地区の指定半径内インシデント取得でGoogleMAPAPIで緯度経度を取得できなかった場合DBを取りに行かないようにするためのフラグ
+		//指定地区の指定半径内インシデント取得でAPIで緯度経度を取得できなかった場合DBを取りに行かないようにするためのフラグ
 		$dbget_flg = true;
 		$this->template->content->choices_flg = false;
 		//指定地区の指定半径内インシデント取得処理
@@ -844,7 +844,7 @@ class Reports_Controller extends Main_Controller {
 				$post->add_rules('comment_author', 'required', 'length[3,100]');
 				$post->add_rules('comment_description', 'required');
 				$post->add_rules('comment_email', 'required','email', 'length[4,100]');
-				// $post->add_rules('captcha', 'required', 'Captcha::valid');
+				$post->add_rules('captcha', 'required', 'Captcha::valid');
 
 				// Test to see if things passed the rule checks
 
@@ -1044,6 +1044,21 @@ class Reports_Controller extends Main_Controller {
 		$this->template->content->incident_neighbors = $this->_get_neighbors($incident->location->latitude,
 																									 $incident->location->longitude);
 
+		//BlackbirdPie
+		$twitters = array();
+        require_once (APPPATH.'/libraries/blackbird-pie.php' );
+        $objbbp = new BlackbirdPie();
+        $twitter_htmls = array();
+		foreach($incident_news as $news){
+			if(preg_match('/^(http|https):\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(es)?\/(\d+)$/',$news,$matches)){
+		        $tweet_details = $objbbp->getTweetData($news);
+                if( is_array($tweet_details) ) {
+                    $twitter_htmls[] = $objbbp->create_tweet_html($tweet_details);
+                }
+		    }
+		}
+		$this->template->content->twitter_htmls = $twitter_htmls;
+
         // News link
 		$this->template->content->incident_news = $incident_news;
 
@@ -1061,6 +1076,7 @@ class Reports_Controller extends Main_Controller {
 		$this->themes->map_enabled = TRUE;
 		$this->themes->photoslider_enabled = TRUE;
 		$this->themes->videoslider_enabled = TRUE;
+		$this->themes->social_button = TRUE;
 		$this->themes->js = new View('reports_view_js');
 		$this->themes->js->incident_id = $incident->id;
 		$this->themes->js->default_map = Kohana::config('settings.default_map');
@@ -1246,7 +1262,7 @@ class Reports_Controller extends Main_Controller {
 			->where('category_visible', '1')
 			->where('parent_id', '0')
 			->where('category_trusted != 1')
-			->orderby('category_title', 'ASC')
+			->orderby('category_type', 'DESC')
 			->find_all();
 
 		return $categories;
@@ -1508,4 +1524,3 @@ class Reports_Controller extends Main_Controller {
 	}*/
 
 } // End Reports
-

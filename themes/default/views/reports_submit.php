@@ -307,7 +307,11 @@
 					?>
 
 				</div>
-									
+
+				<div id="divtos" class="report_row">
+                    <p><a target="_blank" href="<?php echo url::base(); ?>page/index/10"><?php echo Kohana::lang('ui_main.terms');?></a>&nbsp;<?php echo Kohana::lang('ui_main.terms_confirm_text');?></p>
+                </div>
+
 				<div class="report_row">
 					<input name="submit" type="submit" value="<?php echo Kohana::lang('ui_main.reports_btn_submit'); ?>" class="btn_submit" /> 
 				</div>

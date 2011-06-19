@@ -39,7 +39,7 @@
 							</div>
 						<?php
 						}
-
+						else
 						if ($form_saved) {
 						?>
 							<!-- green-box -->
@@ -56,7 +56,13 @@
 									<li><a href="<?php echo url::site(); ?>reports/view/<?php echo $id; ?>" target="_blank"><?php echo strtoupper(Kohana::lang('ui_main.view_report'));?></a></li>
 									<li><a href="#" class="btn_save"><?php echo strtoupper(Kohana::lang('ui_main.save_report'));?></a></li>
 									<li><a href="#" class="btn_save_close"><?php echo strtoupper(Kohana::lang('ui_main.save_close'));?></a></li>
-									<li><a href="<?php echo url::base().'admin/reports/';?>" class="btns_red"><?php echo strtoupper(Kohana::lang('ui_main.cancel'));?></a>&nbsp;&nbsp;&nbsp;</li>
+								<?php 
+								if($id)
+								{
+									echo "<li><a href=\"#\" class=\"btn_delete btns_red\">".strtoupper(Kohana::lang('ui_main.delete_report'))."</a></li>";
+								}
+								?>
+									<li><a href="<?php echo url::base().'admin/reports/';?>" class="btns_red"><?php echo strtoupper(Kohana::lang('ui_main.close'));?></a>&nbsp;&nbsp;&nbsp;</li>
 									<?php if ($id) {?>
 									<li><a href="<?php echo $previous_url;?>" class="btns_gray">&laquo; <?php echo strtoupper(Kohana::lang('ui_main.previous'));?></a></li>
 									<li><a href="<?php echo $next_url;?>" class="btns_gray"><?php echo strtoupper(Kohana::lang('ui_main.next'));?> &raquo;</a></li>
@@ -66,6 +72,23 @@
 						</div>
 						<!-- f-col -->
 						<div class="f-col">
+<?php
+if ( $form['incident_active'] > 1 ) {
+?>
+        <div style="float:left;" class="active-box"><h4>
+<?php
+    if ( $form['incident_active'] == 2 ) {
+        echo Kohana::lang('ui_main.not_approval');
+    } elseif ( $form['incident_active'] == 3 ) {
+        echo  Kohana::lang('ui_main.pending_approval');
+    } elseif ( $form['incident_active'] == 4 ) {
+        echo  Kohana::lang('ui_main.escalation_approval');
+    }
+?>
+        </h4></div>
+<?php
+}
+?>
 							<?php
 							// Action::report_pre_form_admin - Runs right before report form is rendered
 							Event::run('ushahidi_action.report_pre_form_admin', $id);
@@ -297,6 +320,7 @@
 										}
 										print form::input($this_field . '[]', $value, ' class="text long"');
 										print "<a href=\"#\" class=\"add\" onClick=\"addFormField('$this_div','$this_field','$this_startid','$this_field_type'); return false;\">add</a>";
+										print "&nbsp;<a target=\"_blank\" href=\"".$value."\">[check]</a>";
 										if ($i != 0)
 										{
 											print "<a href=\"#\" class=\"rem\"  onClick='removeFormField(\"#" . $this_field . "_" . $i . "\"); return false;'>remove</a>";
@@ -425,59 +449,72 @@
 								print "<input type=\"hidden\" name=\"$this_startid\" value=\"$i\" id=\"$this_startid\">";
 								?>
 							</div>
+                            <div id="divpersonal">
+								<div class="row">
+									<h4><?php echo Kohana::lang('ui_main.personal_information');?></span></h4>
+								</div>
+								<div class="row">
+									<label for='person_last'><?php echo Kohana::lang('ui_main.last_name');?></label>
+										<?php print form::input('person_last', $form['person_last'], ' class="text"'); ?>
+								</div>
+								<div class="row">
+									<label for='person_first'><?php echo Kohana::lang('ui_main.first_name');?></label>
+										<?php print form::input('person_first', $form['person_first'], ' class="text"'); ?>
+								</div>
+								<div class="row">
+									<label for='person_email'><?php echo Kohana::lang('ui_main.email_address');?></label>
+										<?php print form::input('person_email', $form['person_email'], ' class="email"'); ?>
+								</div>
+                            </div>
 						</div>
 						<!-- f-col-bottom -->
 						<div class="f-col-bottom-container">
-							<div class="f-col-bottom">
-								<div class="row">
-									<h4><?php echo Kohana::lang('ui_main.personal_information');?></span></h4>
-									<label>
-										<span><?php echo Kohana::lang('ui_main.first_name');?></span>
-										<?php print form::input('person_first', $form['person_first'], ' class="text"'); ?>
-									</label>
-									<label>
-										<span><?php echo Kohana::lang('ui_main.last_name');?></span>
-										<?php print form::input('person_last', $form['person_last'], ' class="text"'); ?>
-									</label>
-								</div>
-								<div class="row">
-									<label>
-										<span><?php echo Kohana::lang('ui_main.email_address');?></span>
-										<?php print form::input('person_email', $form['person_email'], ' class="text"'); ?>
-									</label>
-								</div>
-							</div>
 							<!-- f-col-bottom-1 -->
 							<div class="f-col-bottom-1">
 								<h4><?php echo Kohana::lang('ui_main.information_evaluation');?></h4>
 								<div class="row">
-									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.approve_this_report');?>?</div>
-									<input type="radio" name="incident_active" value="1"
-									<?php if ($form['incident_active'] == 1)
-									{
-										echo " checked=\"checked\" ";
-									}?>> <?php echo Kohana::lang('ui_main.yes');?>
-									<input type="radio" name="incident_active" value="0"
+									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.approve_this_report');?>?</div><br />
+									<input type="radio" id="incident_active_0" name="incident_active" value="0"
 									<?php if ($form['incident_active'] == 0)
 									{
 										echo " checked=\"checked\" ";
-									}?>> <?php echo Kohana::lang('ui_main.no');?>
-								</div>
-								<div class="row">
-									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.verify_this_report');?>?</div>
-									<input type="radio" name="incident_verified" value="1"
-									<?php if ($form['incident_verified'] == 1)
+									}?>><label for="incident_active_0"><?php echo Kohana::lang('ui_main.not_approved');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_active_2" name="incident_active" value="2"
+									<?php if ($form['incident_active'] == 2)
 									{
 										echo " checked=\"checked\" ";
-									}?>> <?php echo Kohana::lang('ui_main.yes');?>
-									<input type="radio" name="incident_verified" value="0"
+									}?>><label for="incident_active_2"><?php echo Kohana::lang('ui_main.not_approval');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_active_3" name="incident_active" value="3"
+									<?php if ($form['incident_active'] == 3)
+									{
+										echo " checked=\"checked\" ";
+									}?>><label for="incident_active_3"><?php echo Kohana::lang('ui_main.pending_approval');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_active_4" name="incident_active" value="4"
+									<?php if ($form['incident_active'] == 4)
+									{
+										echo " checked=\"checked\" ";
+									}?>><label for="incident_active_4"><?php echo Kohana::lang('ui_main.escalation_approval');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_active_1" name="incident_active" value="1"
+									<?php if ($form['incident_active'] == 1)
+									{
+										echo " checked=\"checked\" ";
+									}?>><label for="incident_active_1"><?php echo Kohana::lang('ui_main.approve');?></label>&nbsp;&nbsp;
+								</div>
+								<div class="row">
+									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.verify_this_report');?>?</div><br />
+									<input type="radio" id="incident_verified_0" name="incident_verified" value="0"
 									<?php if ($form['incident_verified'] == 0)
 									{
 										echo " checked=\"checked\" ";
-									}?>> <?php echo Kohana::lang('ui_main.no');?>									
+									}?>><label for="incident_verified_0"><?php echo Kohana::lang('ui_main.unverified');?></label>&nbsp;&nbsp;
+									<input type="radio" id="incident_verified_1" name="incident_verified" value="1"
+									<?php if ($form['incident_verified'] == 1)
+									{
+										echo " checked=\"checked\" ";
+									}?>><label for="incident_verified_1"><?php echo Kohana::lang('ui_main.verified');?></label>
 								</div>
 								<div class="row">
-									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.report_edit_dropdown_1_title');?>:</div>
+									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.report_edit_dropdown_1_title');?>:</div><br />
 									<?php print form::dropdown('incident_source', 
 									array(""=> Kohana::lang('ui_main.report_edit_dropdown_1_default'), 
 									"1"=> Kohana::lang('ui_main.report_edit_dropdown_1_item_1'), 
@@ -490,7 +527,7 @@
 									, $form['incident_source']) ?>									
 								</div>
 								<div class="row">
-									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.report_edit_dropdown_2_title');?>:</div>
+									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_main.report_edit_dropdown_2_title');?>:</div><br />
 									<?php print form::dropdown('incident_information', 
 									array(""=> Kohana::lang('ui_main.report_edit_dropdown_1_default'), 
 									"1"=> Kohana::lang('ui_main.report_edit_dropdown_2_item_1'), 
@@ -502,11 +539,40 @@
 									)
 									, $form['incident_information']) ?>									
 								</div>								
+                                <div class="row">
+									<div class="f-col-bottom-1-col"><?php echo Kohana::lang('ui_admin.admin_comments');?>:</div><br />
+                                    <?php print form::textarea('verified_comment', $form['verified_comment'], ' rows="4"') ?>
+                                </div>
 							</div>
+							<div class="f-col-bottom-2">
+                                <h4><?php echo Kohana::lang('ui_main.admin_logview');?></h4>
+                                    <div class="row viewlog">
+                                    <ul><?php
+                                $active_status_arry = Kohana::lang('ui_admin.active_status_arry');
+                                $viewlog = '';
+                                if( $superadmin_flag && is_object($form['incident_editlog']) ) {
+                                    foreach ($form['incident_editlog'] as $editlog)
+                                    {
+                                        $viewlog .= "<li><strong>".$editlog->user->name;
+                                        $viewlog .= " : ".date('Y/m/d H:i:s',strtotime($editlog->verified_date));
+                                        $viewlog .= " >> ".$active_status_arry[$editlog->verified_status];
+                                        $viewlog .= "</strong><br />";
+                                        if( empty($editlog->verified_comment) ) {
+                                            $viewlog .= Kohana::lang('ui_admin.admin_nocomments');
+                                        } else {
+                                            $viewlog .= $editlog->verified_comment;
+                                        }
+                                        $viewlog .= "</li>\n";
+                                    }
+                                }
+                                echo $viewlog; ?></ul>
+                                    </div>
+                                </div>
 							<div style="clear:both;"></div>
 						</div>
 						<div class="btns">
 							<ul>
+									<li><a href="<?php echo url::site(); ?>reports/view/<?php echo $id; ?>" target="_blank"><?php echo strtoupper(Kohana::lang('ui_main.view_report'));?></a></li>
 								<li><a href="#" class="btn_save"><?php echo strtoupper(Kohana::lang('ui_main.save_report'));?></a></li>
 								<li><a href="#" class="btn_save_close"><?php echo strtoupper(Kohana::lang('ui_main.save_close'));?></a></li>
 								<?php 
@@ -515,7 +581,11 @@
 									echo "<li><a href=\"#\" class=\"btn_delete btns_red\">".strtoupper(Kohana::lang('ui_main.delete_report'))."</a></li>";
 								}
 								?>
-								<li><a href="<?php echo url::site().'admin/reports/';?>" class="btns_red"><?php echo strtoupper(Kohana::lang('ui_main.cancel'));?></a></li>
+								<li><a href="<?php echo url::site().'admin/reports/';?>" class="btns_red"><?php echo strtoupper(Kohana::lang('ui_main.close'));?></a></li>
+									<?php if ($id) {?>
+									<li><a href="<?php echo $previous_url;?>" class="btns_gray">&laquo; <?php echo strtoupper(Kohana::lang('ui_main.previous'));?></a></li>
+									<li><a href="<?php echo $next_url;?>" class="btns_gray"><?php echo strtoupper(Kohana::lang('ui_main.next'));?> &raquo;</a></li>
+									<?php } ?>
 							</ul>
 						</div>						
 					</div>

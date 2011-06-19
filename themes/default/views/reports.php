@@ -30,7 +30,7 @@
 				$get_val = "?".ltrim($get_val,'&');
 				echo $get_val;
 			}
-			echo '"><img src="'.url::base().'/media/img/all.png" width="16" height="16"/>';
+			echo '"><img src="'.url::base().'media/img/all.png" width="16" height="16"/>';
 			echo '<span>全カテゴリ</span></a>';
 			foreach($category_master as $key => $category){
 				echo '<a class="category_menu" href="'.url::site().'reports/?c='.$key;
@@ -43,7 +43,7 @@
 				if($order)echo '&order='.$order;
 				echo '" >';
 				if(isset($category['category_image_thumb'])){
-				    echo '<img src="/ushahidi/media/uploads/'.$category['category_image_thumb'].'"/>';
+				    echo '<img src="' . url::base() . 'media/uploads/'.$category['category_image_thumb'].'"/>';
 				}else{
 				    echo '<span style="width:16px;height:16px;background-color:#'.$category['color'].'"> &nbsp;</span>';
 				}
@@ -77,8 +77,8 @@
 <?php echo ($l) ? '<input type="hidden" name="l" value="'.$l.'">' : ""?>
 <?php echo ($sw) ? '<input type="hidden" name="sw" value="'.$sw.'">' : ""?>
 <?php echo ($ne) ? '<input type="hidden" name="ne" value="'.$ne.'">' : ""?>
-検索キーワード：<input type="text" name="keyword" value="<?php if(isset($_GET["keyword"])){echo $_GET["keyword"];}?>" />
-検索地区：<input type="text" name="address" value="<?php if(isset($_GET["address"])){echo $_GET["address"];}?>" />
+検索キーワード：<input type="text" name="keyword" value="<?php if(isset($_GET["keyword"])){echo htmlspecialchars($_GET["keyword"]);}?>" />
+検索地区：<input type="text" name="address" value="<?php if(isset($_GET["address"])){echo htmlspecialchars($_GET["address"]);}?>" />
 <select name="distance">
 	<option value="0.5" <?php if(isset($_GET["distance"]) && $_GET["distance"] == 0.5)echo "selected" ?>>500m</option>
 	<option value="1" <?php if(isset($_GET["distance"]) && $_GET["distance"] == 1)echo "selected" ?>>1km</option>
