@@ -93,5 +93,6 @@
 	'safety_confirmation_bbs_title_index' => 'La sécurité Confirme・BBS',
 	'volunteer' => 'Volontaire',
 	'volunteer_title_index' => 'Volontaire',
+	'search_example_value' => 'entré un mot',
 	);
 ?>

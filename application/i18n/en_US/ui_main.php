@@ -537,6 +537,6 @@
 	'google_satellite' => 'Satellite (by Google Map)',
 	'google_hybrid' => 'Map & Satellite  (by Google Map)',
 	'google_normal' => 'Map (by Google Map)',
-	
+	'search_example_value' => 'enter search words',
 	);
 ?>

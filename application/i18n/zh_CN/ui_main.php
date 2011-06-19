@@ -286,5 +286,6 @@
 	'safety_confirmation_bbs_title_index' => '平安与否确・公告牌',
 	'volunteer' => '志愿者募集',
 	'volunteer_title_index' => '志愿者募集',
+	'search_example_value' => '输入检索语',
 	);
 ?>

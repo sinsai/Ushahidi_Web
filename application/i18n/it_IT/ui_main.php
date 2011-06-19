@@ -493,5 +493,6 @@
 	'weight' => 'Peso',
 	'yes' => 'Sì',
 	'yesterday' => 'Ieri',
+	'search_example_value' => 'contributo una parola',
 	);
 ?>

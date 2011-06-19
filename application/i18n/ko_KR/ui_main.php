@@ -42,5 +42,6 @@
 	'submit' => '리포트를 투고 ',
 	'volunteer' => '자원봉사 모집',
 	'volunteer_title_index' => '자원봉사 모집',
+	'search_example_value' => '검색어를 입력 ',
 	);
 ?>

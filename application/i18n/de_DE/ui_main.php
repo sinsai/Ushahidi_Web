@@ -507,5 +507,6 @@
 	'safety_confirmation_bbs_title_index' => 'Sicherheitsbestätigung・BBS',
 	'volunteer' => 'Freiwillige',
 	'volunteer_title_index' => 'Freiwillige',
+        'search_example_value' => 'Ich gebe ein Suchwort ein',
 	);
 ?>
