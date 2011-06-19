@@ -544,5 +544,7 @@
 	'google_satellite' => '衛星写真 (by Google Map)',
 	'google_hybrid' => '地図&衛星写真  (by Google Map)',
 	'google_normal' => '地図 (by Google Map)',
+
+	'search_example_value' => '地名,氏名,サービスを入力',
 	);
 ?>
