@@ -5,7 +5,12 @@ body {
 	padding:0;
 	height:100%;
 }
-h1, h2, h3, p {
+h1, h2, h3 {
+	margin: 5px 0 5px 0;
+	padding: 0;
+	line-height: 120%;
+}
+p {
 	margin: 0 0 5px 0;
 	padding: 0;
 }
