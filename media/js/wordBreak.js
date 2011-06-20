@@ -1,3 +1,14 @@
+/*--------------------------------------------------------------------------*
+ * 
+ *  wordBreak JavaScript Library for Opera & Firefox
+ * 
+ *  MIT-style license.
+ * 
+ *  2008 Kazuma Nishihata
+ *  http://www.to-r.net
+ *  2009 hokaccha
+ * 
+ *--------------------------------------------------------------------------*/
 $(function(){
     var $targetElement = '.wordBreak';
     if ($.browser.msie) {

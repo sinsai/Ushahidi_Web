@@ -1141,6 +1141,7 @@ table.table-list tbody tr td{
     border-bottom: #EEEEEE 1px solid;
     vertical-align: top;
     word-break: break-all;
+    word-wrap: break-word;
     overflow: hidden;
 }
 
