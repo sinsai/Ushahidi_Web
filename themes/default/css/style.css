@@ -1141,12 +1141,12 @@ table.table-list tbody tr td{
     border-bottom: #EEEEEE 1px solid;
     vertical-align: top;
     word-break: break-all;
+    overflow: hidden;
 }
 
 table.table-list tbody tr td a{
     color: #0099CC;
 }
-
 
 div.location{
     float: right;
