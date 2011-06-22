@@ -291,7 +291,7 @@
 									$incident_location = html::specialchars($incident->location->location_name);
 								?>
 								<tr>
-									<td><a href="<?php echo url::site() . 'reports/view/' . $incident_id; ?>"> <?php echo $incident_title ?></a></td>
+									<td><a class="wordBreak" href="<?php echo url::site() . 'reports/view/' . $incident_id; ?>"> <?php echo $incident_title ?></a></td>
 									<td><?php echo $incident_location ?></td>
 									<td><?php echo $incident_date; ?></td>
 								</tr>
@@ -331,7 +331,7 @@
 									$incident_location = html::specialchars($comment_incident->location_name);
 								?>
 								<tr>
-									<td><a href="<?php echo url::site() . 'reports/view/' . $incident_id; ?>"> <?php echo $incident_title ?></a></td>
+									<td><a class="wordBreak" href="<?php echo url::site() . 'reports/view/' . $incident_id; ?>"> <?php echo $incident_title ?></a></td>
 									<td><?php echo $incident_location ?></td>
 									<td><?php echo $incident_date; ?></td>
 								</tr>

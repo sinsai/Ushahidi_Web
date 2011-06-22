@@ -133,6 +133,7 @@ class Themes_Core {
 				$core_js .= html::script($this->js_url."media/js/jquery.flot", true);
 				$core_js .= html::script($this->js_url."media/js/timeline", true);
 				$core_js .= "<!--[if IE]>".html::script($this->js_url."media/js/excanvas.min", true)."<![endif]-->";
+				$core_js .= html::script($this->js_url."media/js/wordBreak", true);
 			}
 		}
 
