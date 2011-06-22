@@ -209,13 +209,13 @@
 									$message_from = $reporters[$message->reporter_id];
                                     if ( count($safelist) > 0 && in_array($message_id,$safelist) == false ) {
                                         $duplicate = 2;
-                                        $dupcol = "#cccccc";
+                                        $dupcol = "#eeeeee";
                                     }
                                     if( count($safelist) > 0 && in_array($message_id,$safelist) ) {
                                         $msgcount = $dupcnt[$message_id];
                                         if( $dupcnt[$message_id] > 1 ) {
                                             $duplicate = 1;
-                                            $dupcol = "#ffbbbb";
+                                            $dupcol = "#b0eaf0";
                                         }
                                     }
 									//$message_from = $message->reporter->service_account;
