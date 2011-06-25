@@ -70,6 +70,8 @@
 	),
 	'incident_video' => array(
 		'url' => 'The video links field does not appear to contain a valid URL?',
+		'shorturl' => 'The video links field appear short url without valid video URL.',
+		'videourl' => 'The video links field contains no supported URL. The only accepted video service and formats are; Vimeo, YouTube:www.youtube.com/watch/v=, GoogleVideo:video.google.com/videoplay?docid=-, Revver, Metacafe, LiveLeak, dotSub',
 	),
 	'latitude' => array(
 		'between' => 'The latitude field does not appear to contain a valid latitude?',

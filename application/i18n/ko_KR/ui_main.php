@@ -43,5 +43,7 @@
 	'volunteer' => '자원봉사 모집',
 	'volunteer_title_index' => '자원봉사 모집',
 	'search_example_value' => '검색어를 입력 ',
+        'reports_video_tooltip' => 'Vimeo, Youtube, GoogleVideo, Revver, Metacafe, LiveLeak, dotSub URL',
+        'detailed_video_example' => 'ex: www.youtube.com/watch?v=eXaMple, video.google.com/videoplay?docid=-eXaMple',
 	);
 ?>

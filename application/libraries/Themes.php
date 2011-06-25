@@ -88,6 +88,8 @@ class Themes_Core {
 		{
 			$core_css .= html::stylesheet($this->css_url."media/css/videoslider","",true);
 		}
+
+		$core_css .= html::stylesheet($this->css_url."media/css/jquery.hovertip-1.0","",true);
 		
 		if ($this->site_style AND $this->site_style != "default")
 		{
@@ -161,6 +163,9 @@ class Themes_Core {
 		{
 			$core_js .= html::script($this->js_url."media/js/jquery.socialbutton-1.7.3");
 		}
+
+		$core_js .= html::script($this->js_url."media/js/jquery.hovertip-1.0");
+
 		
 		// Javascript files from plugins
 		$plugin_js = plugin::render('javascript');
@@ -168,8 +173,12 @@ class Themes_Core {
 		// Inline Javascript
 		$inline_js = "<script type=\"text/javascript\">
                         <!--//
-			".'$(document).ready(function(){$(document).pngFix();});'.$this->js.
-                        "//-->
+			";
+		$inline_js .= "$(function(){if($('.tooltip[title]') != null)
+		$('.tooltip[title]').hovertip();
+		});";
+		$inline_js .= '$(document).ready(function(){$(document).pngFix();});'.$this->js;
+                $inline_js .= "//-->
                         </script>";
 		
 		return $core_js.$plugin_js.$inline_js;
