@@ -1020,7 +1020,7 @@ ul.pager li a.active {background:#999; color:#fff}
 	line-height:18px;
 	padding:16px 0 4px;
 }
-.report-form h4 span{
+.report-form h4 span.example{
 	font-weight:normal;
 	font-size:10px;
 	line-height:12px;
