@@ -377,7 +377,7 @@
 	'reports_timeline' => 'タイムライン',
 	'reports_title' => 'レポートタイトル',
 	'reports_video' => 'ビデオリンク',
-	'reports_video_tooltip' => 'Vimeo, Youtube, GoogleVideo, Revver, Metacafe, LiveLeak, dotSubのビデオへリンクできます。',
+	'reports_video_tooltip' => '公開されたビデオへリンクできます。',
 	'detailed_video_example' => '例: www.youtube.com/watch?v=eXaMple, video.google.com/videoplay?docid=-eXaMple',
 	'report_an_incident' => 'インシデントをレポートする',
 	'report_details' => 'レポート詳細',
