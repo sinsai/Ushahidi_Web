@@ -563,5 +563,6 @@
     'privacypolicy' => '個人情報保護方針',
     'privacypolicy_title_index' => '個人情報保護方針',
 	'search_example_value' => '地名,氏名,サービスを入力',
+	'supported_video_providers' => '有効なサービス',
 	);
 ?>

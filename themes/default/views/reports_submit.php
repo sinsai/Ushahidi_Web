@@ -233,14 +233,15 @@
 
 				<!-- Video Fields -->
 				<div id="divVideo" class="report_row">
-					<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_video_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_video'); ?></span>
+				<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_video_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_video'); ?></span>
+				<span>(<?php echo Kohana::lang('ui_main.supported_video_providers'); ?></span>
 				<a href="http://youtube.com" target="_blank">
 				<img class="tooltip" title="YouTube" alt="youtube" src="<?php echo url::base().'media/img/youtube.png' ?>" /></a>
 				<a href="http://video.google.com" target="_blank">
 				<img class="tooltip" title="google video" alt="google" src="<?php echo url::base().'media/img/google.png' ?>" /></a>
 				<a href="http://www.vimeo.com" target="_blank">
 				<img class="tooltip" title="Vimeo" alt="vimeo" src="<?php echo url::base().'media/img/vimeo.png' ?>" /></a>
-				<span class="tooltip" title="one.revver.com, metacafe.com, liveleak.com, dotsub.com"> O </span><br />
+				<span class="tooltip" title="one.revver.com, metacafe.com, liveleak.com, dotsub.com"> ...) </span><br />
 				<span class="example"><?php echo Kohana::lang('ui_main.detailed_video_example'); ?></span></h4>
 					<?php
 						$this_div = "divVideo";
