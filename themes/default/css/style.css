@@ -715,12 +715,6 @@ div.content-block-right{
 	border: 15px solid #e2e2e2;
 }
 
-div.officialnews-container{
-	padding: 5px 5px 10px;
-}
-div.official-detail{
-	padding-top:5px;
-}
 div.newreports-container{
 	padding:10px;
 	background: none repeat scroll 0 0 #FFFFFF;
@@ -729,6 +723,14 @@ div.newcomments-container{
 	margin-top:20px;
 	padding:10px;
 	background: none repeat scroll 0 0 #FFFFFF;
+}
+div.officialnews-container{
+	margin-top:20px;
+	padding:10px;
+	background: none repeat scroll 0 0 #FFFFFF;
+}
+div.official-detail{
+	padding-top:5px;
 }
 
 #related-link {
