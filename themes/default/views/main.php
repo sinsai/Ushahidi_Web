@@ -168,34 +168,6 @@
 			Event::run('ushahidi_action.main_sidebar');
 			?>
 			<!--content-container-->
-				<!--officialnews-container-->
-				<div class="officialnews-container section">
-					<div class="clearingfix">
-						<div style="float:left"><h5><?php echo Kohana::lang('ui_main.official_news'); ?></h5></div>
-						<div style="float:right"><a class="more" href="<?php echo url::site() . 'feeds' ?>"><?php echo Kohana::lang('ui_main.view_more'); ?></a></div>
-					</div>
-							<?php
-								foreach($feeds as $feed){
-									echo "<div>".$feed["name"]."</div>";
-									echo '<div style="font-size:0.85em">';
-		                            if ($feed["feed_item"]->count() != 0)
-		                            {
-		                                foreach ($feed["feed_item"] as $feed)
-		                                {
-		                                        $feed_id = $feed->id;
-		                                        $feed_title = text::limit_chars($feed->item_title, 40, '...', True);
-		                                        $feed_link = $feed->item_link;
-		                                        $feed_date = date('Y/m/d', strtotime($feed->item_date));
-		                                        $feed_source = text::limit_chars($feed->feed->feed_name, 15, "...");
-		                                ?>
-		                                        <div class="official-detail"><a href="<?php echo $feed_link; ?>" target="_blank"><?php echo html::specialchars($feed_title) ?></a></div>
-		                                <?php
-		                                }
-		                            }
-									echo "</div>";
-								}
-							?>
-                </div><!-- / officialnews-container-->
                 <!-- #related-link -->
             <div id="related-link" class="section">
                 <h5>関連リンク</h5>
@@ -345,6 +317,34 @@
 						</table>
 					</div>
 					<!-- / newcomments-container -->
+				<!--officialnews-container-->
+				<div class="officialnews-container">
+					<div class="clearingfix">
+						<div style="float:left"><h5><?php echo Kohana::lang('ui_main.official_news'); ?></h5></div>
+						<div style="float:right"><a class="more" href="<?php echo url::site() . 'feeds' ?>"><?php echo Kohana::lang('ui_main.view_more'); ?></a></div>
+					</div>
+							<?php
+								foreach($feeds as $feed){
+									echo "<div>".$feed["name"]."</div>";
+									echo '<div style="font-size:0.85em">';
+		                            if ($feed["feed_item"]->count() != 0)
+		                            {
+		                                foreach ($feed["feed_item"] as $feed)
+		                                {
+		                                        $feed_id = $feed->id;
+		                                        $feed_title = text::limit_chars($feed->item_title, 40, '...', True);
+		                                        $feed_link = $feed->item_link;
+		                                        $feed_date = date('Y/m/d', strtotime($feed->item_date));
+		                                        $feed_source = text::limit_chars($feed->feed->feed_name, 15, "...");
+		                                ?>
+		                                        <div class="official-detail"><a href="<?php echo $feed_link; ?>" target="_blank"><?php echo html::specialchars($feed_title) ?></a></div>
+		                                <?php
+		                                }
+		                            }
+									echo "</div>";
+								}
+							?>
+                </div><!-- / officialnews-container-->
 				</div>
 				<!-- /content blocks -->
 			</div>
