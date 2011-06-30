@@ -280,6 +280,10 @@ div.search-form input.text{
     font-size: 13px;
 }
 
+div.search-form input.blur{
+    color: #999;
+}
+
 div.search-form input.searchbtn{
     border: #868686 1px solid;
     background: #EEEEEE url(../img/search-button.jpg) 5px 5px no-repeat;
