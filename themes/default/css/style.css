@@ -348,6 +348,10 @@ div.search-form input.text{
     height: 17px;
 }
 
+div.search-form input.blur{
+    color: #999;
+}
+
 div.search-form input.searchbtn{
     margin: 0 0 0 1px;
    	padding: 9px 5px 10px 5px;
