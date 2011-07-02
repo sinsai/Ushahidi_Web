@@ -238,7 +238,7 @@ class Themes_Core {
 		$search .= "<form method=\"get\" id=\"search\" action=\"".url::site()."search/\">";
 		$search .= "<p>";
 		$search .= "<input type=\"text\" name=\"k\" value=\"\" class=\"text\" title=\"".Kohana::lang('ui_main.search_example_value')."\" />";
-		$search .= "<input type=\"submit\" name=\"b\" class=\"searchbtn\" value=\"サイト内検索\" />";
+		$search .= "<input type=\"submit\" name=\"b\" class=\"searchbtn\" value=\"".Kohana::lang('ui_main.search')."\" />";
 		$search .= "</p>";
 		$search .= "</form>";
 		$search .= "</div>";

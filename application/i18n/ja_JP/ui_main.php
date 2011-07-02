@@ -418,7 +418,7 @@
 	'scheduler_log' => 'スケジューラーログ',
 	'scheduler_minute' => '分',
 	'scheduler_weekday' => '曜日',
-	'search' => '検索',
+	'search' => 'サイト内検索',
 	'search_results' => '検索結果',
 	'security_code' => 'セキュリティコード',
 	'select_all' => 'すべて選択する',
