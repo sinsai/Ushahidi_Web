@@ -99,7 +99,7 @@ class locale_Core
 			"kl" => "kalaallisut, kalaallit oqaasii",
 			"km" => "ភាសាខ្មែរ",
 			"kn" => "ಕನ್ನಡ",
-			"ko" => "한국어 (韓國語), 조선말 (朝鮮語)",
+			"ko" => "한국어,조선말",
 			"kr" => "Kanuri",
 			"ks" => "कश्मीरी, كشميري‎",
 			"ku" => "Kurdî, كوردی‎",
@@ -197,7 +197,7 @@ class locale_Core
 			"yi" => "ייִדיש",
 			"yo" => "Yorùbá",
 			"za" => "Saɯ cueŋƅ, Saw cuengh",
-			"zh" => "中文 (Zhōngwén), 汉语, 漢語",
+			"zh" => "中文",
 			"zu" => "isiZulu",
 		);
 

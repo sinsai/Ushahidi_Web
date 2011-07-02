@@ -52,9 +52,11 @@ echo map::layers_scripts(TRUE);
 <div id="nations">
 <p><span class="uppercase">Select Language</span>
 <?php
-$nations = array("ja_JP","en_US","ko_KR","zh_CN","de_DE","fr_FR","it_IT");
-foreach ($nations as $nation){
-    echo "<a href='?l=".$nation."'><img src='".url::base()."media/img/flags/".$nation.".png' alt='".$nation."'title='".$nation."' ></a>";
+$langs = array(array("ja","JP"),array("en","US"),array("ko","KR"),array("zh","CN"),array("de","DE"),array("fr","FR"),array("it","IT")); // tuples
+foreach ($langs as $lang){
+    $langname = locale::language($lang[0]);
+    $nation = $lang[0]."_".$lang[1];
+    echo "<a href='?l=".$nation."'><img src='".url::base()."media/img/flags/".$nation.".png' alt='".$langname."'title='".$langname."' ></a>";
 }
 ?>
 </p></div>
