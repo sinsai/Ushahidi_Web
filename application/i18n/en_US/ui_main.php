@@ -367,8 +367,8 @@
 	'reports_timeline' => 'Timeline',
 	'reports_title' => 'Report Title',
 	'reports_video' => 'Video link',
-        'reports_video_tooltip' => 'You can link to Vimeo, Youtube, GoogleVideo, Revver, Metacafe, LiveLeak, and dotSub videos URL',
-        'detailed_video_example' => 'ex: www.youtube.com/watch?v=eXaMple, video.google.com/videoplay?docid=-eXaMple',
+        'reports_video_tooltip' => 'You can link to Video',
+        'detailed_video_example' => 'share video sites URL',
 	'report_an_incident' => 'Report an Incident',
 	'report_details' => 'Report Details',
 	'report_edit_dropdown_1_default' => '--- Select One ---',
@@ -547,6 +547,5 @@
     'privacypolicy' => 'Privacy Policy',
     'privacypolicy_title_index' => 'Privacy Policy',
 	'search_example_value' => 'enter search words',
-	'supported_video_providers' => 'Supported',
 	);
 ?>

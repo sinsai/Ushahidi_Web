@@ -233,14 +233,10 @@
 
 				<!-- Video Fields -->
 				<div id="divVideo" class="report_row">
-				<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_video_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_video'); ?></span>
-				<span>(<?php echo Kohana::lang('ui_main.supported_video_providers'); ?></span>
-				<a href="http://youtube.com" target="_blank">
-				<img class="tooltip" title="YouTube" alt="youtube" src="<?php echo url::base().'media/img/youtube.png' ?>" /></a>
-				<a href="http://video.google.com" target="_blank">
-				<img class="tooltip" title="google video" alt="google" src="<?php echo url::base().'media/img/google.png' ?>" /></a>
-				<a href="http://www.vimeo.com" target="_blank">
-				<img class="tooltip" title="Vimeo" alt="vimeo" src="<?php echo url::base().'media/img/vimeo.png' ?>" /></a>
+				<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_video_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_video'); ?>(</span>
+				<img class="tooltip" title="youtube.com/watch?v=" alt="youtube" src="<?php echo url::base().'media/img/youtube.png' ?>" />
+				<img class="tooltip" title="video.google.com/videoplay?docid=" alt="google video" src="<?php echo url::base().'media/img/google.png' ?>" />
+				<img class="tooltip" title="vimeo.com/12345" alt="vimeo" src="<?php echo url::base().'media/img/vimeo.png' ?>" />
 				<span class="tooltip" title="one.revver.com, metacafe.com, liveleak.com, dotsub.com"> ...) </span><br />
 				<span class="example"><?php echo Kohana::lang('ui_main.detailed_video_example'); ?></span></h4>
 					<?php

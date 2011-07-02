@@ -377,8 +377,8 @@
 	'reports_timeline' => 'タイムライン',
 	'reports_title' => 'レポートタイトル',
 	'reports_video' => 'ビデオリンク',
-	'reports_video_tooltip' => '公開されたビデオへリンクできます。',
-	'detailed_video_example' => '例: www.youtube.com/watch?v=eXaMple, video.google.com/videoplay?docid=-eXaMple',
+	'reports_video_tooltip' => '公開ビデオへリンクできます。',
+	'detailed_video_example' => 'YouTubeなどの共有用URLを入力してください。',
 	'report_an_incident' => 'インシデントをレポートする',
 	'report_details' => 'レポート詳細',
 	'report_edit_dropdown_1_default' => '---選択してください---',
@@ -563,6 +563,5 @@
     'privacypolicy' => '個人情報保護方針',
     'privacypolicy_title_index' => '個人情報保護方針',
 	'search_example_value' => '地名,氏名,サービスを入力',
-	'supported_video_providers' => '有効なサービス',
 	);
 ?>
