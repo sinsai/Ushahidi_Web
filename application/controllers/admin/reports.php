@@ -798,13 +798,13 @@ class Reports_Controller extends Admin_Controller
                         $header = @get_headers($url,1);
                         if (!isset($header['Location']))
                         {
-                            $post->add_error('incident_video', 'url');
+                            $post->add_error('incident_video', 'videourl');
                             continue;
                         }
                         $check = str_replace(VideoEmbed::$video_hosts, "", $header['Location']);
                         if (!empty($check) AND (bool) filter_var($check, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
                         {
-                            $post->add_error('incident_video', 'url');
+                            $post->add_error('incident_video', 'shorturl');
                             continue;
                         }
                     }

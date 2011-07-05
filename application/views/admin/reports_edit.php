@@ -281,7 +281,7 @@ if ( $form['incident_active'] > 1 ) {
 							</div>
 							<div class="row">
 								<div class="town">
-									<h4><?php echo Kohana::lang('ui_main.reports_location_name');?> <br /><span><?php echo Kohana::lang('ui_main.detailed_location_example');?></span></h4>
+									<h4><?php echo Kohana::lang('ui_main.reports_location_name');?> <br /><span class="example"><?php echo Kohana::lang('ui_main.detailed_location_example');?></span></h4>
 									<?php print form::input('location_name', $form['location_name'], ' class="text long"'); ?>
 								</div>
 							</div>
@@ -289,7 +289,7 @@ if ( $form['incident_active'] > 1 ) {
 				
 							<!-- News Fields -->
 							<div class="row link-row">
-								<h4><?php echo Kohana::lang('ui_main.reports_news');?></h4>
+								<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_news_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_news'); ?></span></h4>
 							</div>
 							<div id="divNews">
 								<?php
@@ -336,7 +336,7 @@ if ( $form['incident_active'] > 1 ) {
 
 							<!-- Video Fields -->
 							<div class="row link-row">
-								<h4><?php echo Kohana::lang('ui_main.reports_video');?></h4>
+								<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_video_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_video'); ?></span><br /><span class="example"><?php echo Kohana::lang('ui_main.detailed_video_example'); ?></span></h4>
 							</div>
 							<div id="divVideo">
 								<?php
@@ -382,7 +382,7 @@ if ( $form['incident_active'] > 1 ) {
 				
 							<!-- Photo Fields -->
 							<div class="row link-row">
-								<h4><?php echo Kohana::lang('ui_main.reports_photos');?></h4>
+								<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_photos_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_photos'); ?></span></h4>
 								<?php								
     								if ($incident != "0")
                         			{

@@ -196,7 +196,7 @@
 
 				<!-- News Fields -->
 				<div id="divNews" class="report_row">
-					<h4><?php echo Kohana::lang('ui_main.reports_news'); ?></h4>
+					<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_news_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_news'); ?><span></h4>
 					<?php
 						$this_div = "divNews";
 						$this_field = "incident_news";
@@ -233,7 +233,12 @@
 
 				<!-- Video Fields -->
 				<div id="divVideo" class="report_row">
-					<h4><?php echo Kohana::lang('ui_main.reports_video'); ?></h4>
+				<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_video_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_video'); ?>(</span>
+				<img class="tooltip" title="youtube.com/watch?v=" alt="youtube" src="<?php echo url::base().'media/img/youtube.png' ?>" />
+				<img class="tooltip" title="video.google.com/videoplay?docid=" alt="google video" src="<?php echo url::base().'media/img/google.png' ?>" />
+				<img class="tooltip" title="vimeo.com/12345" alt="vimeo" src="<?php echo url::base().'media/img/vimeo.png' ?>" />
+				<span class="tooltip" title="one.revver.com, metacafe.com, liveleak.com, dotsub.com"> ...) </span><br />
+				<span class="example"><?php echo Kohana::lang('ui_main.detailed_video_example'); ?></span></h4>
 					<?php
 						$this_div = "divVideo";
 						$this_field = "incident_video";
@@ -260,6 +265,7 @@
 								{
 									print "<a href=\"#\" class=\"rem\"	onClick='removeFormField(\"#" . $this_field . "_" . $i . "\"); return false;'>remove</a>";
 								}
+
 								print "</div>\n";
 								$i++;
 							}
@@ -270,7 +276,7 @@
 
 				<!-- Photo Fields -->
 				<div id="divPhoto" class="report_row">
-					<h4><?php echo Kohana::lang('ui_main.reports_photos'); ?></h4>
+					<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_photos_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_photos'); ?></span></h4>
 					<?php
 						$this_div = "divPhoto";
 						$this_field = "incident_photo";

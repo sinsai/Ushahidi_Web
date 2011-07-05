@@ -69,6 +69,8 @@
 	),
 	'incident_video' => array(
 		'url' => 'ビデオリンクフィールドに有効なURLが入っていないようです。',
+                'shorturl' => 'ビデオリンクフィールドに有効な短縮URLが入っていないようです。',
+                'videourl' => 'ビデオリンクフィールドにサポートされるURLが入っていないようです。次のサービスとURL形式だけがサポートされます: Vimeo:www.vimeo.com/12345, YouTube:www.youtube.com/watch/v=AbCde, GoogleVideo:video.google.com/videoplay?docid=-, Revver, Metacafe, LiveLeak, dotSub',
 	),
 	'latitude' => array(
 		'between' => '緯度フィールドに有効な緯度の値が入ってい内容です。',
