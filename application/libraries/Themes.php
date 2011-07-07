@@ -175,12 +175,11 @@ class Themes_Core {
 		$inline_js = "<script type=\"text/javascript\">
                         <!--//
 			";
-		$inline_js .= "$(function(){if($('.tooltip[title]') != null)
-		$('.tooltip[title]').hovertip();
-		});";
-		$inline_js .= '$(document).ready(function(){$(document).pngFix();});'.$this->js;
-        $inline_js .= "//-->
-                        </script>";
+		$inline_js .= "$(function(){if($('.tooltip[title]') != null) $('.tooltip[title]').hovertip();});";
+		$inline_js .= '$(document).ready(function(){$(document).pngFix();});';
+		$inline_js .= '$(function(){$(\'input[title!=\"\"]\').hint();});';
+		$inline_js .= $this->js;
+        $inline_js .= "//--></script>";
 		
 		return $core_js.$plugin_js.$inline_js;
 	}
