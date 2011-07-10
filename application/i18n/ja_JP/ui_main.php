@@ -363,6 +363,7 @@
 	'reports_find_location' => '近くのロケーションを探す',
 	'reports_first' => '名前',
 	'reports_last' => '名字',
+	'reports_name_order' => '1', // 0 - first, last    1 - last(family), first(given)
 	'reports_location_name' => 'ロケーションの名前を明確にする',
 	'reports_news' => '情報源のリンク',
 	'reports_news_tooltip' => 'この情報の情報源(ブログ、Twitterなど）のURLを入力します',

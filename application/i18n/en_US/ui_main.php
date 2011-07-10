@@ -353,6 +353,7 @@
 	'reports_find_location' => 'Find a location near you',
 	'reports_first' => 'First Name',
 	'reports_last' => 'Last Name',
+	'reports_name_order' => '0', // 0 - first, last    1 - last(family), first(given)
 	'reports_location_name' => 'Refine Location name',
 	'reports_news' => 'News source link',
 	'reports_news_tooltip' => 'input News source URL',
