@@ -1,6 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 // Basic configuration
-$config['kmlsite'] = "http://www.sinsai.info/ushahidi/";
 $config['default_limit'] = 1000;
 // for google maps
 	// max file size :     3MB
@@ -18,10 +17,10 @@ $config['cache_secs'] = 120;  // seconds during which to serve cached file,
                             // after which re-generate on next request
 $config['cache_on'] = true;   // true  = use cache file 
                             // false = debug mode: re-generated on each req.
+$config['compress'] = true;
 
 // views options
 $config['options'] = array(
-	"upload_directory" => "http://www.sinsai.info/ushahidi/". "media/uploads/",
 	'placemark_balloon_width' => "340",  // width in pixels (suggest 200 to 500)
 	'document_balloon_width' => "340",  // width in pixels (suggest 200 to 500)
 	'title_text_color' => "black",  // HTML color (works in Google Earth, ignored in Google Maps)
@@ -43,11 +42,15 @@ $config['options'] = array(
 	'extended_data' => true,      // True/False, true = write extended data section in each placemark kml, false = No extended data
 	'bundle_icons' => true,   // True/False, true = bundle icon images into KMZ, false = link to images on server
 	'bundle_media_tumbs' => false,    // True/False, true = bundle media thumbnail images into KMZ, false = link to images on server
+	'normal_label_scale' => 0.8,
+	'highlight_label_scale' => 0.9,
+	'normal_icon_scale' => 0.6,
+	'highlight_icon_scale' => 0.8,
 );
 
 //=== Logo Details == (image file for in balloons: png/jpg/gif; suggested size: 36 x 36 pixels)
 $config['logo'] = array(
-	'path' => "http://www.sinsai.info/ushahidi/" . "plugins/kml/views/",
+	'path' => "plugins/kml/views/",
 	'filename' => "sinsai_logo_36x36.png",
 	'width' => 36,
 	'height' => 36,

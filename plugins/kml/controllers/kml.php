@@ -52,27 +52,8 @@ class Kml_Controller extends Controller
 		return array($limit, $category_id, $cron_flag);
 	}
 
-	public function index()
+	private function set_filename($limit, $category_id, $cron_flag)
 	{
-		// 0. define default limitation for google maps
-		// 1. get limit
-		// 2. set filename
-		// 3. ditect cache
-		// 4.1. has cache -> return file
-		// 4.2. no cache -> get data from sql, and write in view
-
-		$default_limit = Kohana::config('kml.default_limit');
-		$default_limit = isset($default_limit)?$default_limit:1000;
-
-		// 1.
-		list($limit, $category_id, $cron_flag) = $this::get_params();
-
-		// use cdn when normal request
-		if ($limit == -1 && $cron_flag == false && $category_id == 0) { 
-			url::redirect(Kohana::config("kml.cdn_kml_url"));
-		}
-
-		// 2.
 		$kml_filename = "latest.kml";  // filename for exported KML file
 		$kmz_filename = "latest.kmz";  // filename for exported KMZ file
 
@@ -93,7 +74,6 @@ class Kml_Controller extends Controller
 		{ 
 			// cron request without parameter 
 			// generate default kml file that is distributed through CDN
-			$limit = $default_limit;
 		}
 		elseif ($limit == 0)
 		{
@@ -102,14 +82,61 @@ class Kml_Controller extends Controller
 		}
 		elseif ($limit == -1) 
 		{
-			$limit = $default_limit;
 			$kml_filename = $cat_name.$kml_filename;
-			$kmz_filename = $cat_name.$kml_filename;
+			$kmz_filename = $cat_name.$kmz_filename;
 		}
 		else
 		{
 			$kml_filename = $cat_name.strval($limit)."_".$kml_filename;
 			$kmz_filename = $cat_name.strval($limit)."_".$kmz_filename;
+		}
+		return array($kml_filename, $kmz_filename);
+	}
+
+	//=== function to zip KML into KMZ file
+	private function create_kmz($kmlFileName, $kmzFileName){
+
+		kohana::log('info', "generating kmz file");
+		$zip = new ZipArchive();
+
+		if ($zip->open("$kmzFileName", ZIPARCHIVE::CREATE|ZIPARCHIVE::OVERWRITE)!==TRUE) {
+			kohana::log('error', "cannot open kmz file");
+			echo("cannot open <". $kmzFileName .">\n");
+		}
+
+		kohana::log('info', "adding kml to kmz file");
+		$zip->addFile($kmlFileName, "doc.kml");
+		//$zip->addFile("plugins/kml2/views/circle_border.png", "files/circle_border.png");
+		$zip->close();
+		kohana::log('info', "closed kmz file");
+		return $zip;
+	}
+
+	public function index()
+	{
+		// 0. define default limitation for google maps
+		// 1. get limit
+		// 2. set filename
+		// 3. ditect cache
+		// 4.1. has cache -> return file
+		// 4.2. no cache -> get data from sql, and write in view
+
+		// 1.
+		list($limit, $category_id, $cron_flag) = $this::get_params();
+
+		// use cdn when normal request
+		if ($limit == -1 && $cron_flag == false && $category_id == 0) { 
+			url::redirect(Kohana::config("kml.cdn_kml_url"));
+		}
+
+		// 2.
+		list($kml_filename, $kmz_filename) = 
+					$this::set_filename($limit, $category_id, $cron_flag);
+
+		if ($limit == -1)
+		{
+			$default_limit = Kohana::config('kml.default_limit');
+			$limit = isset($default_limit)?$default_limit:1000;
 		}
 
   		// internal path to KML/KMZ file in uploads directory
@@ -118,6 +145,7 @@ class Kml_Controller extends Controller
 
 		// 3.
 		//=== Caching Options ==
+		// TOD: Add something to check if new incidents have come in and re-create files only if needed?
 		$cache_secs = Kohana::config('kml.cache_secs',TRUE);
 		$cache_on = Kohana::config('kml.cache_on',TRUE);
 		if ($cache_on && file_exists($kmzFileName)
@@ -167,18 +195,42 @@ class Kml_Controller extends Controller
 		$view->kml_name = htmlspecialchars(Kohana::config('settings.site_name'));
 		$view->kml_tagline = htmlspecialchars(Kohana::config('settings.site_tagline'));
 		$view->kml_filename = $kml_filename;
-		$view->kmz_filename = $kmz_filename;
+	//	$view->kmz_filename = $kmz_filename;
 		$view->kmlFileName = $kmlFileName;
-		$view->kmzFileName = $kmzFileName;
+	//	$view->kmzFileName = $kmzFileName;
 
 		$view->items = $incident_items;
 		$view->categories = $categories;
 
-		// set use cache
-		$view->use_cache = $use_cache;
-		// set cron flag
-		$view->cron_flag = $cron_flag;
+		if (!$use_cache)
+		{
+			kohana::log('info', "generating new kml file");
+			$kmlFile = fopen($kmlFileName, "w");
+			if (flock($kmlFile, LOCK_EX)) { // do an exclusive lock
+				kohana::log('info', "Got lock on $kmlFileName");
+				$view->kmlFile = $kmlFile;
 
-		$view->render(TRUE);
+				$view->render(FALSE);
+
+				flock($kmlFile, LOCK_UN); // release the lock
+				fclose($kmlFile);
+				kohana::log('info', " ...locked and closed $kmlFileName");
+			} else {
+				kohana::log('error', "Couldn't lock $kmlFileName");
+   			}
+		}
+
+		if ( ! $cron_flag )
+		{
+		    if (Kohana::config('kml.compress'))
+			{
+				$this::create_kmz($kmlFileName, $kmzFileName);
+				echo readfile($kmzFileName);
+			}
+			else
+			{
+				echo readfile($kmlFileName);
+			}
+		}
 	}
 }
