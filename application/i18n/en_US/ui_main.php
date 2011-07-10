@@ -547,5 +547,7 @@
     'privacypolicy' => 'Privacy Policy',
     'privacypolicy_title_index' => 'Privacy Policy',
 	'search_example_value' => 'enter search words',
+	'strickenareavolunteer' => 'Call Volunteers',
+	'appandapi' => 'Apps&API',
 	);
 ?>
