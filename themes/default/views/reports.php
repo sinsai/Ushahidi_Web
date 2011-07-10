@@ -10,6 +10,7 @@
 			<h2><?php echo ($area_name) ? $area_name."周辺の" : ""?> <?php echo ($disp_distance) ? "半径".$disp_distance."の" : ""?> <?php echo Kohana::lang('ui_main.reports').": ";?> <?php echo ($category_title) ? " in $category_title" : ""?> <?php echo $pagination_stats; ?></h2>
 <?php
 			echo '<a class="category_menu" href="'.url::site().'reports/';
+			$keyword = html::specialchars($keyword);
 			$get_val = "";
 			if(isset($_GET['sw'])){
 				if($sw)$get_val .= '&sw='.$_GET['sw'];
