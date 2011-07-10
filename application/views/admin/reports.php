@@ -199,7 +199,11 @@
 										if ($incident->incident_person->id)
 										{
 											// Report was submitted by a visitor
-											$submit_by = $incident_persons[$incident->id]['person_first'] . " " . $incident_persons[$incident->id]['person_last'];
+											if (Kohana::lang('ui_main.reports_name_order') == '1') { 
+												$submit_by = $incident_persons[$incident->id]['person_last'] . " " . $incident_persons[$incident->id]['person_first'];
+											} else {
+												$submit_by = $incident_persons[$incident->id]['person_first'] . " " . $incident_persons[$incident->id]['person_last'];
+											}
 										}
 										else
 										{

@@ -453,6 +453,7 @@ if ( $form['incident_active'] > 1 ) {
 								<div class="row">
 									<h4><?php echo Kohana::lang('ui_main.personal_information');?></span></h4>
 								</div>
+<?php if (Kohana::lang('ui_main.reports_name_order') == '1') { ?>
 								<div class="row">
 									<label for='person_last'><?php echo Kohana::lang('ui_main.last_name');?></label>
 										<?php print form::input('person_last', $form['person_last'], ' class="text"'); ?>
@@ -461,6 +462,16 @@ if ( $form['incident_active'] > 1 ) {
 									<label for='person_first'><?php echo Kohana::lang('ui_main.first_name');?></label>
 										<?php print form::input('person_first', $form['person_first'], ' class="text"'); ?>
 								</div>
+<?php } else { ?>
+								<div class="row">
+									<label for='person_first'><?php echo Kohana::lang('ui_main.first_name');?></label>
+										<?php print form::input('person_first', $form['person_first'], ' class="text"'); ?>
+								</div>
+								<div class="row">
+									<label for='person_last'><?php echo Kohana::lang('ui_main.last_name');?></label>
+										<?php print form::input('person_last', $form['person_last'], ' class="text"'); ?>
+								</div>
+<?php } ?>
 								<div class="row">
 									<label for='person_email'><?php echo Kohana::lang('ui_main.email_address');?></label>
 										<?php print form::input('person_email', $form['person_email'], ' class="email"'); ?>
