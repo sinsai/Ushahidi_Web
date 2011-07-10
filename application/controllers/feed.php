@@ -93,7 +93,7 @@ class Feed_Controller extends Controller
 
         //header("Content-Type: text/xml; charset=utf-8");
         $view = new View('feed_'.$feedtype);
-        $view->feed_title = htmlspecialchars(Kohana::config('settings.site_name'));
+        $view->feed_title = Kohana::config('settings.site_name');
         $view->site_url = $site_url;
         $view->georss = 1; // this adds georss namespace in the feed
         $view->feed_url = $site_url.$feedpath;
