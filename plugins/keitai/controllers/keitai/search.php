@@ -77,35 +77,32 @@ error_log("Phase 3 ".mb_detect_encoding($keyword_raw)." ".$keyword_raw);
             $keyword_raw = "";
         }
 
-        error_log("Phase 4 ".$keyword_raw);
+#        error_log("Phase 4 ".$keyword_raw);
         $keywords = explode(' ', $keyword_raw);
 
         if (is_array($keywords) && !empty($keywords)) 
         {
-            $match = "MATCH(incident_title,incident_description) AGAINST(\"*D+1:2,2:1 $keyword_raw\" IN BOOLEAN MODE)";
-            error_log("Match ".$match);
-            $keyword_string = $match;
+            #error_log("Match ".$match);
+            $match = "MATCH(incident_text) AGAINST(\"$keyword_raw\" IN BOOLEAN MODE)";
             $where_string = $match.' AND incident_active = 1';
-            $search_query = "SELECT *, (".$keyword_string.") AS relevance FROM ".$this->table_prefix."incident".
-                            " WHERE (".$where_string.") ORDER BY relevance DESC LIMIT ";
+            $search_query = "SELECT * FROM ".$this->table_prefix."s_incident".
+                            " WHERE (".$where_string.") ORDER BY _score DESC LIMIT ";
         }
         
         if (!empty($search_query))
         {
             // Pagination
-            $slave_config = Kohana::config('database.slave');
-            $db = new Database($slave_config);
+            $db = new Database();
             $pagination = new Pagination(array(
                 'style' => 'keitai',
                 'query_string'    => 'page',
                 'items_per_page' => (int) Kohana::config('settings.items_per_page'),
-		'total_items'    => $db->count_records('incident',$where_string)
+		'total_items'    => $db->count_records('s_incident',$where_string)
             ));
             $query = $db->query($search_query . $pagination->sql_offset . ",". (int)Kohana::config('settings.items_per_page'));
             // Results Bar
             if ($pagination->total_items != 0)
             {
-               # $search_info .= . ( $pagination->sql_offset + 1 ). ( (int) Kohana::config('settings.items_per_page') + $pagination->sql_offset ) .' '.Kohana::lang('ui_admin.of').' '. $pagination->total_items .' '.Kohana::lang('ui_admin.searching_for').'<strong>'. $keyword_raw . "</strong>";
                 $search_info .= "$keyword_raw ".$pagination->total_items."件";
                 $search_info .= "<br>";
                   
