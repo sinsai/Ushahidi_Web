@@ -124,6 +124,17 @@
 						<h3><?php echo Kohana::lang('ui_main.quick_stats');?></h3>
 						<ul class="nav-list">
 							<li>
+								<a href="<?php echo url::site() . 'admin/messages' ?>" class="messages"><?php echo Kohana::lang('ui_main.messages');?></a>
+								<strong><?php echo number_format($message_count); ?></strong>
+								<ul>
+									<?php
+									foreach ($message_services as $service) {
+										echo "<li><a href=\"".url::site() . 'admin/messages/index/'.$service['id']."\">".$service['name']."</a><strong>(".$service['count'].")</strong></li>";
+									}
+									?>
+								</ul>
+							</li>
+							<li>
 								<a href="<?php echo url::site() . 'admin/reports' ?>" class="reports"><?php echo Kohana::lang('ui_main.reports');?></a>
 								<strong><?php echo number_format($reports_total); ?></strong>
 								<ul>
@@ -151,17 +162,6 @@
 							<li>
 								<a href="<?php echo url::site() . 'admin/manage/feeds' ?>" class="media"><?php echo Kohana::lang('ui_main.news_feeds');?></a>
 								<strong><?php echo number_format($incoming_media); ?></strong>
-							</li>
-							<li>
-								<a href="<?php echo url::site() . 'admin/messages' ?>" class="messages"><?php echo Kohana::lang('ui_main.messages');?></a>
-								<strong><?php echo number_format($message_count); ?></strong>
-								<ul>
-									<?php
-									foreach ($message_services as $service) {
-										echo "<li><a href=\"".url::site() . 'admin/messages/index/'.$service['id']."\">".$service['name']."</a><strong>(".$service['count'].")</strong></li>";
-									}
-									?>
-								</ul>
 							</li>
 						</ul>
 					</div>
