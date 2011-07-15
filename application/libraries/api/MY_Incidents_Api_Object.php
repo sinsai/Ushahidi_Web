@@ -308,7 +308,7 @@ class Incidents_Api_Object extends Api_Object_Core {
                 ."l.location_name AS locationname, "
                 ."l.latitude AS locationlatitude, "
                 ."l.longitude AS locationlongitude "
-                ."FROM ".$this->table_prefix."incident AS i "
+                ."FROM ".$this->table_prefix."s_incident AS i "
                 ."INNER JOIN ".$this->table_prefix.
                 "location as l on l.id = i.location_id "."$where $limit";
         $items = $this->db->query($this->query);
@@ -342,7 +342,7 @@ class Incidents_Api_Object extends Api_Object_Core {
             "m.media_type AS mediatype, m.media_link AS medialink, " .
             "m.media_thumb AS mediathumb FROM ".$this->table_prefix.
             "media AS m " . "INNER JOIN ".$this->table_prefix.
-            "incident AS i ON i.id = m.incident_id " .
+            "s_incident AS i ON i.id = m.incident_id " .
             "WHERE i.id IN(".implode(',',$incidentids).")";
 
         $media_items = $this->db->query($this->query);
@@ -599,7 +599,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         
         if (is_array($keywords) && !empty($keywords) && $keyword_raw != "") 
         {
-            $match = " MATCH(i.incident_title,i.incident_description) AGAINST(\"*D+1:2,2:1 $keyword_raw\" IN BOOLEAN MODE) AND";
+            $match = " MATCH(i.incident_text) AGAINST(\"$keyword_raw\" IN BOOLEAN MODE) AND";
             $where .= $match;
         }
         $where .=  "\nround(sqrt(pow((l.latitude - $param[1])/0.0111, 2) + pow((l.longitude - $param[0])/0.0091, 2)), 1) <= $param[2] AND i.incident_active = 1 ";
@@ -802,7 +802,7 @@ class Incidents_Api_Object extends Api_Object_Core {
         $match = "";
         if (is_array($keywords) && !empty($keywords) && $keyword_raw != "") 
         {
-            $match = " MATCH(i.incident_title,i.incident_description) AGAINST(\"*D+1:2,2:1 $keyword_raw\" IN BOOLEAN MODE) AND";
+            $match = " MATCH(i.incident_text) AGAINST(\"$keyword_raw\" IN BOOLEAN MODE) AND";
         }
 
 		$where = ' WHERE '.$match.' i.incident_active = 1 AND '.$location_id_in.' ';
