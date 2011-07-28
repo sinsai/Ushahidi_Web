@@ -36,8 +36,7 @@ abstract class Api_Object_Core {
     
     public function __construct($api_service)    
     {    
-        $slave_config = Kohana::config('database.slave');
-        $this->db = new Database($slave_config);
+        $this->db = new Database();
        
         $this->api_settings = new Api_Settings_Model(1);
 
