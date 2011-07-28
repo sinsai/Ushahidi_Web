@@ -36,17 +36,17 @@ $config['default'] = array
 
 $config['slave'] = array
  (
-        'benchmark'     => TRUE,
+        'benchmark'     => FALSE,
         'persistent'    => FALSE,
         'connection'    => array
         (
                 'type'     => 'mysql',
-                'user'     => 'osm',     //ユーザー
-                'pass'     => 'osmosm',  //パスワード
-                'host'     => 'dbslave', //DBサーバ
+                'user'     => '',     //ユーザー
+                'pass'     => '',  //パスワード
+                'host'     => '', //DBサーバ
                 'port'     => FALSE,
                 'socket'   => FALSE,
-                'database' => 'ushahidi' //DB名
+                'database' => '' //DB名
         ),
         'character_set' => 'utf8',
         'table_prefix'  => '',
