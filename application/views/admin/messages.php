@@ -232,6 +232,7 @@
 									$level_id = $message->reporter->level_id;
 									?>
 									<tr <?php if ($message_level == "99") {
+                                        $duplicate = 0;
 										echo " class=\"spam_tr\"";
 									} ?>>
 <?php
