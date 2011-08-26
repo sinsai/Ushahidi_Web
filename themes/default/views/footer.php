@@ -69,6 +69,11 @@
 							<img src="<?php echo url::base(); ?>/media/img/logo_yahoo.gif" alt="yahoo" style="vertical-align:middle" />
 						</a>
 					</li>
+					<li>
+						<a href="http://www.nifty.co.jp/english/" target="_blank">
+							<img src="<?php echo url::base(); ?>/media/img/nifty_yoko.png" alt="nifty" style="vertical-align:middle" />
+						</a>
+					</li>
 				</ul>
 			</div>
       		<div style="text-align:center;margin-top:10px;"><p class="copyright">Copyright&nbsp;&copy;&nbsp;sinsai.info&nbsp;All&nbsp;Rights&nbsp;Reserved.&nbsp;<?php echo $site_copyright_statement; ?></p></div>
