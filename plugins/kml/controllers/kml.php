@@ -231,6 +231,11 @@ class Kml_Controller extends Controller
 			{
 				echo readfile($kmlFileName);
 			}
+		} else {
+			if (Kohana::config('kml.compress'))
+			{
+				$this::create_kmz($kmlFileName, $kmzFileName);
+			}
 		}
 	}
 }
