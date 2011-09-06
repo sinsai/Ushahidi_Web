@@ -148,6 +148,16 @@
 
 				<div class="report_optional">
 					<h3><?php echo Kohana::lang('ui_main.reports_optional'); ?></h3>
+<?php if (Kohana::lang('ui_main.reports_name_order') == '1') { ?>
+					<div class="report_row">
+						<h4><?php echo Kohana::lang('ui_main.reports_last'); ?></h4>
+						<?php print form::input('person_last', $form['person_last'], ' class="text long"'); ?>
+					</div>
+					<div class="report_row">
+							 <h4><?php echo Kohana::lang('ui_main.reports_first'); ?></h4>
+							 <?php print form::input('person_first', $form['person_first'], ' class="text long"'); ?>
+					</div>
+<?php } else { ?>
 					<div class="report_row">
 							 <h4><?php echo Kohana::lang('ui_main.reports_first'); ?></h4>
 							 <?php print form::input('person_first', $form['person_first'], ' class="text long"'); ?>
@@ -156,6 +166,7 @@
 						<h4><?php echo Kohana::lang('ui_main.reports_last'); ?></h4>
 						<?php print form::input('person_last', $form['person_last'], ' class="text long"'); ?>
 					</div>
+<?php } ?>
 					<div class="report_row">
 						<h4><?php echo Kohana::lang('ui_main.reports_email'); ?></h4>
 						<?php print form::input('person_email', $form['person_email'], ' class="text long"'); ?>

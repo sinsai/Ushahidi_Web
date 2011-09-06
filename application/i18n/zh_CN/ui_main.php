@@ -172,6 +172,7 @@
 	'reports_find_location' => '选择你附近地址',
 	'reports_first' => '姓名',
 	'reports_last' => '昵称(网络ID)',
+	'reports_name_order' => '0', // 0 - first, last    1 - last(family), first(given)
 	'reports_location_name' => '精确位置信息',
 	'reports_news' => '新闻来源链接',
 	'reports_news_tooltip' => '新闻来源链接',

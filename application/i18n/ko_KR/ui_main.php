@@ -43,7 +43,10 @@
 	'volunteer' => '자원봉사 모집',
 	'volunteer_title_index' => '자원봉사 모집',
 	'search_example_value' => '검색어를 입력 ',
-        'reports_video_tooltip' => '공유하고 싶은 비디오를 입력',
-        'detailed_video_example' => 'YouTube등의 공유용URL을 입력해 주십시오',
+    'reports_video_tooltip' => '공유하고 싶은 비디오를 입력',
+    'detailed_video_example' => 'YouTube등의 공유용URL을 입력해 주십시오',
+	'reports_name_order' => '1', // 0 - first, last    1 - last(family), first(given)
+	'reports_first' => '이름',
+	'reports_last' => '성',
 	);
 ?>
