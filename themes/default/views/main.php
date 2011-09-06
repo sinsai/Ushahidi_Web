@@ -192,6 +192,7 @@
                     <a href="http://www.311er.jp"><img src="http://www.311er.jp/wp-content/uploads/2011/04/bnr_160b.gif" title="Rescue311" width="160" height="80" /></a>
                     <a href="http://www.tomoni.net/"><img src="<?php echo url::base(); ?>themes/default/images/banner_tomoni.gif" title="tomoni.net" width="234" height="60" /></a>
                     <a href="http://www.osmf.jp/"><img src="<?php echo url::base(); ?>themes/default/images/banner_osmfj.gif" title="osmf japan" width="233" height="100" /></a>
+<A HREF="http://fumbaro.org/" TARGET="_top"><IMG SRC="http://fumbaro.org/about/images/fjm_logo_harf.gif" BORDER="0" WIDTH="234" HEIGHT="60"></A>
                 </div>
                 <!--banner area-->
 		<!-- / right column -->
