@@ -320,7 +320,7 @@ class Reports_Controller extends Main_Controller {
 		// Swap out category titles with their proper localizations using an array (cleaner way to do this?)
 
                 // $query = 'SELECT id,category_title,category_color FROM category WHERE category_visible = 1 AND category_trusted = 0';
-		$query = 'SELECT id,category_title,category_color,category_image_thumb FROM category ORDER BY category_type desc;';
+		$query = 'SELECT id,category_title,category_color,category_image_thumb FROM category WHERE category_visible = 1 ORDER BY category_type desc;';
 		$query = $db->query($query);
 		$category_master = array();
 		$localized_categories = array();
