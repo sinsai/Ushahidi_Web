@@ -44,7 +44,6 @@ class Search_Controller extends Keitai_Controller  {
             'on', 'you', 'this', 'for', 'but', 'with', 'are', 'have', 'be', 
             'at', 'or', 'as', 'was', 'so', 'if', 'out', 'not'
         );
-       error_log("raw_data ".$_GET['k']); 
         if ($_GET)
         {
             /**
@@ -61,28 +60,22 @@ class Search_Controller extends Keitai_Controller  {
               
             // Phase 1 - Fetch the search string and perform initial sanitization
             $keyword_raw = (isset($_GET['k']))? mysql_real_escape_string($_GET['k']) : "";
-error_log("Phase 1 ".mb_detect_encoding($keyword_raw)." ".$keyword_raw);     
           
             // Phase 2 - Strip the search string of any HTML and PHP tags that may be present for additional safety              
             $keyword_raw = strip_tags($keyword_raw);
-error_log("Phase 2 ".mb_detect_encoding($keyword_raw)." ".$keyword_raw);               
             // Phase 3 - Apply Kohana's XSS cleaning mechanism
             $keyword_raw = $this->input->xss_clean($keyword_raw);
-error_log("Phase 3 ".mb_detect_encoding($keyword_raw)." ".$keyword_raw);   
 #            $keyword_raw = mb_convert_encoding($keyword_raw,'UTF-8','EUC-JP,SJIS,ASCII,JIS');
-#error_log("Phase 4 ".mb_detect_encoding($keyword_raw)." ".$keyword_raw);   
         }
         else
         {
             $keyword_raw = "";
         }
 
-#        error_log("Phase 4 ".$keyword_raw);
         $keywords = explode(' ', $keyword_raw);
 
         if (is_array($keywords) && !empty($keywords)) 
         {
-            #error_log("Match ".$match);
             $match = "MATCH(incident_text) AGAINST(\"$keyword_raw\" IN BOOLEAN MODE)";
             $where_string = $match.' AND incident_active = 1';
             $search_query = "SELECT * FROM ".$this->table_prefix."s_incident".
