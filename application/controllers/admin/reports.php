@@ -30,6 +30,7 @@ class Reports_Controller extends Admin_Controller
     */
     function index($page = 1)
     {
+error_log("action 0"."\n",3,"/tmp/errorlog.log");
         // If user doesn't have access, redirect to dashboard
         if ( ! admin::permissions($this->user, "reports_view"))
         {
@@ -145,8 +146,10 @@ class Reports_Controller extends Admin_Controller
         $form_saved = FALSE;
         $form_action = "";
         
+error_log("action 1 post"."\n",3,"/tmp/errorlog.log");
         if ($_POST)
         {
+error_log("action 2 post in"."\n",3,"/tmp/errorlog.log");
             $post = Validation::factory($_POST);
 
              //  Add some filters
@@ -158,6 +161,7 @@ class Reports_Controller extends Admin_Controller
 
             if ($post->validate())
             {
+error_log("action 2-1 post in validate:".$post->action."\n",3,"/tmp/errorlog.log");
                 if ($post->action == 'a')       // Approve Action
                 {
                     foreach($post->incident_id as $item)
@@ -392,6 +396,7 @@ class Reports_Controller extends Admin_Controller
             }
 
         }
+error_log("action 3 post out"."\n",3,"/tmp/errorlog.log");
 
 		$order = 0;
 		$order_string = "desc";
@@ -475,6 +480,7 @@ class Reports_Controller extends Admin_Controller
             $countries[$country->id] = $this_country;
         }
 
+error_log("action 4 template"."\n",3,"/tmp/errorlog.log");
         $this->template->content->count_unapproved = ORM::factory('incident')->where('incident_active', '0')->where('incident_verified','0')->count_all();
         $this->template->content->count_notapproved = ORM::factory('incident')->where('incident_active', '2')->count_all();
         $this->template->content->count_pendingapproved = ORM::factory('incident')->where('incident_active', '3')->count_all();
@@ -692,6 +698,7 @@ class Reports_Controller extends Admin_Controller
         {
             $feed_item_id = $_GET['fid'];
             $feed_item = ORM::factory('feed_item', $feed_item_id);
+	    $service_id = 5;
 
             if ($feed_item->loaded == true)
             {
@@ -702,8 +709,13 @@ class Reports_Controller extends Admin_Controller
                     url::redirect('admin/reports/edit/'. $feed_item->incident_id);
                 }
 
+                $rep_target = array("<br />","<div>","</div>","<span>","</span>");
+                $rep_replace = array("\n","","","","");
+
                 $form['incident_title'] = $feed_item->item_title;
-                $form['incident_description'] = $feed_item->item_description;
+                $form['incident_description'] = str_replace(
+                                    $rep_target,$rep_replace,
+                                    $feed_item->item_description);
                 $form['incident_date'] = date('m/d/Y', strtotime($feed_item->item_date));
                 $form['incident_hour'] = date('h', strtotime($feed_item->item_date));
                 $form['incident_minute'] = date('i', strtotime($feed_item->item_date));
@@ -889,6 +901,7 @@ class Reports_Controller extends Admin_Controller
                 // Is this an Email, SMS, Twitter submitted report?
                 //XXX: We may get rid of incident_mode altogether... ???
                 //$_POST
+error_log("service_id ".$service_id."\n",3,"/tmp/errorlog.log");
                 if(!empty($service_id))
                 {
                     if ($service_id == 1)
@@ -906,6 +919,10 @@ class Reports_Controller extends Admin_Controller
                     elseif ($service_id == 4)
                     { // Laconica
                         $incident->incident_mode = 5;
+                    }
+                    elseif ($service_id == 5)
+                    { // RSS
+                        $incident->incident_mode = 6;
                     }
                 }
                 $vflag = 0;

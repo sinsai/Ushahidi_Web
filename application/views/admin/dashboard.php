@@ -64,6 +64,7 @@
 							$incident_date = $incident->incident_date;
 							$incident_date = date('g:i A', strtotime($incident->incident_date));
 							$incident_mode = $incident->incident_mode;	// Mode of submission... WEB/SMS/EMAIL?
+$submit_mode = "aaa:".$incident_mode;
 
 							if ($incident_mode == 1)
 							{
@@ -80,6 +81,10 @@
 							elseif ($incident_mode == 4)
 							{
 								$submit_mode = "twitter";
+							}
+							elseif ($incident_mode == 5)
+							{
+								$submit_mode = "rss";
 							}
 							
 							// Incident Status

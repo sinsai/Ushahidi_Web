@@ -88,6 +88,7 @@
 <!--							<li><a <?php if($via == 2 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=2&from=<?php echo $from;?>&to=<?php echo $to;?>">sms</a></li> -->
 							<li><a <?php if($via == 3 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=3&from=<?php echo $from;?>&to=<?php echo $to;?>">Email</a></li>
 							<li><a <?php if($via == 4 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=4&from=<?php echo $from;?>&to=<?php echo $to;?>">Twitter</a></li>
+							<li><a <?php if($via == 5 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=5&from=<?php echo $from;?>&to=<?php echo $to;?>">RSS</a></li>
 					</fieldset>
 						</ul>
 					</div>
@@ -240,6 +241,10 @@
 										if(isset($incident_messages[$incident->id]['message_from'])){
 											$submit_by =$incident_messages[$incident->id]['message_from'];
 										}
+									}
+									elseif ($incident_mode == 6) 	// Submitted via RSS
+									{
+										$submit_mode = "RSS";
 									}
 									$tasukeai = false;
 									foreach ($incident->media as $media)
