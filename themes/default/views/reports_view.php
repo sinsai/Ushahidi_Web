@@ -64,7 +64,8 @@
 		
 		<div class="report-description-text">
 			<h5><?php echo Kohana::lang('ui_main.reports_description');?></h5>
-			<?php echo  nl2br(preg_replace('/((https?|http)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))/', '<a href="$1">$1</a>',html::specialchars($incident_description))); 
+<?php // echo  nl2br(preg_replace('/((https?|http)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))/', '<a href="$1">$1</a>',html::specialchars($incident_description))); ?>
+			<?php echo  nl2br($incident_description); 
                               Event::run('ushahidi_action.report_extra', $incident_id);
                         ?>
 			<?php
