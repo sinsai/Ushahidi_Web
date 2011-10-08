@@ -30,7 +30,6 @@ class Reports_Controller extends Admin_Controller
     */
     function index($page = 1)
     {
-error_log("action 0"."\n",3,"/tmp/errorlog.log");
         // If user doesn't have access, redirect to dashboard
         if ( ! admin::permissions($this->user, "reports_view"))
         {
@@ -156,10 +155,8 @@ error_log("action 0"."\n",3,"/tmp/errorlog.log");
         }
         $this->template->content->filter_categories = $filter_categories;
         
-error_log("action 1 post"."\n",3,"/tmp/errorlog.log");
         if ($_POST)
         {
-error_log("action 2 post in"."\n",3,"/tmp/errorlog.log");
             $post = Validation::factory($_POST);
 
              //  Add some filters
@@ -171,7 +168,6 @@ error_log("action 2 post in"."\n",3,"/tmp/errorlog.log");
 
             if ($post->validate())
             {
-error_log("action 2-1 post in validate:".$post->action."\n",3,"/tmp/errorlog.log");
                 if ($post->action == 'a')       // Approve Action
                 {
                     foreach($post->incident_id as $item)
@@ -406,7 +402,6 @@ error_log("action 2-1 post in validate:".$post->action."\n",3,"/tmp/errorlog.log
             }
 
         }
-error_log("action 3 post out"."\n",3,"/tmp/errorlog.log");
 
 		$order = 0;
 		$order_string = "desc";
@@ -508,7 +503,6 @@ error_log("action 3 post out"."\n",3,"/tmp/errorlog.log");
             $countries[$country->id] = $this_country;
         }
 
-error_log("action 4 template"."\n",3,"/tmp/errorlog.log");
         $this->template->content->count_unapproved = ORM::factory('incident')->where('incident_active', '0')->where('incident_verified','0')->count_all();
         $this->template->content->count_notapproved = ORM::factory('incident')->where('incident_active', '2')->count_all();
         $this->template->content->count_pendingapproved = ORM::factory('incident')->where('incident_active', '3')->count_all();
@@ -933,7 +927,6 @@ error_log("action 4 template"."\n",3,"/tmp/errorlog.log");
                 // Is this an Email, SMS, Twitter submitted report?
                 //XXX: We may get rid of incident_mode altogether... ???
                 //$_POST
-error_log("service_id ".$service_id."\n",3,"/tmp/errorlog.log");
                 if(!empty($service_id))
                 {
                     if ($service_id == 1)
