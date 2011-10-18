@@ -253,6 +253,18 @@ class Incident_Model extends ORM
 
 		return $incidents;
 	}
+	public static function get_incident_reports_filter_category($filter,$order_string,$sql_offset)
+	{
+                
+		$incidents = ORM::factory('incident')
+				->join('location', 'incident.location_id', 'location.id','INNER')
+				->join('incident_category', 'incident.id', 'incident_category.incident_id','LEFT')
+				->where($filter)
+				->orderby('incident_date', $order_string)
+				->find_all((int) Kohana::config('settings.items_per_page_admin'), $sql_offset);
+
+		return $incidents;
+	}
 	public static function get_incident_persons($filter)
 	{
 		$temp_incident_persons = ORM::factory('incident_person')

@@ -153,7 +153,7 @@ class Reports_Controller extends Admin_Controller
                     $filter_categories[] = $item;
                 }
         }
-        $this->template->content->filter_categories = $selected_categories;
+        $this->template->content->filter_categories = $filter_categories;
         
         if ($_POST)
         {
@@ -420,7 +420,24 @@ class Reports_Controller extends Admin_Controller
 		}
 
         // Pagination
-        $pagination = new Pagination(array(
+        if (count($filter_categories) > 0){
+            $f = array();
+            foreach($filter_categories as $item){
+                 $f[] = " incident_category.category_id = ". $item ;
+            }
+            $filter .= " AND (" . join($f, ' OR ') . ")";
+            $pagination = new Pagination(array(
+            'query_string'   => 'page',
+            'items_per_page' => (int) Kohana::config('settings.items_per_page_admin'),
+            'total_items'    => ORM::factory('incident')
+				->join('location', 'incident.location_id', 'location.id','INNER')
+				->join('incident_category', 'incident.id', 'incident_category.id','INNER')
+				->where($filter)
+				->count_all()
+            ));
+	    $incidents = Incident_Model::get_incident_reports_filter_category($filter,$order_string,$pagination->sql_offset);
+        }else{
+            $pagination = new Pagination(array(
             'query_string'   => 'page',
             'items_per_page' => (int) Kohana::config('settings.items_per_page_admin'),
             'total_items'    => ORM::factory('incident')
@@ -428,7 +445,8 @@ class Reports_Controller extends Admin_Controller
 				->where($filter)
 				->count_all()
             ));
-		$incidents = Incident_Model::get_incident_reports($filter,$order_string,$pagination->sql_offset);
+	    $incidents = Incident_Model::get_incident_reports($filter,$order_string,$pagination->sql_offset);
+        }
 
         $location_ids = array();
         foreach ($incidents as $incident)
