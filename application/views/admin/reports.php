@@ -12,6 +12,14 @@
  * @copyright  Ushahidi - http://www.ushahidi.com
  * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
+
+$query_filter_category = "";
+$cats = array();
+foreach($filter_categories as $item){
+    $cats[] = "filter_category%5B$item%5D=$item";
+}
+$query_filter_category .= join($cats,"&");
+
 ?>
 			<div class="bg">
 				<h2>
@@ -64,6 +72,9 @@
 							<input type="hidden" name="via" value="<?php echo $via;?>" />
 							<input type="hidden" name="order" value="<?php echo $order;?>" />
 							<input type="hidden" name="status" value="<?php echo $status;?>" />
+<?php foreach($filter_categories as $item){
+print "<input type=\"hidden\" name=\"filter_category[$item]\" value=\"$item\">";
+}?>
 							<label for="from">From</label>
 							<input size="12" type="text" id="from" name="from" value="<?php if(isset($from)) echo $from; ?>"/>
 							<label for="to">to</label>
@@ -76,18 +87,18 @@
 						<ul>
 						<fieldset>
 						<legend> Order. </legend>
-							<li><a <?php if($order == 0 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=0&via=<?php echo $via;?>&from=<?php echo $from;?>&to=<?php echo $to;?>"><?php echo Kohana::lang('ui_admin.sort_desc');?></a></li>
-							<li><a <?php if($order == 1 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=1&via=<?php echo $via;?>&from=<?php echo $from;?>&to=<?php echo $to;?>"><?php echo Kohana::lang('ui_admin.sort_asc');?></a></li>
+							<li><a <?php if($order == 0 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=0&via=<?php echo $via;?>&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php echo $query_filter_category?>"><?php echo Kohana::lang('ui_admin.sort_desc');?></a></li>
+							<li><a <?php if($order == 1 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=1&via=<?php echo $via;?>&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php echo $query_filter_category?>"><?php echo Kohana::lang('ui_admin.sort_asc');?></a></li>
 						</fieldset>
 						</ul>
 						<ul>
 						<fieldset>
 						<legend> Via. </legend>
-							<li><a <?php if($via == 0 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&from=<?php echo $from;?>&to=<?php echo $to;?>">All</a></li>
-							<li><a <?php if($via == 1 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=1&from=<?php echo $from;?>&to=<?php echo $to;?>">Web</a></li>
-<!--							<li><a <?php if($via == 2 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=2&from=<?php echo $from;?>&to=<?php echo $to;?>">sms</a></li> -->
-							<li><a <?php if($via == 3 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=3&from=<?php echo $from;?>&to=<?php echo $to;?>">Email</a></li>
-							<li><a <?php if($via == 4 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=4&from=<?php echo $from;?>&to=<?php echo $to;?>">Twitter</a></li>
+							<li><a <?php if($via == 0 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php print $query_filter_category?>">All</a></li>
+							<li><a <?php if($via == 1 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=1&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php print $query_filter_category?>">Web</a></li>
+<!--							<li><a <?php if($via == 2 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=2&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php print $query_filter_category?>">sms</a></li> -->
+							<li><a <?php if($via == 3 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=3&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php print $query_filter_category?>">Email</a></li>
+							<li><a <?php if($via == 4 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=4&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php print $query_filter_category?>">Twitter</a></li>
 					</fieldset>
 						</ul>
                                        </div>
@@ -99,6 +110,11 @@
 				<?php print form::open(NULL, array('id' => 'selectCategory', 'name' => 'selectCategory','method' => 'get')); ?>
 							<?php echo category::tree($categories, $filter_categories, 'filter_category', 4); ?>
 							<input type="submit" value="絞り込み">
+                                                        <input type="hidden" name="status" value="<?php print $status; ?>">
+                                                        <input type="hidden" name="order" value="<?php print $order; ?>">
+                                                        <input type="hidden" name="from" value="<?php print $from; ?>">
+                                                        <input type="hidden" name="to" value="<?php print $to; ?>">
+                                                        <input type="hidden" name="via" value="<?php print $via; ?>">
 				<?php print form::close(); ?>
 						</fieldset>
 						</ul>
