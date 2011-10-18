@@ -550,7 +550,6 @@ ul.tabset li a:hover {
 	clear:none;
 	overflow:hidden;
 }
-
 .table tr.filter {
 	background: none;
 }
@@ -2221,5 +2220,31 @@ tr.addon_active td{
 	background-color:#ffffcc;
 }
 
+/* Category selector */
+.categoryFilter{
+	background:#eee;
+	width:100%;
+	padding:0 0 8px;
+	clear:none;
+	overflow:hidden;
+}
+.categoryFilter ul{
+	display: inline;
+	margin:0;
+	float: left;
+	padding:9px 10px 0;
+	clear:none;
+	overflow:hidden;
+}
+
+#selectCategoryFields {
+	clear: both;
+}
+#selectCategoryFields ul li{
+	float: none;
+}
+#selectCategoryFields ul.treeview{
+	float: left;
+}
 /*--  --*/
 /*--  --*/

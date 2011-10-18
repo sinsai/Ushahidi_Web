@@ -15,6 +15,59 @@
  */
 
 <?php require SYSPATH.'../application/views/admin/form_utils_js.php' ?>
+		/* Dynamic categories */
+		$(document).ready(function() {
+			$('#category_add').hide();
+		    $('#add_new_category').click(function() { 
+		        var category_name = $("input#category_name").val();
+		        var category_description = $("input#category_description").val();
+		        var category_color = $("input#category_color").val();
+
+		        //trim the form fields
+                        //Removed ".toUpperCase()" from name and desc for Ticket #38
+		        category_name = category_name.replace(/^\s+|\s+$/g, '');
+		        category_description = category_description.replace(/^\s+|\s+$/g,'');
+		        category_color = category_color.replace(/^\s+|\s+$/g, '').toUpperCase();
+        
+		        if (!category_name || !category_description || !category_color) {
+		            alert("Please fill in all the fields");
+		            return false;
+		        }
+        
+		        //category_color = category_color.toUpperCase();
+
+		        re = new RegExp("[^ABCDEF0123456789]"); //Color values are in hex
+		        if (re.test(category_color) || category_color.length != 6) {
+		            alert("Please use the Color picker to help you choose a color");
+		            return false;
+		        }
+		
+				$.post("<?php echo url::base() . 'admin/reports/save_category/' ?>", { category_title: category_name, category_description: category_description, category_color: category_color },
+					function(data){
+						if ( data.status == 'saved')
+						{
+							// alert(category_name+" "+category_description+" "+category_color);
+					        $('#user_categories').append("<li><label><input type=\"checkbox\"name=\"incident_category[]\" value=\""+data.id+"\" class=\"check-box\" checked />"+category_name+"</label></li>");
+							$('#category_add').hide();
+						}
+						else
+						{
+							alert("Your submission had errors!!");
+						}
+					}, "json");
+		        return false; 
+		    });
+		
+			// Category treeview
+			$("#category-column-1,#category-column-2,#category-column-3,#category-column-4").treeview({
+			  persist: "location",
+			  collapsed: true,
+			  unique: false
+			});
+			
+		});
+		
+
 
 		// Ajax Submission
 		function reportAction ( action, confirmAction, incident_id )

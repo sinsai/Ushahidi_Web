@@ -90,6 +90,19 @@
 							<li><a <?php if($via == 4 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=4&from=<?php echo $from;?>&to=<?php echo $to;?>">Twitter</a></li>
 					</fieldset>
 						</ul>
+                                       </div>
+					<div calss="categoryFilter">
+						<ul>
+						<fieldset id="selectCategoryFields">
+						<legend> Category </legend>
+								<?php print $new_category_toggle_js; ?>
+				<?php print form::open(NULL, array('id' => 'selectCategory', 'name' => 'selectCategory','method' => 'get')); ?>
+							<?php echo category::tree($categories, $filter_categories, 'filter_category', 4); ?>
+							<input type="submit" value="絞り込み">
+				<?php print form::close(); ?>
+						</fieldset>
+						</ul>
+					
 					</div>
 				</div>
 				<?php

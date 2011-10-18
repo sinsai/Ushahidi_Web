@@ -144,6 +144,16 @@ class Reports_Controller extends Admin_Controller
         $form_error = FALSE;
         $form_saved = FALSE;
         $form_action = "";
+
+        // category search
+        $filter_categories=array();
+	if (isset($_GET['filter_category'])){
+            foreach($_GET['filter_category'] as $item)
+                {
+                    $filter_categories[] = $item;
+                }
+        }
+        $this->template->content->filter_categories = $selected_categories;
         
         if ($_POST)
         {
@@ -506,6 +516,10 @@ class Reports_Controller extends Admin_Controller
         // Status Tab
         $this->template->content->status = $status;
 
+	// Categories
+        $this->template->content->categories = $this->_get_categories();
+        $this->template->content->new_category_toggle_js = $this->_new_category_toggle_js();
+        $this->template->treeview_enabled = TRUE;
         // Javascript Header
         $this->template->js = new View('admin/reports_js');
     }
