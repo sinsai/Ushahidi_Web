@@ -179,13 +179,24 @@ echo '<input type="radio" name="order" value="dist" checked>近隣順';
 										if ($category->category_image_thumb)
 										{
 											?>
-											<a class="r_category" href="<?php echo url::site(); ?>reports/?c=<?php echo $category->id; ?>"><span class="r_cat-box"><img src="<?php echo url::base().Kohana::config('upload.relative_directory')."/".$category->category_image_thumb; ?>" height="16" width="16" /></span> <span class="r_cat-desc"><?php echo $localized_categories[(string)$category->category_title];?></span></a>
+											<a class="r_category" href="<?php echo url::site(); ?>reports/?c=<?php echo $category->id; ?>"><span class="r_cat-box"><img src="<?php echo url::base().Kohana::config('upload.relative_directory')."/".$category->category_image_thumb; ?>" height="16" width="16" /></span> <span class="r_cat-desc"><?php 
+    if(isset($localized_categories[(string)$category->category_title]){
+        echo $localized_categories[(string)$category->category_title];
+    } else {
+        echo $category->category_title;
+    }; ?></span></a>
 											<?php
 										}
 										else
 										{
 											?>
-											<a class="r_category" href="<?php echo url::site(); ?>reports/?c=<?php echo $category->id; ?>"><span class="r_cat-box" style="background-color:#<?php echo $category->category_color;?>;"></span> <span class="r_cat-desc"><?php echo $localized_categories[(string)$category->category_title];?></span></a>
+											<a class="r_category" href="<?php echo url::site(); ?>reports/?c=<?php echo $category->id; ?>"><span class="r_cat-box" style="background-color:#<?php echo $category->category_color;?>;"></span> <span class="r_cat-desc"><?php 
+    if(isset($localized_categories[(string)$category->category_title]){
+        echo $localized_categories[(string)$category->category_title];
+    } else {
+        echo $category->category_title;
+    }; ?></span></a>
+
 											<?php
 										}
 									}
