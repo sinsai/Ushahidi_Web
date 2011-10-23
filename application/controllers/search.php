@@ -80,8 +80,8 @@ class Search_Controller extends Main_Controller {
         {
             $match = "MATCH(incident_text) AGAINST(\"$keyword_raw\" IN BOOLEAN MODE)";
             $where_string = $match.' AND incident_active = 1';
-            $search_query = "SELECT * FROM ".$this->table_prefix."s_incident".
-                            " WHERE (".$where_string.") ORDER BY _score DESC LIMIT ";
+            $search_query = "SELECT * , ".$match." AS score FROM ".$this->table_prefix."s_incident".
+                            " WHERE (".$where_string.") ORDER BY " .$match. " DESC LIMIT ";
         }
         if (!empty($search_query))
         {
@@ -161,7 +161,7 @@ class Search_Controller extends Main_Controller {
                 $html .= "<div class=\"search_result\">";
                 $html .= "<h3><a href=\"" . url::base() . "reports/view/" . $incident_id . "\">" . $highlight_title . "</a></h3>";
                 $html .= $highlight_description . " ...";
-                $html .= "<div class=\"search_date\">" . $incident_date . " | ".Kohana::lang('ui_admin.relevance').": <strong>+" . $search->_score . "</strong></div>";
+                $html .= "<div class=\"search_date\">" . $incident_date . " | ".Kohana::lang('ui_admin.relevance').": <strong>+" . $search->score . "</strong></div>";
                 $html .= "</div>";
             }
         }
