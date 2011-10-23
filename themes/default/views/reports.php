@@ -191,7 +191,7 @@ echo '<input type="radio" name="order" value="dist" checked>近隣順';
 										{
 											?>
 											<a class="r_category" href="<?php echo url::site(); ?>reports/?c=<?php echo $category->id; ?>"><span class="r_cat-box" style="background-color:#<?php echo $category->category_color;?>;"></span> <span class="r_cat-desc"><?php 
-    if(isset($localized_categories[(string)$category->category_title]){
+    if(isset($localized_categories[(string)$category->category_title])){
         echo $localized_categories[(string)$category->category_title];
     } else {
         echo $category->category_title;
