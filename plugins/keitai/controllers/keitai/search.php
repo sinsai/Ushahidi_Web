@@ -78,8 +78,8 @@ class Search_Controller extends Keitai_Controller  {
         {
             $match = "MATCH(incident_text) AGAINST(\"$keyword_raw\" IN BOOLEAN MODE)";
             $where_string = $match.' AND incident_active = 1';
-            $search_query = "SELECT * FROM ".$this->table_prefix."s_incident".
-                            " WHERE (".$where_string.") ORDER BY _score DESC LIMIT ";
+            $search_query = "SELECT * ,". $match." AS score FROM ".$this->table_prefix."s_incident".
+                            " WHERE (".$where_string.") ORDER BY " .$match. " DESC LIMIT ";
         }
         
         if (!empty($search_query))
