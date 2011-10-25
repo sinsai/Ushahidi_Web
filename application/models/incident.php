@@ -308,7 +308,12 @@ class Incident_Model extends ORM
 				->find_all();
 		$incident_incident_categories = array();
 		foreach($temp_incident_incident_categories as $incident_category){
-			$incident_incident_categories[$incident_category->incident_id]['category_title'] = $incident_category->category->category_title;
+			if (!array_key_exists($incident_category->incident_id,$incident_incident_categories)){
+				$incident_incident_categories[$incident_category->incident_id]['category_title'] = array();
+			}
+			if (!in_array($incident_category->category->category_title, $incident_incident_categories[$incident_category->incident_id]['category_title'])){
+				$incident_incident_categories[$incident_category->incident_id]['category_title'][] = $incident_category->category->category_title;
+			}
 		}
 		return $incident_incident_categories;
 	}
