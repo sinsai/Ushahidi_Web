@@ -286,10 +286,9 @@ print "<input type=\"hidden\" name=\"filter_category[$item]\" value=\"$item\">";
 
 									// Retrieve Incident Categories
 									$incident_category = "";
-									
 									foreach($incident_incident_categories[$incident->id] as $category)
 									{
-										$incident_category .= "<a href=\"#\">" . $category['category_title'] . "</a>&nbsp;&nbsp;";
+										$incident_category .=  $category . "&nbsp;&nbsp;";
 									}
 
 									// Incident Status
