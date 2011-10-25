@@ -285,11 +285,12 @@ print "<input type=\"hidden\" name=\"filter_category[$item]\" value=\"$item\">";
 									$incident_location = $locations[$incident->location_id];
 
 									// Retrieve Incident Categories
-									$incident_category = "";
+									$tmp_incident_category = array();
 									foreach($incident_incident_categories[$incident->id]['category_title'] as $category)
 									{
-										$incident_category .=  $category . "&nbsp;&nbsp;";
+										$tmp_incident_category[] =  $category; 
 									}
+									$incident_category = join($tmp_incident_category, "&nbsp;/&nbsp;");
 
 									// Incident Status
 									$incident_approved = $incident->incident_active;
