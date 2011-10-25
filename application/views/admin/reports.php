@@ -286,7 +286,7 @@ print "<input type=\"hidden\" name=\"filter_category[$item]\" value=\"$item\">";
 
 									// Retrieve Incident Categories
 									$incident_category = "";
-									foreach($incident_incident_categories[$incident->id] as $category)
+									foreach($incident_incident_categories[$incident->id]['category_title'] as $category)
 									{
 										$incident_category .=  $category . "&nbsp;&nbsp;";
 									}
