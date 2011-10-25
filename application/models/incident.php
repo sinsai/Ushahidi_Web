@@ -311,7 +311,7 @@ class Incident_Model extends ORM
 			if (!array_key_exists($incident_category->incident_id,$incident_incident_categories)){
 				$incident_incident_categories[$incident_category->incident_id]['category_title'] = array();
 			}
-			if (!array_key_exists($incident_category->category->category_title, $incident_incident_categories[$incident_category->incident_id])){
+			if (!array_key_exists($incident_category->category->category_title, $incident_incident_categories[$incident_category->incident_id]['category_title'])){
 				$incident_incident_categories[$incident_category->incident_id]['category_title'][] = $incident_category->category->category_title;
 			}
 		}
