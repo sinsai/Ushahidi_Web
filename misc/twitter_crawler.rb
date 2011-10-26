@@ -6,7 +6,7 @@ require 'sequel'
 require 'date'
 
 Sequel::Model.plugin(:schema)
-Sequel.connect("mysql://dbuser:dbpass@dbmaster/ushahidi", :encoding => "utf8")
+Sequel.connect("mysql://osm:osmosm@dbmaster/ushahidi", :encoding => "utf8")
 
 class Message < Sequel::Model(:message)
 end
@@ -130,7 +130,7 @@ user, pass = ARGV[0..1]
 begin
   https = Net::HTTP.new(uri.host,uri.port) 
   https.use_ssl = true
-  https.ca_file = 'twitter.com.cer'
+  #https.ca_file = 'twitter.com.cer'
   https.verify_mode = OpenSSL::SSL::VERIFY_PEER
   https.verify_depth = 5
   https.start do |h|
