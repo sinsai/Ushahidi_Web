@@ -313,9 +313,9 @@
 												}
 												else
 												{
-													?><li class="none-separator">From: <a href="<?php echo url::site()."admin/messages/reporters/index/".$service_id."?k=".urlencode($message_from);?>"><strong class="reporters_<?php echo $level_id?>"><?php echo $message_from; ?></strong></a><?php
+													?><li class="none-separator">From: <a href="<?php echo url::site().$from_action.$service_id."?k=".urlencode($message_from);?>"><strong class="reporters_<?php echo $level_id?>"><?php echo $message_from; ?></strong></a><?php
 												}
-												?>
+?>
 											</ul>
 										</td>
 <?php if ( $duplicate > 0 ) { ?>

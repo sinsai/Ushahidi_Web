@@ -20,7 +20,7 @@ class Reporters_Controller extends Admin_Controller
 	{
 		parent::__construct();
 		$this->template->this_page = 'messages';
-		
+
 		// If user doesn't have access, redirect to dashboard
 		if ( ! admin::permissions($this->user, "messages_reporters"))
 		{

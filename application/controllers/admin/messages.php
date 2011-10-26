@@ -322,6 +322,15 @@ class Messages_Controller extends Admin_Controller
             $this->template->content->dupcnt = $dupcnt;
 
         }
+        // If user doesn't have access to messages_reporters
+        if (admin::permissions($this->user, "messages_reporters"))
+		{
+			$this->template->content->from_action = 'admin/messages/reporters/index/';
+		}
+		else
+		{
+			$this->template->content->from_action = 'admin/messages/index/';
+		}
 
         $this->template->content->from = $r_from;
         $this->template->content->to = $r_to;
