@@ -1,5 +1,5 @@
 #-*- coding: utf-8 -*-
-require 'net/http'
+require 'net/https'
 require 'json'
 require 'uri'
 require 'sequel'
@@ -122,13 +122,18 @@ end
 
 hashtags = %w(#jishin #j_j_helpme #hinan #anpi #311care)
 
-uri = URI.parse('http://stream.twitter.com/1/statuses/filter.json')
+uri = URI.parse('https://stream.twitter.com:443/1/statuses/filter.json')
 
 abort "user pass" if ARGV.size < 2
 user, pass = ARGV[0..1]
 
 begin
-  Net::HTTP.start(uri.host,uri.port) do |h|
+  https = Net::HTTP.new(uri.host,uri.port) 
+  https.use_ssl = true
+  #https.ca_file = 'twitter.com.cer'
+  https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+  https.verify_depth = 5
+  https.start do |h|
     q = Net::HTTP::Post.new(uri.request_uri)
     q.basic_auth(user,pass)
     h.request(q,'track='+hashtags.map{|x|URI.escape(x)}.join(",")) do |r|
