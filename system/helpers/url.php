@@ -89,6 +89,11 @@ class url_Core {
 	 */
 	public static function site($uri = '', $protocol = FALSE)
 	{
+		// use https if protocol is ssl
+                if ( (false === empty($_SERVER['HTTPS']))&&('off' !== $_SERVER['HTTPS']) ) {
+			$protocol = 'https';
+		}
+
 		if ($path = trim(parse_url($uri, PHP_URL_PATH), '/'))
 		{
 			// Add path suffix
