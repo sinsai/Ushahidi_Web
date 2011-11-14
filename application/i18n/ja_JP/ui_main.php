@@ -250,7 +250,7 @@
 	'message_details' => 'メッセージ詳細',
 	'mobile' => 'モバイル',
 	'modify' => '編集',
-	'modify_date' => '編集日時',
+	'modify_date' => '日時の変更',
 	'month' => '月',
 	'more' => 'もっと',
 	'more_information' => '更なる情報',
