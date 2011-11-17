@@ -131,11 +131,19 @@ class admin_Core {
 		{
 			if ($service->id == $service_id)
 			{
-				$menu .= $service->service_name;
+				if ($service->id == 5){
+					$menu = $service->service_name . $menu;
+				}else{
+					$menu .= $service->service_name ;
+				}
 			}
 			else
 			{
-				$menu .= "<a href=\"" . url::site() . "admin/messages/index/".$service->id."\">".$service->service_name."</a>";
+				if ($service->id == 5){
+					$menu = "<a href=\"" . url::site() . "admin/messages/index/".$service->id."\">".$service->service_name."</a>". $menu;
+				}else{
+					$menu .= "<a href=\"" . url::site() . "admin/messages/index/".$service->id."\">".$service->service_name."</a>";
+				}
 			}
 		}
 		
