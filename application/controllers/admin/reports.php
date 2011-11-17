@@ -107,6 +107,7 @@ class Reports_Controller extends Admin_Controller
 			$tmp_via = intval($this->input->xss_clean($_GET['via']));
 			if ($tmp_via != 0)
 			{
+				if ($tmp_via == 5) $tmp_via = 6;
 				$filter_via = 'incident_mode = '.$tmp_via;
 			}
 			$via = $tmp_via;
