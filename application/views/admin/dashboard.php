@@ -81,9 +81,11 @@
 							{
 								$submit_mode = "twitter";
 							}
-							elseif ($incident_mode == 5)
+							elseif ($incident_mode == 6)
 							{
 								$submit_mode = "rss";
+							}else{
+								$submit_mode = "";
 							}
 							
 							// Incident Status
