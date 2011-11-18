@@ -11,7 +11,7 @@ $config['site_domain'] = '/';
  * specified, then the current protocol is used, or when possible, only an
  * absolute path (with no protocol/domain) is used.
  */
-if ( (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) &&  $_SERVER["HTTP_X_FORWARDED_FOR"]== 'https') ) {
+if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ) {
     $config['site_protocol'] = 'https';
 } else {
     $config['site_protocol'] = 'http';
