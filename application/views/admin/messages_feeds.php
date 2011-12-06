@@ -196,7 +196,7 @@
 											</div>
                                              <ul class="info">
                                                 <li class="none-separator"><?php echo Kohana::lang('ui_main.feed');?>: <strong><a href="<?php echo $item_link; ?>"><?php echo $feed_name; ?></a></strong>
-                                                <li><?php echo Kohana::lang('ui_main.geolocation_available');?>?: <strong><?php echo ($location_id) ? strtoupper(Kohana::lang('ui_main.yes')) : strtoupper(Kohana::lang('ui_main.no'));?></strong></li>
+                                                <!--li><?php echo Kohana::lang('ui_main.geolocation_available');?>?: <strong><?php echo ($location_id) ? strtoupper(Kohana::lang('ui_main.yes')) : strtoupper(Kohana::lang('ui_main.no'));?></strong></li-->
                                             </ul>
 										</td>
 										<td class="col-2"><?php echo $item_date."<br />".$item_time; ?></td>
