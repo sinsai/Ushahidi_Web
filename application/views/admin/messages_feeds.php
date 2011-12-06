@@ -62,7 +62,7 @@
 								<div id="date_range">
 								<form id="form_range" method="GET">
 								<label for="datepick">Pick</label>
-								<input size="10" type="text" id="datepick" name="datepick" value="<?php if(isset($datepick)) echo $datepick; ?>"/>
+								<input size="12" type="text" id="datepick" name="datepick" value="<?php if(isset($datepick)) echo $datepick; ?>"/>
                                 <input type="hidden" name="feed_id" value="<?php echo $sel_feeds ?>">
 								<a href="#" id="down_range"><?php echo Kohana::lang('ui_admin.down_range');?></a>
 								</form>
