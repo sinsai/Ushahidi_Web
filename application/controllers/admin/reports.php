@@ -107,6 +107,7 @@ class Reports_Controller extends Admin_Controller
 			$tmp_via = intval($this->input->xss_clean($_GET['via']));
 			if ($tmp_via != 0)
 			{
+				if ($tmp_via == 5) $tmp_via = 6;
 				$filter_via = 'incident_mode = '.$tmp_via;
 			}
 			$via = $tmp_via;
@@ -724,6 +725,7 @@ class Reports_Controller extends Admin_Controller
         {
             $feed_item_id = $_GET['fid'];
             $feed_item = ORM::factory('feed_item', $feed_item_id);
+	    $service_id = 5;
 
             if ($feed_item->loaded == true)
             {
@@ -734,8 +736,13 @@ class Reports_Controller extends Admin_Controller
                     url::redirect('admin/reports/edit/'. $feed_item->incident_id);
                 }
 
+                $rep_target = array("<br />","<div>","</div>","<span>","</span>");
+                $rep_replace = array("\n","","","","");
+
                 $form['incident_title'] = $feed_item->item_title;
-                $form['incident_description'] = $feed_item->item_description;
+                $form['incident_description'] = str_replace(
+                                    $rep_target,$rep_replace,
+                                    $feed_item->item_description);
                 $form['incident_date'] = date('m/d/Y', strtotime($feed_item->item_date));
                 $form['incident_hour'] = date('h', strtotime($feed_item->item_date));
                 $form['incident_minute'] = date('i', strtotime($feed_item->item_date));
@@ -938,6 +945,10 @@ class Reports_Controller extends Admin_Controller
                     elseif ($service_id == 4)
                     { // Laconica
                         $incident->incident_mode = 5;
+                    }
+                    elseif ($service_id == 5)
+                    { // RSS
+                        $incident->incident_mode = 6;
                     }
                 }
                 $vflag = 0;

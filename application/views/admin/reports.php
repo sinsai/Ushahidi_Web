@@ -94,11 +94,12 @@ print "<input type=\"hidden\" name=\"filter_category[$item]\" value=\"$item\">";
 						<ul>
 						<fieldset>
 						<legend> Via. </legend>
-							<li><a <?php if($via == 0 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php print $query_filter_category?>">All</a></li>
-							<li><a <?php if($via == 1 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=1&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php print $query_filter_category?>">Web</a></li>
-<!--							<li><a <?php if($via == 2 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=2&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php print $query_filter_category?>">sms</a></li> -->
-							<li><a <?php if($via == 3 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=3&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php print $query_filter_category?>">Email</a></li>
-							<li><a <?php if($via == 4 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=4&from=<?php echo $from;?>&to=<?php echo $to;?>&<?php print $query_filter_category?>">Twitter</a></li>
+							<li><a <?php if($via == 0 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&from=<?php echo $from;?>&to=<?php echo $to;?>">All</a></li>
+							<li><a <?php if($via == 1 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=1&from=<?php echo $from;?>&to=<?php echo $to;?>">Web</a></li>
+<!--							<li><a <?php if($via == 2 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=2&from=<?php echo $from;?>&to=<?php echo $to;?>">sms</a></li> -->
+							<li><a <?php if($via == 3 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=3&from=<?php echo $from;?>&to=<?php echo $to;?>">Email</a></li>
+							<li><a <?php if($via == 4 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=4&from=<?php echo $from;?>&to=<?php echo $to;?>">Twitter</a></li>
+							<li><a <?php if($via == 5 ) echo "class=\"active\""; ?> href="?status=<?php echo $status;?>&order=<?php echo $order;?>&via=5&from=<?php echo $from;?>&to=<?php echo $to;?>">RSS</a></li>
 					</fieldset>
 						</ul>
                                        </div>
@@ -273,6 +274,10 @@ print "<input type=\"hidden\" name=\"filter_category[$item]\" value=\"$item\">";
 										if(isset($incident_messages[$incident->id]['message_from'])){
 											$submit_by =$incident_messages[$incident->id]['message_from'];
 										}
+									}
+									elseif ($incident_mode == 6) 	// Submitted via RSS
+									{
+										$submit_mode = "RSS";
 									}
 									$tasukeai = false;
 									foreach ($incident->media as $media)

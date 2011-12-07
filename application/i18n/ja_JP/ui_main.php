@@ -175,7 +175,7 @@
 	'form_title' => 'フォームタイトル',
 	'from' => 'から',
 	'full_name' => '氏名',
-	'geolocation_available' => '可能なジオロケーション',
+	'geolocation_available' => '有効な位置情報',
 	'geometry_color' => '色',
 	'geometry_comments' => 'コメント',
 	'geometry_label' => 'ラベル',

@@ -64,7 +64,10 @@ class Dashboard_Controller extends Admin_Controller
                                     ->where('service_id', $service->id)
                                     ->where('message_type', '1')
                                     ->count_all();
-                                    
+
+            if( $service->id == 5 ) {
+                $message_count = ORM::factory('feed_item')->count_all();
+            }
             $message_services[] = array(
                 'id'    => $service->id,
                 'name'  => $service->service_name,
