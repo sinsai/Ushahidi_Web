@@ -324,7 +324,7 @@
 	'preview_item' => 'レビューアイテム',
 	'preview_message' => 'レビューメッセージ',
 	'previous' => '前',
-	'profile_saved' => 'プロファイルは保存されました。',
+	'profile_saved' => 'プロフィールは保存されました。',
 	'quick_stats' => 'クイック統計',
 	'rating' => '評価',
 	'read' => '読む',
