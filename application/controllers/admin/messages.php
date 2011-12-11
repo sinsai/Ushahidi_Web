@@ -110,7 +110,7 @@ class Messages_Controller extends Admin_Controller
                 );
 
             $feeds = ORM::factory('feed')
-						->orderby('id', 'asc')
+						->orderby('feed_name', 'asc')
 						->find_all();
 
             $feed_items = ORM::factory('feed_item')
