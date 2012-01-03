@@ -48,6 +48,7 @@ $query_filter_category .= join($cats,"&");
 							defaultDate: "-3d",
 							dateFormat: 'yy/mm/dd',
 							changeMonth: true,
+							changeYear: true,
 							numberOfMonths: 2,
 							gotoCurrent: true,
 							onSelect: function( selectedDate ) {
