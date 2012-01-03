@@ -47,6 +47,7 @@ $query_filter_category .= join($cats,"&");
 						var dates = $( "#from, #to" ).datepicker({
 							defaultDate: "-3d",
 							dateFormat: 'yy/mm/dd',
+							yearRange:"2011:+0",
 							changeMonth: true,
 							changeYear: true,
 							numberOfMonths: 2,
