@@ -50,6 +50,7 @@ $query_filter_category .= join($cats,"&");
 							yearRange:"2011:+0",
 							changeMonth: true,
 							changeYear: true,
+							showMonthAfterYear: true,
 							numberOfMonths: 2,
 							gotoCurrent: true,
 							onSelect: function( selectedDate ) {
