@@ -78,10 +78,19 @@ $query_filter_category .= join($cats,"&");
 <?php foreach($filter_categories as $item){
 print "<input type=\"hidden\" name=\"filter_category[$item]\" value=\"$item\">";
 }?>
-							<label for="from">From</label>
+<?php if(Kohana::config('locale.language.0') === "ja_JP"){ ?>
 							<input size="12" type="text" id="from" name="from" value="<?php if(isset($from)) echo $from; ?>"/>
-							<label for="to">to</label>
+
+							<label for="from"><?php echo Kohana::lang('ui_admin.from')?></label>
 							<input size="12" type="text" id="to" name="to" value="<?php if(isset($to)) echo $to; ?>"/>
+
+							<label for="to"><?php echo Kohana::lang('ui_admin.to')?></label>
+<?php } else { ?>
+							<label for="from"><?php echo Kohana::lang('ui_admin.from')?></label>
+							<input size="12" type="text" id="from" name="from" value="<?php if(isset($from)) echo $from; ?>"/>
+							<label for="to"><?php echo Kohana::lang('ui_admin.to')?></label>
+							<input size="12" type="text" id="to" name="to" value="<?php if(isset($to)) echo $to; ?>"/>
+<?php } ?>
 							<a href="#" id="down_range"><?php echo Kohana::lang('ui_admin.down_range');?></a>
 							</form>
 							</div>
