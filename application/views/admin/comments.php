@@ -58,10 +58,17 @@
 							<div id="date_range">
 							<form id="form_range" method="GET">
 							<input type="hidden" name="order" value="<?php echo $order;?>" />
-							<label for="from">From</label>
+<?php if (Kohana::config('locale.language.0') === 'ja_JP') { ?>
 							<input size="12" type="text" id="from" name="from" value="<?php if(isset($from)) echo $from; ?>"/>
-							<label for="to">to</label>
+							<label for="from"><?php echo Kohana::lang('ui_admin.from') ?></label>
 							<input size="12" type="text" id="to" name="to" value="<?php if(isset($to)) echo $to; ?>"/>
+							<label for="to"><?php echo Kohana::lang('ui_admin.to') ?></label>
+<?php } else { ?>
+							<label for="from"><?php echo Kohana::lang('ui_admin.from') ?></label>
+							<input size="12" type="text" id="from" name="from" value="<?php if(isset($from)) echo $from; ?>"/>
+							<label for="to"><?php echo Kohana::lang('ui_admin.to') ?></label>
+							<input size="12" type="text" id="to" name="to" value="<?php if(isset($to)) echo $to; ?>"/>
+<?php } ?>
 							<a href="#" id="down_range"><?php echo Kohana::lang('ui_admin.down_range');?></a>
 							</form>
 							</div>
