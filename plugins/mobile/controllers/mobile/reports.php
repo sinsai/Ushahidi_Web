@@ -197,8 +197,11 @@ class Reports_Controller extends Mobile_Controller {
 		}
 		else
 		{
-			$incident = ORM::factory('incident', $id);
-			if ( ! $incident->loaded)
+			$incident = ORM::factory('incident')
+				->where('id',$id)
+				->where('incident_active',1)
+				->find();
+			if ( $incident->id == 0 )	// Not Found
 			{
 				url::redirect('mobile');
 			}
