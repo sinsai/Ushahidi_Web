@@ -46,12 +46,6 @@
 	echo html::script('media/js/jquery.hovertip-1.0', true);
 	echo html::script('media/js/jquery.ui.datepicker-ja', true);
 	echo html::stylesheet('media/css/jquery.ui.datepicker-ja', '', true);
-	$locale = Kohana::config('locale.language.0');
-	echo "<script type=\"text/javascript\">
-		$(function() {
-			$.datepicker.setDefaults($.datepicker.regional['".$locale."']);
-		});
-	</script>";
 	echo html::stylesheet('media/css/jquery.hovertip-1.0', '', true);
 	
 	echo "<script type=\"text/javascript\">
