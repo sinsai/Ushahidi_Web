@@ -58,7 +58,9 @@
 						var dates = $( "#from, #to" ).datepicker({
 							defaultDate: "-3d",
 							dateFormat: 'yy/mm/dd',
+							yearRange:"2011:+0",
 							changeMonth: true,
+							changeYear: true,
 							numberOfMonths: 2,
 							gotoCurrent: true,
 							onSelect: function( selectedDate ) {
