@@ -60,8 +60,8 @@
             </a>
           </li>
           <li>
-            <a href="http://www.nttdata.co.jp/" target="_blank">
-              <img src="<?php echo url::base(); ?>/media/img/nttdata-gi.gif" alt="nttdata" style="vertical-align:middle" />
+            <a href="http://www.nttdata.com/" target="_blank">
+              <img src="<?php echo url::base(); ?>/media/img/nttdata-logo.png" alt="nttdata" style="vertical-align:middle" />
             </a>
           </li>
           <li>
