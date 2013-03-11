@@ -74,6 +74,11 @@
               <img src="<?php echo url::base(); ?>/media/img/nifty_yoko.png" alt="nifty" style="vertical-align:middle" />
             </a>
           </li>
+          <li>
+            <a href="http://www.geopublic.co.jp/" target="_blank">
+              <img src="<?php echo url::base(); ?>/media/img/georepublic_logo.png" alt="georepublic" style="vertical-align:middle" />
+            </a>
+          </li>
         </ul>
       </div>
           <div style="text-align:center;margin-top:10px;"><p class="copyright">Copyright&nbsp;&copy;&nbsp;sinsai.info&nbsp;All&nbsp;Rights&nbsp;Reserved.&nbsp;<?php echo $site_copyright_statement; ?></p></div>
