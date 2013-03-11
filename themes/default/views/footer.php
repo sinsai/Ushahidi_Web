@@ -61,7 +61,7 @@
           </li>
           <li>
             <a href="http://www.nttdata.com/" target="_blank">
-              <img src="<?php echo url::base(); ?>/media/img/nttdata-logo.png" alt="nttdata" style="vertical-align:middle" />
+              <img src="<?php echo url::base(); ?>/media/img/nttdata_logo.png" alt="nttdata" style="vertical-align:middle" />
             </a>
           </li>
           <li>
