@@ -314,7 +314,7 @@ class map_Core {
 		$layer = new stdClass();
 		$layer->active = TRUE;
 		$layer->name = 'osm_mapnik_jp';
-		$layer->openlayers = "OSM.Mapnik";
+		$layer->openlayers = "OSM.MapnikJP";
 		$layer->title =  Kohana::lang('ui_main.osm_mapnik_jp');
 		$layer->description = 'The main OpenStreetMap map(Japan cache)';
 		$layer->api_url = 'http://www.openstreetmap.org/openlayers/OpenStreetMap.js';
