@@ -537,6 +537,7 @@
 	'volunteer' => 'Volunteer',
 	'volunteer_title_index' => 'Volunteer',
 	'osm_mapnik' => 'Map (by OSM)',
+	'osm_mapnik_jp' => 'Map (by OSM Japan)',
 	'virtualearth_satellite' => 'Satellite (by Bing)',
 	'virtualearth_hybrid' => 'Map & Satellite (by Bing)',
 	'google_satellite' => 'Satellite (by Google Map)',

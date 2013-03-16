@@ -310,6 +310,23 @@ class map_Core {
 		);
 		$layers[$layer->name] = $layer;
 
+		// OpenStreetMap Mapnik Japan cache
+		$layer = new stdClass();
+		$layer->active = TRUE;
+		$layer->name = 'osm_mapnik_jp';
+		$layer->openlayers = "OSM.Mapnik";
+		$layer->title =  Kohana::lang('ui_main.osm_mapnik_jp');
+		$layer->description = 'The main OpenStreetMap map(Japan cache)';
+		$layer->api_url = 'http://www.openstreetmap.org/openlayers/OpenStreetMap.js';
+		$layer->data = array(
+			'baselayer' => TRUE,
+			'attribution' => '&copy;<a href="@ccbysa">OpenStreetMap contributors</a> 
+				<a href="@openstreetmap">OpenStreetMap.org</a> contributors',
+			'url' => 'https://tile.openstreetmap.jp/${z}/${x}/${y}.png',
+			'type' => ''
+		);
+		$layers[$layer->name] = $layer;
+
 		// OpenStreetMap Tiles @ Home
 		$layer = new stdClass();
 		$layer->active = FALSE;

@@ -553,6 +553,7 @@
 	'volunteer' => 'サイト制作ボランティア',
 	'volunteer_title_index' => 'サイト制作ボランティア',
 	'osm_mapnik' => '地図 (by OSM)',
+	'osm_mapnik_jp' => '地図 (by OSM Japan)',
 	'virtualearth_satellite' => '衛星写真 (by Bing)',
 	'virtualearth_hybrid' => '地図&衛星写真 (by Bing)',
 	'google_satellite' => '衛星写真 (by Google Map)',
