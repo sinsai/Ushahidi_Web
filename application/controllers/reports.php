@@ -558,7 +558,7 @@ class Reports_Controller extends Main_Controller {
 
 			// Validate photo uploads
 			$post->add_rules('incident_photo', 'upload::valid',
-											 'upload::type[gif,jpg,png]', 'upload::size[2M]');
+											 'upload::type[gif,jpg,png]', 'upload::size[2B]');// XXX: limit size 2M->2B
 
 
 			// Validate Personal Information
