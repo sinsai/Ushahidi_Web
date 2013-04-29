@@ -1342,6 +1342,12 @@ class Reports_Controller extends Admin_Controller
         // check, has the form been submitted, if so, setup validation
         if ($_POST)
         {
+            ini_set("memory_limit","256M");
+            set_time_limit(300);
+            ignore_user_abort(true);             // keep on going even if user pulls the plug*
+            while(ob_get_level())ob_end_clean(); // remove output buffers
+            ob_implicit_flush(true);             // output stuff directly
+
             // Instantiate Validation, use $post, so we don't overwrite $_POST fields with our own things
             $post = Validation::factory($_POST);
 
@@ -1351,8 +1357,8 @@ class Reports_Controller extends Admin_Controller
             // Add some rules, the input field, followed by a list of checks, carried out in order
             $post->add_rules('data_point.*','required','numeric','between[1,4]');
             $post->add_rules('data_include.*','numeric','between[1,5]');
-            $post->add_rules('from_date','date_mmddyyyy');
-            $post->add_rules('to_date','date_mmddyyyy');
+            //$post->add_rules('from_date','date_mmddyyyy');
+            //$post->add_rules('to_date','date_mmddyyyy');
 
             // Validate the report dates, if included in report filter
             if (!empty($_POST['from_date']) || !empty($_POST['to_date']))
@@ -1377,21 +1383,26 @@ class Reports_Controller extends Admin_Controller
             if ($post->validate())
             {
                 // Add Filters
-                $filter = " ( 1=1";
+                $filter = " ( ";
+                $isfirst = true;
                 // Report Type Filter
                 foreach($post->data_point as $item)
                 {
                     if ($item == 1) {
-                        $filter .= " OR incident_active = 1 ";
+                        if ($filter != " ( ") $filter .= " OR ";
+                        $filter .= " incident_active = 1 ";
                     }
                     if ($item == 2) {
-                        $filter .= " OR incident_verified = 1 ";
+                        if ($filter != " ( ") $filter .= " OR ";
+                        $filter .= " incident_verified = 1 ";
                     }
                     if ($item == 3) {
-                        $filter .= " OR incident_active = 0 ";
+                        if ($filter != " ( ") $filter .= " OR ";
+                        $filter .= " incident_active = 0 ";
                     }
                     if ($item == 4) {
-                        $filter .= " OR incident_verified = 0 ";
+                        if ($filter != " ( ") $filter .= " OR ";
+                        $filter .= " incident_verified = 0 ";
                     }
                 }
                 $filter .= ") ";
