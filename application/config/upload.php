@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+$config['enabled'] = FALSE;
+
 $config['directory'] = DOCROOT.'media/uploads';
 $config['relative_directory'] = 'media/uploads';
 $config['create_directories'] = TRUE;

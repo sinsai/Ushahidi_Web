@@ -286,6 +286,10 @@
 				</div>
 
 				<!-- Photo Fields -->
+	<?php
+		if (Kohana::config('upload.enabled'))
+		{
+	?>
 				<div id="divPhoto" class="report_row">
 					<h4><span class="tooltip" title="<?php echo Kohana::lang('ui_main.reports_photos_tooltip'); ?>"><?php echo Kohana::lang('ui_main.reports_photos'); ?></span></h4>
 					<?php
@@ -324,6 +328,9 @@
 					?>
 
 				</div>
+	<?php
+		}
+	?>
 
 				<div id="divtos" class="report_row">
                     <p><a target="_blank" href="<?php echo url::base(); ?>page/index/10"><?php echo Kohana::lang('ui_main.terms');?></a>&nbsp;<?php echo Kohana::lang('ui_main.terms_confirm_text');?></p>
